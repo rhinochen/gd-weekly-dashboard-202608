@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#061b18">
+  <title>營運部週會即時儀表板</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="deck">
+    <section class="slide is-active" data-title="認證件數">
+      <header class="slide-header">
+        <div class="brand">
+          <img src="come-true-logo.png" alt="康築 Come True">
+          <div><span>OPERATIONS WEEKLY</span><strong>營運部週會</strong></div>
+        </div>
+        <div class="page-meta date-air">
+          <span id="todayDateLarge">07/21</span>
+          <div>
+            <strong id="reportMonthLabel">2026 年 8 月</strong>
+            <b id="airQualityText">空氣品質讀取中</b>
+          </div>
+        </div>
+      </header>
+      <div class="page-title">
+        <p id="reportScopeLabel1">8 月目前業績</p>
+        <h1>認證申請件數</h1>
+      </div>
+      <div class="metric-row">
+        <article class="metric-block accent-green">
+          <span>本月認證申請</span>
+          <strong id="monthCases">2<small>件</small></strong>
+          <p id="monthCasesNote">截至 8 月 10 日</p>
+        </article>
+        <article class="metric-block">
+          <span>去年同月份</span>
+          <strong id="lastYearMonthCases">10<small>件</small></strong>
+          <p>2025 年同期</p>
+        </article>
+        <article class="metric-block comparison" id="caseComparisonBlock">
+          <span>同期比較</span>
+          <strong id="caseComparison">-80%</strong>
+          <p id="caseComparisonText">較去年同期減少 8 件</p>
+        </article>
+      </div>
+      <article class="chart-block">
+        <div class="chart-heading">
+          <div><span>每月件數趨勢</span><strong>2026 年 1 月至今 vs. 2025 全年</strong></div>
+          <div class="legend"><i class="current"></i>2026 <i class="previous"></i>2025</div>
+        </div>
+        <div class="line-chart" id="casesChart"></div>
+      </article>
+    </section>
+
+    <section class="slide" data-title="認證金額">
+      <header class="slide-header">
+        <div class="section-name"><span>02</span><strong>認證收入</strong></div>
+        <div class="page-meta"><strong id="reportMonthLabel2">2026 年 8 月</strong></div>
+      </header>
+      <div class="page-title compact">
+        <p id="reportScopeLabel2">8 月目前業績</p>
+        <h2>認證金額</h2>
+      </div>
+      <div class="metric-row">
+        <article class="metric-block accent-gold">
+          <span>本月認證金額</span>
+          <strong id="monthCertRevenue">14<small>萬</small></strong>
+          <p>金額以萬元四捨五入</p>
+        </article>
+        <article class="metric-block">
+          <span>去年同月份</span>
+          <strong id="lastYearMonthCertRevenue">48<small>萬</small></strong>
+          <p>2025 年同期認證收入</p>
+        </article>
+        <article class="metric-block comparison" id="certComparisonBlock">
+          <span>同期比較</span>
+          <strong id="certComparison">-72%</strong>
+          <p id="certComparisonText">較去年同期減少 34 萬</p>
+        </article>
+      </div>
+      <div class="cashflow-row single">
+        <article class="cashflow-card is-new">
+          <span>NEW｜待收認證款</span>
+          <strong>80.6<small>萬</small></strong>
+          <p>目前待收 $806,000，後續入帳可補強認證收入表現。</p>
+        </article>
+      </div>
+      <article class="chart-block compact-chart">
+        <div class="chart-heading">
+          <div><span>每月認證金額趨勢</span><strong>單位：萬｜2026 年 1 月至今 vs. 2025 全年</strong></div>
+          <div class="legend"><i class="current gold"></i>2026 <i class="previous"></i>2025</div>
+        </div>
+        <div class="line-chart" id="certChart"></div>
+      </article>
+    </section>
+
+    <section class="slide" data-title="總收入">
+      <header class="slide-header">
+        <div class="section-name"><span>03</span><strong>營運收入</strong></div>
+        <div class="page-meta"><strong id="reportMonthLabel3">2026 年 8 月</strong></div>
+      </header>
+      <div class="page-title compact">
+        <p id="reportScopeLabel3">8 月目前業績｜包含認證收入與既有長期合作 IP 收入</p>
+        <h2>本月總收入</h2>
+      </div>
+      <div class="metric-row">
+        <article class="metric-block accent-blue">
+          <span>本月總收入</span>
+          <strong id="monthTotalRevenue">30<small>萬</small></strong>
+          <p>認證＋既有合作收入</p>
+        </article>
+        <article class="metric-block">
+          <span>去年同期總收入</span>
+          <strong id="lastYearCertBaseline">93<small>萬</small></strong>
+          <p id="lastYearTotalBreakdown">認證 48 萬＋行銷 45 萬</p>
+        </article>
+        <article class="metric-block comparison" id="totalComparisonBlock">
+          <span>基準比較</span>
+          <strong id="totalComparison">-37%</strong>
+          <p id="totalComparisonText">較去年總收入少 25 萬｜認證 -6、行銷 -19 萬</p>
+        </article>
+      </div>
+      <div class="cashflow-row">
+        <article class="cashflow-card is-new">
+          <span>NEW｜行銷費用待收</span>
+          <strong>31.6<small>萬</small></strong>
+          <p>待收 $316,000，需追蹤入帳時間。</p>
+        </article>
+        <article class="cashflow-card">
+          <span>已收支票</span>
+          <strong>61.95<small>萬</small></strong>
+          <p>9/10、10/10、11/10 分批兌現。</p>
+        </article>
+        <article class="cashflow-card is-next">
+          <span>下週預計再收支票</span>
+          <strong>43.5<small>萬</small></strong>
+          <p>預計收 $435,000，分 6 個月兌現。</p>
+        </article>
+      </div>
+      <article class="chart-block compact-chart">
+        <div class="chart-heading">
+          <div><span>每月收入趨勢</span><strong>單位：萬｜2026 總收入 vs. 2025 總收入</strong></div>
+          <div class="legend"><i class="current blue"></i>2026 總收入 <i class="previous"></i>2025 總收入</div>
+        </div>
+        <div class="line-chart" id="totalChart"></div>
+      </article>
+    </section>
+
+    <section class="slide" data-title="目標達成率">
+      <header class="slide-header">
+        <div class="section-name"><span>04</span><strong>目標管理</strong></div>
+        <div class="page-meta"><strong id="reportMonthLabel4">2026 年 8 月</strong></div>
+      </header>
+      <div class="page-title">
+        <p id="reportScopeLabel4">8 月目前業績與後續目標</p>
+        <h2>達成率與年度進度</h2>
+      </div>
+      <div class="achievement-grid">
+        <article class="achievement-card">
+          <div class="achievement-top">
+            <div><span>本月達成率</span><strong id="monthlyRate">57%</strong></div>
+            <b id="monthlyDelta">尚差 52 萬</b>
+          </div>
+          <div class="achievement-progress"><i id="monthlyRateBar"></i></div>
+          <div class="amount-pair">
+            <div><span>目前收入</span><strong id="monthlyActual">68 萬</strong></div>
+            <div><span>本月目標</span><strong id="monthlyTarget">120 萬</strong></div>
+          </div>
+        </article>
+        <article class="achievement-card annual">
+          <div class="achievement-top">
+            <div><span>年度達成率</span><strong id="annualRate">58%</strong></div>
+            <b id="annualDelta">尚差 616 萬</b>
+          </div>
+          <div class="achievement-progress"><i id="annualRateBar"></i></div>
+          <div class="amount-pair">
+            <div><span>累計收入</span><strong id="annualActual">834 萬</strong></div>
+            <div><span>年度目標</span><strong>1,450 萬</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="特約聯盟">
+      <header class="slide-header">
+        <div class="section-name"><span>05</span><strong>特約聯盟推進</strong></div>
+        <div class="page-meta"><strong>合約簽署進度</strong></div>
+      </header>
+      <div class="page-title">
+        <p id="allianceSummaryText">8 月目標 10 位｜目前已簽 0 位｜累計合作 36 位</p>
+        <h2>特約聯盟合作設計公司</h2>
+      </div>
+      <div class="alliance-scoreboard alliance-simple-scoreboard">
+        <article class="alliance-goal-card">
+          <span>8 月簽約目標</span>
+          <strong id="allianceAugustTarget">10<small>位</small></strong>
+          <p>本月推進目標</p>
+        </article>
+        <article>
+          <span>8 月目前已簽</span>
+          <strong id="allianceAugustSigned">0<small>位</small></strong>
+          <p id="allianceAugustNote">含資料待補，排除不列入</p>
+        </article>
+        <article class="alliance-total-card">
+          <span>累計合作</span>
+          <strong id="allianceTotalSigned">36<small>位</small></strong>
+          <p>含 6 月、7 月與 8 月已簽夥伴</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="協會快報">
+      <header class="slide-header">
+        <div class="section-name"><span>06</span><strong>協會營運快報</strong></div>
+        <div class="page-meta"><strong>秘書工作日誌摘要｜更新至 2026/08/17</strong></div>
+      </header>
+      <div class="association-grid association-brief-grid">
+        <article class="member-panel">
+          <span>會員概況</span>
+          <strong>220<small>家</small></strong>
+          <p class="member-trend-label is-new">NEW｜較上次增加 8 家｜待繳 2 家</p>
+          <div class="member-weekly-grid">
+            <div><span>上次</span><strong>212<small>家</small></strong></div>
+            <div><span>本次增減</span><strong>+8<small>家</small></strong></div>
+          </div>
+          <div class="member-structure">
+            <p><span>會員人數</span><strong>247<small>位</small></strong></p>
+            <p><span>個人會員</span><strong>194<small>家</small></strong></p>
+            <p><span>團體會員</span><strong>26<small>家</small></strong></p>
+          </div>
+          <div class="member-growth">
+            <span>本期重點</span>
+            <div>
+              <p><b>2608 北區營隊</b><strong>3<small>位</small></strong></p>
+              <p><b>2608 北區入會</b><strong>4<small>位</small></strong></p>
+            </div>
+            <em class="new-line">NEW｜顏邦浩・浩琪好室室內設計已繳費 $10,000（115/08–116/12）</em>
+          </div>
+        </article>
+        <article class="region-panel">
+          <div class="block-title"><span>六區推動狀況</span><strong>活動報名與下一步</strong></div>
+          <div class="region-grid">
+            <section class="region-card">
+              <div><b>北1區</b><span>待規劃</span></div>
+              <strong>前次 Open House 已完成</strong>
+              <p>目前未回報新活動，待下一場區域聚會規劃。</p>
+            </section>
+            <section class="region-card is-done">
+              <div><b>北2區</b><span>實到 15 位</span></div>
+              <strong>06/26 家具工廠參訪</strong>
+              <p>18 位報名，活動已完成，後續可追蹤參與設計師。</p>
+            </section>
+            <section class="region-card is-done">
+              <div><b>北3區</b><span>實到 17 位</span></div>
+              <strong>06/24 知識小聚</strong>
+              <p>23 位報名，活動已完成，主題聚焦團隊經營交流。</p>
+            </section>
+            <section class="region-card is-active">
+              <div><b>桃竹苗區</b><span>NEW｜報名 11 位</span></div>
+              <strong>09/04 知識小聚＋慶祝餐會</strong>
+              <p>PARKJECT 趴街餐酒館，15:30–20:00；截至 8/17 已報名 11 位。</p>
+            </section>
+            <section class="region-card">
+              <div><b>中區</b><span>待規劃</span></div>
+              <strong>延續前次參訪成果</strong>
+              <p>目前未回報新活動，待下一場中區分享或參訪主題。</p>
+            </section>
+            <section class="region-card is-done">
+              <div><b>南區</b><span>出席 17 位</span></div>
+              <strong>南區知識小聚 × 廠商參訪</strong>
+              <p>08/06 伊斯曼塗料、翊騰興業、綠裝修認證案例解析與茂系亞健康角料介紹；活動已完成。</p>
+            </section>
+          </div>
+        </article>
+        <article class="event-panel host-events brief-host-events">
+          <div class="block-title"><span>近期協會主辦活動</span><strong>參訪／公益</strong></div>
+          <div class="event-list">
+            <section>
+              <b>2026 綠裝修年會啟動</b>
+              <p>10/30 W 飯店，7/31 已回簽；會員 $1,000／位，非會員 $3,800／位。</p>
+              <p>需確認總召、主題、各組長與工作時程。</p>
+              <p class="is-new-text">NEW｜第一次場勘調整為 9/22。</p>
+            </section>
+            <section>
+              <b>07/30 公益電影包場</b>
+              <p>《超人再起》南港喜樂時代影城，出席 28 位。</p>
+              <p>活動已完成，可作為公益合作與協會聲量紀錄。</p>
+            </section>
+            <section>
+              <b>帳務與會員服務</b>
+              <p class="is-new-text">NEW｜協會帳務已處理至 2026/08/10，送金單已完成。</p>
+              <p>各項活動收據已寄發予綠設計師。</p>
+            </section>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="協會重點">
+      <header class="slide-header">
+        <div class="section-name"><span>07</span><strong>協會重點專案</strong></div>
+        <div class="page-meta"><strong>年會啟動｜理監事會｜南區分享會｜公協會合作</strong></div>
+      </header>
+      <div class="association-focus-grid">
+        <article class="annual-meeting-panel">
+          <div class="block-title"><span>2026 綠裝修年會</span><strong>已回簽｜內部作業待啟動</strong></div>
+          <div class="annual-hero">
+            <span>10/30</span>
+            <div>
+              <b>2026/10/30（五）</b>
+              <strong>場地：W 飯店</strong>
+              <em>2026/07/31 已回簽｜活動訂金 TWD $106,128</em>
+            </div>
+          </div>
+          <div class="annual-price-grid">
+            <section><span>會員</span><strong>$1,000<small>/位</small></strong></section>
+            <section><span>非會員</span><strong>$3,800<small>/位</small></strong></section>
+            <section class="is-new-box"><span>第 1 次場勘</span><strong>09/22</strong></section>
+            <section><span>第 2 次場勘</span><strong>10月初</strong></section>
+          </div>
+          <div class="annual-cost-card">
+            <span>啟動待確認</span>
+            <strong>總召｜主題｜組別時程</strong>
+            <p>需確認年會活動啟動，以利規劃總召、主題、各組長與組員工作行事曆。</p>
+          </div>
+        </article>
+        <article class="guild-panel">
+          <div class="block-title"><span>與公會、協會合作</span><strong>NEW｜8/17 更新回覆進度</strong></div>
+          <div class="guild-list">
+            <p class="is-new">台北市室內設計裝修商業同業公會｜8/12 已回覆，預計 11–12 月再安排交流；10/15 年會暨理監事就職典禮</p>
+            <p>新北市室內設計裝修商業同業公會</p>
+            <p>桃園市室內設計裝修商業同業公會</p>
+            <p class="is-paused">台中市室內設計裝修商業同業公會｜115 年度暫無法排程</p>
+            <p>臺南市室內設計裝修商業同業公會</p>
+            <p class="is-new">高雄市室內設計裝修商業同業公會｜8/13 已回覆，後續以個別交流方式進行</p>
+          </div>
+        </article>
+        <article class="share-panel">
+          <div class="block-title"><span>09/17 南區分享會</span><strong>高雄市空間藝術協會邀請</strong></div>
+          <h3>掌門精釀啤酒餐廳｜棧貳庫店</h3>
+          <div class="share-info-grid">
+              <p><b>時間</b><span>18:00-21:00｜17:00 報到交流</span></p>
+              <p><b>費用</b><span>會員 $500｜非會員 $1,500</span></p>
+              <p><b>主講 1</b><span>李彥頤 建築師｜森曜建築師事務所</span></p>
+              <p><b>主講 2</b><span>饒允武 理事長｜台灣綠裝修發展協會</span></p>
+              <p class="is-new"><b>NEW</b><span>截至 8/14 已報名 9 位</span></p>
+            </div>
+        </article>
+        <article class="focus-board-panel">
+          <div class="block-title"><span>第二屆理監事會議</span><strong>第 11 次 W Hotel｜訂金完成</strong></div>
+          <div class="board-date-grid">
+            <div><span>第 11 次</span><strong>08/21<small>五</small></strong></div>
+            <div><span>第 12 次</span><strong>11/20<small>五</small></strong></div>
+          </div>
+          <div class="board-notes">
+            <p>第 11 次 2026/08/21 12:00 台北 W 飯店，會議通知已公告。</p>
+            <p class="is-new-text">NEW｜截至 8/17：報名 19 位、不克參加 5 位。</p>
+            <p>活動訂金 $17,688 已於 2026/07/31 完成；內政部人民團體線上申報已於 7/30 處理。</p>
+            <p>8/19 財報提交理監事群查閱；會議議程及報告彙整安排中。</p>
+          </div>
+        </article>
+        <article class="timeline-panel">
+          <div class="block-title"><span>近期重要工作</span><strong>NEW｜8/19–11/20</strong></div>
+          <div class="timeline-list">
+            <p><b>08/19</b><span>理監事財報提交群組查閱</span></p>
+            <p><b>08/21</b><span>第 11 次理監事會議</span></p>
+            <p><b>09/04</b><span>桃竹苗區知識小聚＋慶祝餐會</span></p>
+            <p><b>09/17</b><span>高雄市空間藝術協會 × 綠裝修南區分享會</span></p>
+            <p><b>09/22</b><span>年會第一次場勘</span></p>
+            <p><b>10/30</b><span>2026 綠裝修年會</span></p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <nav class="deck-controls" aria-label="簡報控制">
+    <button id="prevButton" type="button" aria-label="上一頁">←</button>
+    <div id="slideDots"></div>
+    <span><b id="currentSlide">1</b> / <b id="totalSlides">7</b></span>
+    <button id="nextButton" type="button" aria-label="下一頁">→</button>
+    <button id="fullscreenButton" type="button">全螢幕</button>
+    <button id="downloadPdfButton" type="button">下載本週 PDF</button>
+  </nav>
+  <div class="data-status" id="dataStatus">正在同步 ai2026</div>
+  <script src="app.js"></script>
+</body>
+</html>
