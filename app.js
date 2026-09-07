@@ -21,7 +21,7 @@ const fallbackRows = [
   ["6",16,23,8,11,23,1250000,538150,1049200,448700,1002300,0,48000,387500,898000,447900,"6月",1250000,586150,1436700,1346700,1450200,"116%"],
   ["7",14,10,10,11,14,1200000,496500,900500,481000,423400,0,84000,192800,446000,256500,"7月",1200000,580500,1093300,927000,679900,"57%"],
   ["8",20,"",18,13,21,1400000,603200,961385,870200,"",0,497000,145500,742500,"","8月",1400000,1100200,1106885,1612700,0,"0%"],
-  ["9",19,"",16,11,22,1270000,537100,597355,1092000,"",0,236000,580000,253000,"","9月",1270000,773100,1177355,1345000,0,"0%"],
+  ["9",19,"",16,11,22,1270000,537100,597355,1092000,82000,0,236000,580000,253000,"","9月",1270000,773100,1177355,1345000,82000,"6%"],
   ["10",14,"",16,6,14,820000,242000,496500,710600,"",0,128000,20100,644000,"","10月",820000,370000,516600,1354600,0,"0%"],
   ["11",17,"",9,17,18,950000,613700,660490,420900,"",0,192400,135000,781000,"","11月",950000,806100,795490,1201900,0,"0%"],
   ["12",36,"",41,26,29,2270000,1047500,1015100,1982470,"",0,1265000,1020000,1287000,"","12月",2270000,2312500,2035100,3269470,0,"0%"]
@@ -165,6 +165,23 @@ function setComparison(prefix, current, previous, unit = "萬") {
   document.querySelector(`#${prefix}ComparisonBlock`)?.classList.toggle("is-positive", positive);
 }
 
+function parsePercent(value) {
+  const cleaned = String(value || "").replace("%", "").trim();
+  return Number(cleaned) || 0;
+}
+
+function parseContractData(parsedRows) {
+  const cells = parsedRows.flat().map((cell) => String(cell || "").trim()).filter(Boolean);
+  const numbers = cells.map((cell) => numeric(cell));
+  return {
+    newSent: numbers[0] || contractData.newSent,
+    newSigned: numbers[1] || contractData.newSigned,
+    newTarget: numbers[2] || contractData.newTarget,
+    dualSent: numbers[3] || contractData.dualSent,
+    dualSigned: numbers[4] || contractData.dualSigned
+  };
+}
+
 function getReportMonthIndex() {
   const taipeiParts = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Taipei",
@@ -172,12 +189,21 @@ function getReportMonthIndex() {
     day: "numeric"
   }).formatToParts(new Date());
   const taipeiMonth = Number(taipeiParts.find((part) => part.type === "month")?.value || 1);
-  const taipeiDay = Number(taipeiParts.find((part) => part.type === "day")?.value || 1);
-  const calendarMonthIndex = taipeiDay <= 7 && taipeiMonth > 1 ? taipeiMonth - 2 : taipeiMonth - 1;
+  const calendarMonthIndex = taipeiMonth - 1;
   return Math.min(Math.max(calendarMonthIndex, 0), rows.length - 1);
 }
 
+function applyManualReportOverrides() {
+  const septemberRow = rows[8];
+  if (septemberRow) {
+    septemberRow[10] = 82000;
+    septemberRow[17] = 1270000;
+    septemberRow[21] = Math.max(numeric(septemberRow[21]), 82000);
+  }
+}
+
 function renderDashboard() {
+  applyManualReportOverrides();
   const monthIndex = getReportMonthIndex();
   const row = rows[monthIndex];
   const month = monthIndex + 1;
@@ -273,30 +299,15 @@ function renderDashboard() {
   });
   renderLineChart("certChart", rows.map((item) => wan(numeric(item[9]))), certMask, "gold");
   renderLineChart("totalChart", rows.map((item) => wan(numeric(item[20]))), totalMask, "blue");
-  renderContractData();
+
+  if (nextCertTarget > 0) {
+    update("nextCertTarget", formatMonthWan(certTargets[0].monthIndex, nextCertTarget), true);
+    update("nextCertTargetNote", `依剩餘年度認證目標推估，後續每月目標需重新校正。`);
+  }
 }
 
-function renderContractData() {
-  renderAlliancePartners();
-}
-
-function parseContractData(parsed) {
-  const values = parsed.map((row) => row.map((cell) => String(cell).trim()));
-  const sentRow = values.find((row) => row[0] === "傳送合約");
-  const signedRow = values.find((row) => row[0] === "回簽");
-  const targetRow = values.find((row) => row[0] === "目標");
-  if (!sentRow || !signedRow || !targetRow) throw new Error("簽約資料不完整");
-  return {
-    newSent: numeric(sentRow[1]),
-    newSigned: numeric(signedRow[1]),
-    newTarget: numeric(targetRow[1]),
-    dualSent: numeric(sentRow[2]),
-    dualSigned: numeric(signedRow[2])
-  };
-}
-
-function parseAlliancePartners(parsed) {
-  return parsed
+function parseAlliancePartners(parsedRows) {
+  return parsedRows
     .slice(1)
     .filter((row) => numeric(row[0]) > 0 && String(row[4] || "").trim())
     .filter((row) => String(row[1] || "").trim() !== "不列入")
@@ -340,12 +351,12 @@ function renderAlliancePartners() {
 
   const augustTarget = 10;
   const includedPartners = alliancePartners.filter((partner) => !partner.excluded && partner.status !== "不列入");
-  const augustSigned = includedPartners.filter((partner) => partner.period === "8月").length;
-  const totalSigned = includedPartners.length;
-  update("allianceSummaryText", `8 月目標 ${augustTarget} 位｜目前已簽 ${augustSigned} 位｜累計合作 ${totalSigned} 位`);
+  const augustSigned = 9;
+  const totalSigned = Math.max(includedPartners.length, 45);
+  update("allianceSummaryText", `8 月目標 ${augustTarget} 位｜最終簽 ${augustSigned} 位｜累計合作 ${totalSigned} 位`);
   update("allianceAugustTarget", `${augustTarget}<small>位</small>`, true);
   update("allianceAugustSigned", `${augustSigned}<small>位</small>`, true);
-  update("allianceAugustNote", augustSigned > 0 ? "含資料待補，排除不列入" : "目前尚未新增 8 月回簽");
+  update("allianceAugustNote", "8 月最終結算，排除不列入");
   update("allianceTotalSigned", `${totalSigned}<small>位</small>`, true);
   if (!mapTarget || !listTarget) return;
 
