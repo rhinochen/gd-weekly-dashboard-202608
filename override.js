@@ -32,10 +32,16 @@
       document.querySelector("#septemberRateBar")?.style.setProperty("width", `${Math.min(100, rate * 100)}%`);
     };
 
+    const removeCasesChartAnnotation = () => {
+      const currentMask = rows.map((item, index) => index <= REPORT_MONTH_INDEX ? numberValue(item[2]) : null);
+      renderLineChart("casesChart", rows.map((item) => numberValue(item[3])), currentMask, "green");
+    };
+
     const originalRenderDashboard = renderDashboard;
     renderDashboard = function renderDashboardWithSeptemberSlide() {
       originalRenderDashboard();
       updateSeptemberSlide();
+      removeCasesChartAnnotation();
     };
 
     renderDashboard();
