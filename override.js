@@ -12,13 +12,12 @@ applyManualReportOverrides = () => {
 };
 
 function updatePendingCertCard() {
-  const amount = 818000;
   const card = document.querySelector('[data-title="認證金額"] .cashflow-card.is-new');
   if (!card) return;
   const main = card.querySelector("strong");
   const note = card.querySelector("p");
-  if (main) main.innerHTML = "81.8<small>萬</small>";
-  if (note) note.textContent = "目前待收 818,000，對標 ai2026 的 Y6 欄位。";
+  if (main) main.innerHTML = "76.8<small>萬</small>";
+  if (note) note.textContent = "目前待收 768100，對標 ai2026 的 Y6 欄位。";
 }
 
 function removeSlidesForWeeklyReport() {
@@ -47,4 +46,4 @@ renderDashboard = function () {
 
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新，暫時移除 9 月目標與特約聯盟頁");
+status("週報已更新：待收認證款對標 ai2026 Y6，並暫時移除 9 月目標與特約聯盟頁");
