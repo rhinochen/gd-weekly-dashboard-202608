@@ -6,7 +6,7 @@ renderLineChart = function (id, previous, current, color, annotation = null) {
 };
 
 applyManualReportOverrides = () => {
-  rows[8][10] = 82000;
+  rows[8][10] = 131900;
   rows[8][17] = 1270000;
   rows[8][21] = 338400;
 };
@@ -46,4 +46,4 @@ renderDashboard = function () {
 
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：待收認證款對標 ai2026 Y6，並暫時移除 9 月目標與特約聯盟頁");
+status("週報已更新：9 月認證收入修正為 131900，總收入 338400，待收認證款對標 ai2026 Y6");
