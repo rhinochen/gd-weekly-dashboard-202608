@@ -1,23 +1,18 @@
-getReportMonthIndex = () => 8;
-
 const originalRenderLineChart = renderLineChart;
 renderLineChart = function (id, previous, current, color, annotation = null) {
   return originalRenderLineChart(id, previous, current, color, id === "casesChart" ? null : annotation);
 };
 
-applyManualReportOverrides = () => {
-  rows[8][10] = 131900;
-  rows[8][17] = 1270000;
-  rows[8][21] = 338400;
-};
-
 function updatePendingCertCard() {
+  const amount = Number(contractData?.pendingAmount) || 880000;
   const card = document.querySelector('[data-title="認證金額"] .cashflow-card.is-new');
   if (!card) return;
   const main = card.querySelector("strong");
   const note = card.querySelector("p");
-  if (main) main.innerHTML = "76.8<small>萬</small>";
-  if (note) note.textContent = "目前待收 768100，對標 ai2026 的 Y6 欄位。";
+  const wanValue = amount / 10000;
+  const wanText = wanValue.toLocaleString("zh-TW", { maximumFractionDigits: 1 });
+  if (main) main.innerHTML = `${wanText}<small>萬</small>`;
+  if (note) note.textContent = `目前待收 ${amount.toLocaleString("zh-TW")}，資料來源：ai2026!Y6。`;
 }
 
 function removeSlidesForWeeklyReport() {
@@ -46,4 +41,4 @@ renderDashboard = function () {
 
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：9 月認證收入修正為 131900，總收入 338400，待收認證款對標 ai2026 Y6");
+status("週報已改為即時同步：認證收入、總收入與待收金額皆由 ai2026 雲端表更新");
