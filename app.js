@@ -28,7 +28,7 @@ const fallbackRows = [
 ];
 
 let rows = fallbackRows;
-let contractData = { newSent: 31, newSigned: 10, newTarget: 10, dualSent: 0, dualSigned: 0 };
+let contractData = { newSent: 31, newSigned: 10, newTarget: 10, dualSent: 0, dualSigned: 0, pendingAmount: 880000 };
 let alliancePartners = [
   { region: "新北", designer: "王國珮", company: "Funz房飾-麗正室內裝修規劃企業", period: "6月" },
   { region: "台北", designer: "林郁萱", company: "回醞空間設計有限公司", period: "6月" },
@@ -172,13 +172,24 @@ function parsePercent(value) {
 
 function parseContractData(parsedRows) {
   const cells = parsedRows.flat().map((cell) => String(cell || "").trim()).filter(Boolean);
-  const numbers = cells.map((cell) => numeric(cell));
+  const numbers = cells.map((cell) => numeric(cell)).filter((value) => value > 0);
+  let pendingAmount = contractData.pendingAmount || 880000;
+
+  for (const row of parsedRows) {
+    const labelIndex = row.findIndex((cell) => String(cell || "").trim().includes("待收金額"));
+    if (labelIndex >= 0) {
+      const value = row.slice(labelIndex + 1).map((cell) => numeric(cell)).find((item) => item > 0);
+      if (value) pendingAmount = value;
+    }
+  }
+
   return {
     newSent: numbers[0] || contractData.newSent,
     newSigned: numbers[1] || contractData.newSigned,
     newTarget: numbers[2] || contractData.newTarget,
-    dualSent: numbers[3] || contractData.dualSent,
-    dualSigned: numbers[4] || contractData.dualSigned
+    dualSent: contractData.dualSent,
+    dualSigned: contractData.dualSigned,
+    pendingAmount
   };
 }
 
@@ -194,12 +205,7 @@ function getReportMonthIndex() {
 }
 
 function applyManualReportOverrides() {
-  const septemberRow = rows[8];
-  if (septemberRow) {
-    septemberRow[10] = 82000;
-    septemberRow[17] = 1270000;
-    septemberRow[21] = Math.max(numeric(septemberRow[21]), 82000);
-  }
+  // 保留 Google Sheet 即時資料，不再覆寫當月認證收入、總收入或目標。
 }
 
 function renderDashboard() {
