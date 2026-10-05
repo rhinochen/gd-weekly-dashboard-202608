@@ -1474,3 +1474,125 @@ button { font: inherit; }
     background:#fff !important;border-color:#183d35 !important;
   }
 }
+
+
+/* 2026-10-05 refinements: cumulative lead + Taiwan alliance map */
+.cumulative-lead-card {
+  padding: .9vw 1vw;
+  margin-bottom: .65vw;
+  background: linear-gradient(145deg, rgba(98,230,172,.13), rgba(112,185,255,.05));
+  border: 1px solid rgba(98,230,172,.3);
+  border-radius: .65vw;
+}
+.cumulative-lead-card > span {
+  display:block;
+  color:var(--green);
+  font-size:clamp(10px,.74vw,14px);
+  font-weight:950;
+}
+.cumulative-lead-card > strong {
+  display:inline-block;
+  margin:.2vw .3vw .1vw 0;
+  color:var(--white);
+  font-size:clamp(30px,2.5vw,48px);
+  line-height:1;
+}
+.cumulative-lead-card > strong small { font-size:.38em; }
+.cumulative-lead-card > b {
+  color:var(--muted);
+  font-size:clamp(12px,.9vw,17px);
+}
+.cumulative-lead-card > p {
+  margin:.28vw 0 0;
+  color:var(--gold);
+  font-size:clamp(14px,1.05vw,20px);
+  font-weight:950;
+}
+
+.alliance-map-content {
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap:1vw;
+  height:calc(100% - 2.2vw);
+  align-items:center;
+}
+.alliance-map-stage {
+  position:relative;
+  height:100%;
+  min-height:31vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.alliance-map-image {
+  display:block;
+  max-height:31vw;
+  max-width:92%;
+  object-fit:contain;
+  filter:drop-shadow(0 .5vw 1vw rgba(0,0,0,.16));
+}
+.alliance-map-markers {
+  position:absolute;
+  inset:0;
+}
+.alliance-map-marker {
+  position:absolute;
+  transform:translate(-50%,-50%);
+  display:flex;
+  align-items:center;
+  gap:.25vw;
+  padding:.22vw .42vw;
+  border-radius:999px;
+  color:#061b18;
+  background:var(--marker);
+  border:2px solid rgba(255,255,255,.75);
+  box-shadow:0 .18vw .45vw rgba(0,0,0,.22);
+  font-weight:950;
+  white-space:nowrap;
+}
+.alliance-map-marker b {
+  font-size:clamp(10px,.82vw,15px);
+}
+.alliance-map-marker span {
+  font-size:clamp(8px,.62vw,12px);
+}
+.alliance-region-legend {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.55vw;
+  align-content:center;
+}
+.alliance-legend-item {
+  display:grid;
+  grid-template-columns:.7vw 1fr auto;
+  gap:.45vw;
+  align-items:center;
+  padding:.6vw .7vw;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:.55vw;
+}
+.alliance-legend-item i {
+  width:.62vw;
+  height:.62vw;
+  min-width:8px;
+  min-height:8px;
+  border-radius:50%;
+  background:var(--legend);
+}
+.alliance-legend-item span {
+  color:var(--white);
+  font-size:clamp(10px,.76vw,14px);
+  font-weight:900;
+}
+.alliance-legend-item strong {
+  color:var(--green);
+  font-size:clamp(11px,.82vw,15px);
+}
+@media print {
+  .cumulative-lead-card,
+  .alliance-legend-item {
+    background:#fff !important;
+    border-color:#183d35 !important;
+  }
+}
