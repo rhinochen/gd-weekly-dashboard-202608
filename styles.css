@@ -1235,3 +1235,242 @@ button { font: inherit; }
     border-color: #8b6100 !important;
   }
 }
+
+
+/* 2026-10 weekly redesign */
+.month-close-hero {
+  display:grid;
+  grid-template-columns:1.7fr .75fr;
+  gap:.9vw;
+  margin: .8vw 0 1vw;
+}
+.month-close-hero > div {
+  padding:1.15vw 1.35vw;
+  background:linear-gradient(145deg,rgba(98,230,172,.11),rgba(255,255,255,.02));
+  border:1px solid rgba(98,230,172,.25);
+  border-radius:.85vw;
+}
+.month-close-hero span,
+.performance-card span,
+.october-main-card span,
+.october-side-card span,
+.annual-target-grid span,
+.alliance-kpi-grid span {
+  display:block;
+  color:var(--muted);
+  font-size:clamp(10px,.82vw,15px);
+  font-weight:900;
+}
+.month-close-hero strong {
+  display:block;
+  margin:.15vw 0;
+  color:var(--green);
+  font-size:clamp(44px,4.6vw,84px);
+  line-height:.95;
+}
+.month-close-hero strong small,
+.performance-card strong small,
+.october-main-card strong small,
+.october-side-card strong small,
+.annual-target-grid strong small,
+.alliance-kpi-grid strong small { font-size:.34em; }
+.month-close-hero p { margin:.3vw 0 0;color:var(--white);font-size:clamp(13px,1vw,19px);font-weight:900; }
+.month-close-rate strong { color:var(--gold); }
+
+.performance-split-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:.8vw;
+}
+.performance-card {
+  padding:1vw 1.1vw;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-top:.42vw solid var(--green);
+  border-radius:.75vw;
+}
+.performance-card.is-gold { border-top-color:var(--gold); }
+.performance-card.is-blue { border-top-color:var(--blue); }
+.performance-card.is-green { border-top-color:var(--green); }
+.performance-card strong {
+  display:block;
+  margin:.35vw 0;
+  color:var(--white);
+  font-size:clamp(35px,3vw,58px);
+}
+.performance-card.is-gold strong { color:var(--gold); }
+.performance-card.is-blue strong { color:var(--blue); }
+.performance-card.is-green strong { color:var(--green); }
+.performance-card p { margin:0;color:var(--muted);font-size:clamp(11px,.82vw,16px);font-weight:850; }
+
+.october-progress-grid {
+  display:grid;
+  grid-template-columns:1.55fr 1fr 1fr;
+  gap:.8vw;
+  margin:.8vw 0;
+}
+.october-main-card,.october-side-card {
+  padding:1.1vw 1.2vw;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:.8vw;
+}
+.october-main-card { border-left:.42vw solid var(--green); }
+.october-side-card.is-gold { border-left:.42vw solid var(--gold); }
+.october-side-card.is-blue { border-left:.42vw solid var(--blue); }
+.october-main-card strong,.october-side-card strong {
+  display:block;
+  margin:.35vw 0;
+  color:var(--white);
+  font-size:clamp(34px,3.1vw,58px);
+}
+.october-side-card.is-gold strong { color:var(--gold); }
+.october-side-card.is-blue strong { color:var(--blue); }
+.october-main-card p,.october-side-card p {
+  margin:.2vw 0;
+  color:var(--muted);
+  font-size:clamp(11px,.84vw,16px);
+  font-weight:850;
+}
+.target-reallocation-banner {
+  display:flex;
+  align-items:center;
+  gap:1vw;
+  margin-top:1vw;
+  padding:.8vw 1vw;
+  background:rgba(246,201,105,.1);
+  border:1px solid rgba(246,201,105,.35);
+  border-radius:.65vw;
+}
+.target-reallocation-banner b { color:var(--gold);font-size:clamp(13px,1vw,19px);white-space:nowrap; }
+.target-reallocation-banner span { color:var(--white);font-size:clamp(11px,.82vw,16px);font-weight:800; }
+
+.diagnosis-layout {
+  display:grid;
+  grid-template-columns:1.25fr .95fr;
+  gap:.8vw;
+  height:calc(100% - 7.5vw);
+}
+.quarter-chart-panel,.annual-diagnosis-panel {
+  padding:1vw;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:.8vw;
+  min-height:0;
+}
+.quarter-bars { display:grid;gap:.7vw; }
+.quarter-row {
+  display:grid;
+  grid-template-columns:3.2vw 1fr;
+  gap:.6vw;
+  align-items:center;
+}
+.quarter-row > b { color:var(--white);font-size:clamp(12px,.9vw,17px); }
+.quarter-series { display:grid;gap:.28vw; }
+.quarter-bar-line {
+  display:grid;
+  grid-template-columns:3.3vw 1fr 4.3vw;
+  gap:.45vw;
+  align-items:center;
+}
+.quarter-bar-line span { color:var(--muted);font-size:clamp(9px,.68vw,13px);font-weight:900; }
+.quarter-track { height:.72vw;min-height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden; }
+.quarter-track i { display:block;height:100%;border-radius:99px;background:var(--muted); }
+.quarter-bar-line.y2024 i { background:#7f9992; }
+.quarter-bar-line.y2025 i { background:var(--blue); }
+.quarter-bar-line.y2026 i { background:var(--green); }
+.quarter-bar-line strong { color:var(--white);font-size:clamp(9px,.68vw,13px);text-align:right; }
+.diagnosis-callout {
+  padding:.85vw;
+  background:rgba(98,230,172,.08);
+  border:1px solid rgba(98,230,172,.22);
+  border-radius:.6vw;
+}
+.diagnosis-callout span { color:var(--green);font-size:clamp(9px,.66vw,12px);font-weight:950; }
+.diagnosis-callout strong { display:block;margin:.2vw 0;color:var(--white);font-size:clamp(18px,1.4vw,27px); }
+.diagnosis-callout p { margin:0;color:var(--gold);font-size:clamp(11px,.82vw,16px);font-weight:900; }
+.annual-target-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.5vw;
+  margin-top:.6vw;
+}
+.annual-target-grid section {
+  padding:.65vw;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:.55vw;
+}
+.annual-target-grid strong {
+  display:block;
+  margin:.15vw 0;
+  color:var(--white);
+  font-size:clamp(20px,1.65vw,31px);
+}
+.annual-target-grid p { margin:0;color:var(--muted);font-size:clamp(8px,.62vw,12px);font-weight:800; }
+.strategy-note {
+  margin-top:.6vw;
+  padding:.7vw .8vw;
+  background:rgba(246,201,105,.08);
+  border:1px solid rgba(246,201,105,.24);
+  border-radius:.55vw;
+}
+.strategy-note b { display:block;color:var(--gold);font-size:clamp(10px,.72vw,14px); }
+.strategy-note span { display:block;margin-top:.2vw;color:var(--white);font-size:clamp(9px,.66vw,13px);font-weight:800;line-height:1.35; }
+
+.alliance-overview-layout {
+  display:grid;
+  grid-template-columns:.9fr 1.4fr;
+  gap:.8vw;
+  height:calc(100% - 7.2vw);
+}
+.alliance-kpi-panel,.alliance-region-panel {
+  padding:1vw;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:.8vw;
+}
+.alliance-kpi-grid { display:grid;gap:.6vw; }
+.alliance-kpi-grid section {
+  padding:.85vw 1vw;
+  background:rgba(98,230,172,.06);
+  border:1px solid rgba(98,230,172,.2);
+  border-radius:.6vw;
+}
+.alliance-kpi-grid section.is-pending { background:rgba(246,201,105,.08);border-color:rgba(246,201,105,.25); }
+.alliance-kpi-grid section.is-potential { background:rgba(112,185,255,.08);border-color:rgba(112,185,255,.25); }
+.alliance-kpi-grid strong {
+  display:block;
+  margin:.2vw 0;
+  color:var(--green);
+  font-size:clamp(34px,3vw,58px);
+}
+.alliance-kpi-grid .is-pending strong { color:var(--gold); }
+.alliance-kpi-grid .is-potential strong { color:var(--blue); }
+.alliance-pipeline-note {
+  margin-top:.7vw;
+  padding:.75vw;
+  background:rgba(255,255,255,.035);
+  border-radius:.55vw;
+}
+.alliance-pipeline-note b { display:block;color:var(--gold);font-size:clamp(10px,.76vw,14px); }
+.alliance-pipeline-note span { display:block;margin-top:.2vw;color:var(--white);font-size:clamp(9px,.68vw,13px);font-weight:800;line-height:1.4; }
+.alliance-region-bars { display:grid;gap:.45vw;margin-top:.7vw; }
+.region-bar-row {
+  display:grid;
+  grid-template-columns:4.4vw 1fr 2.4vw;
+  gap:.5vw;
+  align-items:center;
+}
+.region-bar-row span { color:var(--white);font-size:clamp(9px,.7vw,14px);font-weight:900; }
+.region-bar-track { height:.8vw;min-height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden; }
+.region-bar-track i { display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:99px; }
+.region-bar-row strong { color:var(--green);font-size:clamp(10px,.76vw,15px);text-align:right; }
+
+@media print {
+  .month-close-hero > div,.performance-card,.october-main-card,.october-side-card,
+  .quarter-chart-panel,.annual-diagnosis-panel,.alliance-kpi-panel,.alliance-region-panel,
+  .annual-target-grid section,.alliance-kpi-grid section,.alliance-pipeline-note {
+    background:#fff !important;border-color:#183d35 !important;
+  }
+}
