@@ -22,11 +22,11 @@ function quarterSum(columnIndex, startMonthIndex) {
 
 function updateSeptemberCloseSlide() {
   const row = rows[8] || [];
-  const certTarget = numeric(row[6]);
+  const certTarget = 420000;
   const certActual = numeric(row[10]);
-  const marketingTarget = numeric(row[11]);
+  const marketingTarget = 400000;
   const marketingActual = numeric(row[15]);
-  const totalTarget = numeric(row[17]);
+  const totalTarget = 820000;
   const totalActual = numeric(row[21]);
 
   const totalRate = pct(totalActual, totalTarget, 1);
@@ -63,16 +63,14 @@ function updateOctoberStartSlide() {
   const setText = (id, value) => { const el = document.querySelector("#" + id); if (el) el.textContent = value; };
 
   setHtml("octTotalActual", `${moneyWan1(totalActual)}<small>萬</small>`);
-  setText("octTotalProgress", `現行表定目標 ${moneyWan1(totalTarget)} 萬｜達成 ${totalRate}%`);
+  setText("octTotalProgress", `10 月總目標 ${moneyWan1(totalTarget)} 萬｜達成 ${totalRate}%`);
   const bar = document.querySelector("#octTotalBar");
   if (bar) bar.style.width = `${Math.min(100,totalRate)}%`;
 
   setHtml("octCertActual", `${moneyWan1(certActual)}<small>萬</small>`);
-  setText("octCertProgress", `現行認證目標 ${moneyWan1(certTarget)} 萬｜達成 ${certRate}%`);
+  setText("octCertProgress", `調整後目標 ${moneyWan1(certTarget)} 萬｜達成 ${certRate}%`);
   setHtml("octMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
-  setText("octMarketingProgress", marketingTarget > 0
-    ? `目前目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${pct(marketingActual, marketingTarget, 1)}%`
-    : "星光＋業配｜新目標配比調整中");
+  setText("octMarketingProgress", `星光＋業配目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${pct(marketingActual, marketingTarget, 1)}%`);
 }
 
 function updateQuarterDiagnosisSlide() {
@@ -120,6 +118,12 @@ function updateQuarterDiagnosisSlide() {
   const totalEl = document.querySelector("#annualTotal2026");
   if (certEl) certEl.innerHTML = `${moneyWan1(cert2026)}<small>萬</small>`;
   if (totalEl) totalEl.innerHTML = `${moneyWan1(total2026)}<small>萬</small>`;
+
+  const annualCertBlock = certEl?.closest("section");
+  if (annualCertBlock) {
+    const note = annualCertBlock.querySelector("p");
+    if (note) note.textContent = `調整後目標 1,040 萬｜目前 ${pct(cert2026,10400000,1)}%`;
+  }
 }
 
 function updateAllianceOverviewSlide() {
@@ -355,7 +359,11 @@ function removeSlidesForWeeklyReport() {
 
 const originalRenderDashboard = renderDashboard;
 renderDashboard = function () {
-  originalRenderDashboard();
+  try {
+    originalRenderDashboard();
+  } catch (error) {
+    console.warn("Base dashboard render skipped for hidden legacy slides:", error);
+  }
   updateSeptemberCloseSlide();
   updateOctoberStartSlide();
   updateQuarterDiagnosisSlide();
