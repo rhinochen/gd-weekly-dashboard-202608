@@ -3,223 +3,226 @@ renderLineChart = function (id, previous, current, color, annotation = null) {
   return originalRenderLineChart(id, previous, current, color, id === "casesChart" ? null : annotation);
 };
 
-function updatePendingCertCard() {
-  const amount = Number(contractData?.pendingAmount) || 880000;
-  const card = document.querySelector('[data-title="認證金額"] .cashflow-card.is-new');
-  if (!card) return;
-  const main = card.querySelector("strong");
-  const note = card.querySelector("p");
-  const wanValue = amount / 10000;
-  const wanText = wanValue.toLocaleString("zh-TW", { maximumFractionDigits: 1 });
-  if (main) main.innerHTML = `${wanText}<small>萬</small>`;
-  if (note) note.textContent = `目前待收 ${amount.toLocaleString("zh-TW")}，資料來源：ai2026!Y6。`;
-}
-
-function ensureWeeklyStyles() {
-  if (document.querySelector("#weekly-report-overrides")) return;
-  const style = document.createElement("style");
-  style.id = "weekly-report-overrides";
-  style.textContent = `
-    .goal-split-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .7vw;
-      margin-top: .8vw;
-    }
-    .goal-split-card {
-      padding: .7vw .85vw;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: .55vw;
-    }
-    .goal-split-card.cert { border-left: .32vw solid var(--gold); }
-    .goal-split-card.marketing { border-left: .32vw solid var(--blue); }
-    .goal-split-card span {
-      display: block;
-      color: var(--muted);
-      font-size: clamp(9px,.7vw,13px);
-      font-weight: 900;
-    }
-    .goal-split-card strong {
-      display: block;
-      margin: .15vw 0;
-      color: var(--white);
-      font-size: clamp(17px,1.45vw,27px);
-    }
-    .goal-split-card b {
-      color: var(--green);
-      font-size: clamp(9px,.72vw,14px);
-    }
-    .goal-split-card p {
-      margin: .18vw 0 0;
-      color: var(--muted);
-      font-size: clamp(8px,.62vw,12px);
-      font-weight: 780;
-    }
-    @media print {
-      .goal-split-card { background:#fff !important; border-color:#183d35 !important; }
-      .goal-split-card strong { color:#10231f !important; }
-      .goal-split-card span,.goal-split-card p { color:#314d46 !important; }
-      .goal-split-card b { color:#007a55 !important; }
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-function formatWanOne(value) {
+function moneyWan1(value) {
   return (Number(value || 0) / 10000).toLocaleString("zh-TW", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 1
   });
 }
 
-function updateSeptemberGoalBreakdown() {
-  ensureWeeklyStyles();
-  const monthIndex = getReportMonthIndex();
-  if (monthIndex !== 8) return;
+function pct(actual, target, digits = 0) {
+  if (!target) return 0;
+  const value = actual / target * 100;
+  return digits ? Number(value.toFixed(digits)) : Math.round(value);
+}
 
+function quarterSum(columnIndex, startMonthIndex) {
+  return [0,1,2].reduce((sum, offset) => sum + numeric(rows[startMonthIndex + offset]?.[columnIndex]), 0);
+}
+
+function updateSeptemberCloseSlide() {
   const row = rows[8] || [];
+  const certTarget = numeric(row[6]);
   const certActual = numeric(row[10]);
+  const marketingTarget = numeric(row[11]);
   const marketingActual = numeric(row[15]);
+  const totalTarget = numeric(row[17]);
   const totalActual = numeric(row[21]);
-  const certTarget = 870000;
-  const marketingTarget = 400000;
-  const totalTarget = certTarget + marketingTarget;
 
-  update("reportScopeLabel3", "9 月目前業績｜本月總收入＝認證收入＋行銷收入");
-  update("reportScopeLabel4", "9 月目前業績｜總目標 127 萬＝認證 87 萬＋行銷 40 萬");
+  const totalRate = pct(totalActual, totalTarget, 1);
+  const certRate = pct(certActual, certTarget, 1);
+  const marketingRate = pct(marketingActual, marketingTarget, 1);
+  const excess = Math.max(0, totalActual - totalTarget);
 
-  const monthlyTarget = document.querySelector("#monthlyTarget");
-  const monthlyActual = document.querySelector("#monthlyActual");
-  const monthlyRate = document.querySelector("#monthlyRate");
-  const monthlyDelta = document.querySelector("#monthlyDelta");
-  const monthlyRateBar = document.querySelector("#monthlyRateBar");
+  const setHtml = (id, value) => { const el = document.querySelector("#" + id); if (el) el.innerHTML = value; };
+  const setText = (id, value) => { const el = document.querySelector("#" + id); if (el) el.textContent = value; };
 
-  const totalRate = totalTarget ? totalActual / totalTarget : 0;
-  if (monthlyTarget) monthlyTarget.textContent = "127 萬";
-  if (monthlyActual) monthlyActual.textContent = `${formatWanOne(totalActual)} 萬`;
-  if (monthlyRate) monthlyRate.textContent = `${Math.round(totalRate * 100)}%`;
-  if (monthlyDelta) monthlyDelta.textContent = `尚差 ${formatWanOne(Math.max(0, totalTarget - totalActual))} 萬`;
-  if (monthlyRateBar) monthlyRateBar.style.width = `${Math.min(100, totalRate * 100)}%`;
+  setHtml("sepTotalActual", `${moneyWan1(totalActual)}<small>萬</small>`);
+  setText("sepTotalTargetText", `目標 ${moneyWan1(totalTarget)} 萬｜超標 ${moneyWan1(excess)} 萬`);
+  setText("sepTotalRate", `${totalRate}%`);
+  setHtml("sepCertActual", `${moneyWan1(certActual)}<small>萬</small>`);
+  setText("sepCertTargetText", `目標 ${moneyWan1(certTarget)} 萬｜達成 ${certRate}%`);
+  setHtml("sepMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
+  setText("sepMarketingTargetText", `目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${marketingRate}%`);
+  setHtml("sepTotalActualCard", `${moneyWan1(totalActual)}<small>萬</small>`);
+  setText("sepTotalRateCard", `${moneyWan1(totalTarget)} 萬目標｜${totalRate}%`);
+}
 
-  const monthlyCard = document.querySelector('[data-title="目標達成率"] .achievement-card:not(.annual)');
-  if (!monthlyCard) return;
-  let split = monthlyCard.querySelector(".goal-split-grid");
-  if (!split) {
-    split = document.createElement("div");
-    split.className = "goal-split-grid";
-    monthlyCard.appendChild(split);
+function updateOctoberStartSlide() {
+  const row = rows[9] || [];
+  const certTarget = numeric(row[6]);
+  const certActual = numeric(row[10]);
+  const marketingTarget = numeric(row[11]);
+  const marketingActual = numeric(row[15]);
+  const totalTarget = numeric(row[17]);
+  const totalActual = numeric(row[21]);
+  const totalRate = pct(totalActual, totalTarget, 1);
+  const certRate = pct(certActual, certTarget, 1);
+
+  const setHtml = (id, value) => { const el = document.querySelector("#" + id); if (el) el.innerHTML = value; };
+  const setText = (id, value) => { const el = document.querySelector("#" + id); if (el) el.textContent = value; };
+
+  setHtml("octTotalActual", `${moneyWan1(totalActual)}<small>萬</small>`);
+  setText("octTotalProgress", `現行表定目標 ${moneyWan1(totalTarget)} 萬｜達成 ${totalRate}%`);
+  const bar = document.querySelector("#octTotalBar");
+  if (bar) bar.style.width = `${Math.min(100,totalRate)}%`;
+
+  setHtml("octCertActual", `${moneyWan1(certActual)}<small>萬</small>`);
+  setText("octCertProgress", `現行認證目標 ${moneyWan1(certTarget)} 萬｜達成 ${certRate}%`);
+  setHtml("octMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
+  setText("octMarketingProgress", marketingTarget > 0
+    ? `目前目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${pct(marketingActual, marketingTarget, 1)}%`
+    : "星光＋業配｜新目標配比調整中");
+}
+
+function updateQuarterDiagnosisSlide() {
+  const years = [
+    { label:"2024", col:8, className:"y2024" },
+    { label:"2025", col:9, className:"y2025" },
+    { label:"2026", col:10, className:"y2026" }
+  ];
+  const quarters = [0,3,6,9].map((start, idx) => ({
+    label:`Q${idx+1}`,
+    values: years.map((year) => quarterSum(year.col, start))
+  }));
+  const maxValue = Math.max(...quarters.flatMap((q)=>q.values), 1);
+  const chart = document.querySelector("#quarterRevenueChart");
+  if (chart) {
+    chart.innerHTML = quarters.map((quarter) => `
+      <div class="quarter-row">
+        <b>${quarter.label}</b>
+        <div class="quarter-series">
+          ${quarter.values.map((value, idx) => {
+            const y = years[idx];
+            const currentNote = y.label === "2026" && quarter.label === "Q4" ? "＊" : "";
+            return `
+              <div class="quarter-bar-line ${y.className}">
+                <span>${y.label}</span>
+                <div class="quarter-track"><i style="width:${Math.max(2,value/maxValue*100)}%"></i></div>
+                <strong>${moneyWan1(value)}${currentNote}</strong>
+              </div>`;
+          }).join("")}
+        </div>
+      </div>
+    `).join("") + '<p style="margin:.5vw 0 0;color:var(--muted);font-size:clamp(8px,.6vw,11px);font-weight:800">＊2026 Q4 僅統計至 10/5，不與完整季度直接比較。</p>';
   }
 
-  const certRate = certTarget ? certActual / certTarget : 0;
-  const marketingRate = marketingTarget ? marketingActual / marketingTarget : 0;
-  split.innerHTML = `
-    <div class="goal-split-card cert">
-      <span>認證收入目標</span>
-      <strong>87 萬</strong>
-      <b>目前 ${formatWanOne(certActual)} 萬｜${Math.round(certRate * 100)}%</b>
-      <p>認證目標與總收入目標分開追蹤</p>
+  const q1_2025 = quarters[0].values[1], q1_2026 = quarters[0].values[2];
+  const q2_2025 = quarters[1].values[1], q2_2026 = quarters[1].values[2];
+  const q3_2025 = quarters[2].values[1], q3_2026 = quarters[2].values[2];
+  const yoy = (a,b) => b ? Math.round((a/b-1)*100) : 0;
+  const qText = document.querySelector("#quarterYoYText");
+  if (qText) qText.textContent = `Q1 ${yoy(q1_2026,q1_2025)>=0?"+":""}${yoy(q1_2026,q1_2025)}%｜Q2 ${yoy(q2_2026,q2_2025)>=0?"+":""}${yoy(q2_2026,q2_2025)}%｜Q3 ${yoy(q3_2026,q3_2025)}%`;
+
+  const cert2026 = rows.reduce((sum,row)=>sum+numeric(row[10]),0);
+  const total2026 = rows.reduce((sum,row)=>sum+numeric(row[21]),0);
+  const certEl = document.querySelector("#annualCert2026");
+  const totalEl = document.querySelector("#annualTotal2026");
+  if (certEl) certEl.innerHTML = `${moneyWan1(cert2026)}<small>萬</small>`;
+  if (totalEl) totalEl.innerHTML = `${moneyWan1(total2026)}<small>萬</small>`;
+}
+
+function updateAllianceOverviewSlide() {
+  const valid = alliancePartners.filter((item) => !item.excluded && item.company);
+  const joined = valid.length;
+  const pendingBack = 10;
+  const potential = joined + pendingBack;
+  const countByRegion = {};
+  valid.forEach((item) => {
+    const region = item.region || "待補";
+    countByRegion[region] = (countByRegion[region] || 0) + 1;
+  });
+  const ordered = Object.entries(countByRegion).sort((a,b)=>b[1]-a[1]);
+  const max = Math.max(...ordered.map(([,count])=>count),1);
+  const top4 = ordered.slice(0,4).reduce((sum,[,count])=>sum+count,0);
+  const topShare = joined ? Math.round(top4/joined*100) : 0;
+
+  const joinedEl = document.querySelector("#allianceJoinedCount");
+  const potentialEl = document.querySelector("#alliancePotentialCount");
+  const noteEl = document.querySelector("#allianceTopRegionNote");
+  if (joinedEl) joinedEl.innerHTML = `${joined}<small>家</small>`;
+  if (potentialEl) potentialEl.innerHTML = `${potential}<small>家</small>`;
+  if (noteEl) noteEl.textContent = `前四區 ${top4} 家｜約占 ${topShare}%`;
+
+  const target = document.querySelector("#allianceRegionBars");
+  if (target) target.innerHTML = ordered.map(([region,count])=>`
+    <div class="region-bar-row">
+      <span>${region}</span>
+      <div class="region-bar-track"><i style="width:${count/max*100}%"></i></div>
+      <strong>${count} 家</strong>
     </div>
-    <div class="goal-split-card marketing">
-      <span>行銷收入目標</span>
-      <strong>40 萬</strong>
-      <b>目前 ${formatWanOne(marketingActual)} 萬｜${Math.round(marketingRate * 100)}%</b>
-      <p>總目標 127 萬＝認證 87 萬＋行銷 40 萬</p>
-    </div>
-  `;
+  `).join("");
 }
 
 function updateWeeklyHighlightSlide() {
   const slide = document.querySelector('[data-title="本週重點"]');
   if (!slide) return;
-
   const meta = slide.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "2026/09/23｜一頁掌握最新進度";
-
+  if (meta) meta.textContent = "2026/10/05｜一頁掌握最新進度";
   const header = slide.querySelector(".weekly-highlight-header");
-  if (header) {
-    header.innerHTML = `
-      <div>
-        <span>WEEKLY HIGHLIGHTS</span>
-        <h2>這週，最重要的 6 件事</h2>
-      </div>
-      <strong>年會 Attendee 63｜會員 229 家｜TTQS 已送件｜南區 12/23</strong>
-    `;
-  }
+  if (header) header.innerHTML = `
+    <div>
+      <span>WEEKLY HIGHLIGHTS</span>
+      <h2>這週，最重要的 6 件事</h2>
+    </div>
+    <strong>年會 102／120｜會員 232 家｜TTQS 10/20 評核｜苗栗 14 位</strong>
+  `;
 
   const grid = slide.querySelector(".weekly-highlight-grid");
   if (!grid) return;
   grid.innerHTML = `
     <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top">
-        <span>01｜2026 綠裝修年度盛會</span>
-        <b>報名推進</b>
-      </div>
-      <strong class="weekly-highlight-number">63<small>位</small></strong>
-      <h3>會員端 Attendee 總數</h3>
-      <p>報名單數 58 筆</p>
-      <p class="weekly-highlight-em">貴賓確認出席 11 位</p>
-      <p>10/30 台北 W Hotel｜規劃 12 桌 × 10 人＋預備 1 桌</p>
-    </article>
-
-    <article class="weekly-highlight-card is-blue">
-      <div class="weekly-highlight-top">
-        <span>02｜年會場勘</span>
-        <b>9/22</b>
-      </div>
-      <strong class="weekly-highlight-number">9/22</strong>
-      <h3>第一次場勘</h3>
-      <p>各組組長參與</p>
-      <p class="weekly-highlight-em">場地：台北 W Hotel</p>
-      <p>後續持續確認飯店、製作物、桌次與現場分工</p>
-    </article>
-
-    <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top">
-        <span>03｜會員成長</span>
-        <b>+1 家</b>
-      </div>
-      <strong class="weekly-highlight-number">229<small>家</small></strong>
-      <h3>會員總數</h3>
-      <p>會員人數 256 位</p>
-      <p class="weekly-highlight-em">較 9/21 增加 1 家、2 位</p>
-      <p>個人會員 202 家｜團體會員 27 家</p>
+      <div class="weekly-highlight-top"><span>01｜2026 綠裝修年度盛會</span><b>85%</b></div>
+      <strong class="weekly-highlight-number">102<small>位</small></strong>
+      <h3>目前掌握人數</h3>
+      <p>網站報名 90 位</p>
+      <p class="weekly-highlight-em">＋邀請貴賓 12 位</p>
+      <p>120 席目標｜尚差 18 位｜10/20 報名截止</p>
     </article>
 
     <article class="weekly-highlight-card is-red">
-      <div class="weekly-highlight-top">
-        <span>04｜TTQS 申請</span>
-        <b>已送件</b>
-      </div>
-      <strong class="weekly-highlight-name">申請文件已寄出</strong>
-      <h3>9/23 完成寄件</h3>
-      <p>9/21 顧問第 1 次到協會諮詢</p>
-      <p class="weekly-highlight-em">NEXT｜9/24 全球提供 2025/01–2026/09 課程資訊</p>
-      <p>持續依排程準備 TTQS 申請資料</p>
+      <div class="weekly-highlight-top"><span>02｜TTQS</span><b>評核排定</b></div>
+      <strong class="weekly-highlight-number">10/20</strong>
+      <h3>14:00–17:00 正式評核</h3>
+      <p>10/5–10/14 彙整指標資料</p>
+      <p class="weekly-highlight-em">10/15 提交第一版線上數位評核</p>
+      <p>參與：理事長、Shawn、Gary、Mark、Joanne</p>
+    </article>
+
+    <article class="weekly-highlight-card is-green">
+      <div class="weekly-highlight-top"><span>03｜會員成長</span><b>+3 家</b></div>
+      <strong class="weekly-highlight-number">232<small>家</small></strong>
+      <h3>會員總數</h3>
+      <p>會員人數 258 位</p>
+      <p class="weekly-highlight-em">較 9/23 增加 3 家、2 位</p>
+      <p>個人會員 206 家｜團體會員 26 家</p>
+    </article>
+
+    <article class="weekly-highlight-card is-blue">
+      <div class="weekly-highlight-top"><span>04｜苗栗二日遊</span><b>報名中</b></div>
+      <strong class="weekly-highlight-number">14<small>位</small></strong>
+      <h3>目前報名</h3>
+      <p>目標 30 位｜15 間雙人房</p>
+      <p class="weekly-highlight-em">訂金 $57,380 已付款</p>
+      <p>11/26–11/27｜寶元紀之丘</p>
     </article>
 
     <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top">
-        <span>05｜南區下一步</span>
-        <b>暫訂</b>
-      </div>
-      <strong class="weekly-highlight-number">12/23</strong>
-      <h3>南區獎勵活動</h3>
-      <p>14:30 Open House＋廠商分享</p>
-      <p class="weekly-highlight-em">17:30 晚餐活動</p>
+      <div class="weekly-highlight-top"><span>05｜北1區</span><b>NEW</b></div>
+      <strong class="weekly-highlight-number">11月</strong>
+      <h3>獎勵活動暫訂</h3>
+      <p>11/12 或 11/19（四）</p>
+      <p class="weekly-highlight-em">15:00–18:00</p>
       <p>會員 $500｜非會員 $1,500</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top">
-        <span>06｜年會贊助貴賓</span>
-        <b>邀請中</b>
-      </div>
-      <strong class="weekly-highlight-number">2<small>位</small></strong>
-      <h3>快譯通股份有限公司</h3>
-      <p>黃秀玲｜行企部經理</p>
-      <p class="weekly-highlight-em">郭至綸｜產品經理</p>
-      <p>由特助烊豫進行贊助貴賓邀請</p>
+      <div class="weekly-highlight-top"><span>06｜帳務</span><b>完成</b></div>
+      <strong class="weekly-highlight-number">9/30</strong>
+      <h3>帳務處理進度</h3>
+      <p>送金單完成</p>
+      <p class="weekly-highlight-em">年會費用對帳＋名額確認</p>
+      <p>二日遊參與名單＋費用確認</p>
     </article>
   `;
 }
@@ -228,7 +231,7 @@ function updateAssociationWeeklyEmphasis() {
   const brief = document.querySelector('[data-title="協會快報"]');
   if (brief) {
     const meta = brief.querySelector(".page-meta strong");
-    if (meta) meta.textContent = "秘書工作日誌摘要｜更新至 2026/09/23";
+    if (meta) meta.textContent = "秘書工作日誌摘要｜更新至 2026/10/05";
 
     const memberPanel = brief.querySelector(".member-panel");
     if (memberPanel) {
@@ -237,131 +240,102 @@ function updateAssociationWeeklyEmphasis() {
       const weekly = memberPanel.querySelector(".member-weekly-grid");
       const structure = memberPanel.querySelector(".member-structure");
       const growth = memberPanel.querySelector(".member-growth");
-
-      if (main) main.innerHTML = '229<small>家</small>';
-      if (trend) trend.textContent = "統計截至 2026/09/23｜較 9/21 增加 1 家";
-      if (weekly) weekly.innerHTML = `
-        <div><span>會員人數</span><strong>256<small>位</small></strong></div>
-        <div><span>團體會員</span><strong>27<small>家</small></strong></div>
-      `;
-      if (structure) structure.innerHTML = `
-        <p><span>個人會員</span><strong>202<small>家</small></strong></p>
-        <p><span>待轉帳</span><strong>2<small>位</small></strong></p>
-        <p><span>本週新增</span><strong>+1<small>家</small></strong></p>
-      `;
-      if (growth) growth.innerHTML = `
-        <span>本週會員變化</span>
-        <div>
-          <p><b>會員家數</b><strong>229<small>家</small></strong></p>
-          <p><b>會員人數</b><strong>256<small>位</small></strong></p>
-        </div>
-        <em class="new-line">NEW｜新天新地國際有限公司 9/23 加入團體會員；林秉廷、鄭曉真待轉帳。</em>
-      `;
+      if (main) main.innerHTML = '232<small>家</small>';
+      if (trend) trend.textContent = "統計截至 2026/10/05｜較 9/23 增加 3 家";
+      if (weekly) weekly.innerHTML = '<div><span>會員人數</span><strong>258<small>位</small></strong></div><div><span>團體會員</span><strong>26<small>家</small></strong></div>';
+      if (structure) structure.innerHTML = '<p><span>個人會員</span><strong>206<small>家</small></strong></p><p><span>廣州設計週</span><strong>35<small>位</small></strong></p><p><span>苗栗二日遊</span><strong>14<small>位</small></strong></p>';
+      if (growth) growth.innerHTML = '<span>本期重點</span><div><p><b>會員增加</b><strong>+3<small>家</small></strong></p><p><b>會員人數</b><strong>258<small>位</small></strong></p></div><em class="new-line">年會、TTQS 與二日遊進入 10 月執行期。</em>';
     }
 
-    const southCard = [...brief.querySelectorAll(".region-card")].find((card) => card.querySelector("b")?.textContent.includes("南區"));
-    if (southCard) {
-      southCard.className = "region-card is-next";
-      southCard.innerHTML = `
-        <div><b>南區</b><span>12/23 暫訂</span></div>
-        <strong>南區獎勵活動</strong>
-        <p>14:30 Open House＋廠商分享、17:30 晚餐；9/17 分享會 23 位全員到齊。</p>
-      `;
-    }
+    const regionCards = [...brief.querySelectorAll(".region-card")];
+    const north1 = regionCards.find((card)=>card.querySelector("b")?.textContent.includes("北1區"));
+    if (north1) north1.innerHTML = '<div><b>北1區</b><span>11月暫訂</span></div><strong>北1區獎勵活動</strong><p>11/12 或 11/19 15:00–18:00；會員 $500／非會員 $1,500。</p>';
+    const south = regionCards.find((card)=>card.querySelector("b")?.textContent.includes("南區"));
+    if (south) south.innerHTML = '<div><b>南區</b><span>12/23 暫訂</span></div><strong>南區獎勵活動</strong><p>14:30 Open House＋廠商分享；17:30 晚餐活動。</p>';
 
     const eventPanel = brief.querySelector(".event-panel.host-events");
-    if (eventPanel) {
-      eventPanel.innerHTML = `
-        <div class="block-title"><span>本週新增進度</span><strong>年會／TTQS／南區</strong></div>
-        <div class="event-list">
-          <section class="year-event-card">
-            <b>年會｜會員端 Attendee 63 位</b>
-            <p>報名單數 58 筆｜貴賓確認出席 11 位。</p>
-            <p class="is-new-text">NEW｜9/22 第一次場勘；贊助貴賓邀請同步推進。</p>
-          </section>
-          <section>
-            <b>TTQS｜9/23 申請文件已寄出</b>
-            <p>9/21 顧問第 1 次到協會諮詢。</p>
-            <p class="is-new-text">NEXT｜9/24 全球提供 2025/01–2026/09 課程資訊。</p>
-          </section>
-          <section>
-            <b>南區｜12/23 獎勵活動暫訂</b>
-            <p>14:30 Open House＋廠商分享｜17:30 晚餐活動。</p>
-            <p class="is-new-text">會員 $500／非會員 $1,500。</p>
-          </section>
-        </div>
-      `;
-    }
+    if (eventPanel) eventPanel.innerHTML = `
+      <div class="block-title"><span>本週新增進度</span><strong>年會／TTQS／二日遊</strong></div>
+      <div class="event-list">
+        <section><b>年會｜目前掌握 102 位</b><p>網站報名 90 位＋邀請貴賓 12 位；120 席達成 85%。</p><p class="is-new-text">NEXT｜10/6、10/13 更新報名；10/20 截止。</p></section>
+        <section><b>TTQS｜10/20 正式評核</b><p>10/5–10/14 彙整指標資料，10/15 提交第一版。</p><p class="is-new-text">評核時間 10/20 14:00–17:00。</p></section>
+        <section><b>苗栗二日遊｜目前 14 位</b><p>目標 30 位；訂金 $57,380 已付款。</p><p class="is-new-text">11/26–11/27｜持續確認交通、住宿、餐飲與保險。</p></section>
+      </div>
+    `;
   }
 
   const focus = document.querySelector('[data-title="協會重點"]');
   if (focus) {
+    const title = focus.querySelector(".section-name strong");
+    if (title) title.textContent = "協會重點專案";
     const meta = focus.querySelector(".page-meta strong");
-    if (meta) meta.textContent = "年會 Attendee 63｜會員 229 家｜TTQS 已送件｜南區 12/23";
+    if (meta) meta.textContent = "年會 102／120｜TTQS 10/20｜苗栗 14／30";
 
     const annual = focus.querySelector(".annual-meeting-panel");
-    if (annual) {
-      const titleStrong = annual.querySelector(".block-title strong");
-      if (titleStrong) titleStrong.textContent = "Attendee 63 位｜9/22 第一次場勘";
+    if (annual) annual.innerHTML = `
+      <div class="block-title"><span>一、2026 綠裝修年度盛會</span><strong>目前掌握 102 位｜85%</strong></div>
+      <div class="annual-hero"><span>10/30</span><div><b>2026/10/30（五）18:00–22:00</b><strong>主題：綠見未來｜台北 W Hotel</strong><em>網站報名 90 位＋邀請貴賓 12 位</em></div></div>
+      <div class="annual-price-grid">
+        <section><span>席次目標</span><strong>120<small>位</small></strong></section>
+        <section><span>目前掌握</span><strong>102<small>位</small></strong></section>
+        <section><span>達成率</span><strong>85<small>%</small></strong></section>
+        <section><span>尚差</span><strong>18<small>位</small></strong></section>
+      </div>
+      <div class="annual-cost-card"><span>招募節點</span><strong>10/6、10/13 更新｜10/20 截止</strong><p>各區區長協助聯繫；快譯通、光引科技贊助貴賓已報名。</p></div>
+    `;
 
-      const priceGrid = annual.querySelector(".annual-price-grid");
-      if (priceGrid) priceGrid.innerHTML = `
-        <section><span>會員</span><strong>$1,000<small>/位</small></strong></section>
-        <section><span>第 2 位貴賓</span><strong>$2,000<small>/位</small></strong></section>
-        <section class="is-new-box"><span>Attendee 總數</span><strong>63<small>位</small></strong></section>
-        <section><span>貴賓確認出席</span><strong>11<small>位</small></strong></section>
-      `;
-
-      const costCard = annual.querySelector(".annual-cost-card");
-      if (costCard) costCard.innerHTML = `
-        <span>目前進度</span>
-        <strong>報名單數 58 筆｜Attendee 63 位</strong>
-        <p>9/22 第一次場勘；規劃 12 桌 × 10 人，另預備 1 桌；快譯通贊助貴賓邀請同步進行。</p>
-      `;
-    }
-
-    const share = focus.querySelector(".share-panel");
-    if (share) share.innerHTML = `
-      <div class="block-title"><span>12/23 南區獎勵活動</span><strong>暫訂｜下一步</strong></div>
-      <h3>Open House＋廠商分享＋晚餐活動</h3>
-      <div class="share-info-grid">
-        <p><b>下午場</b><span>14:30 Open House＋廠商分享</span></p>
-        <p><b>晚餐</b><span>17:30 晚餐活動</span></p>
-        <p><b>費用</b><span>會員 $500｜非會員 $1,500</span></p>
-        <p><b>上次成果</b><span>9/17 南區分享會 23 位全員到齊</span></p>
-        <p class="is-new"><b>NEW</b><span>12/23 南區獎勵活動進入暫訂規劃</span></p>
+    const guild = focus.querySelector(".guild-panel");
+    if (guild) guild.innerHTML = `
+      <div class="block-title"><span>TTQS 申請案</span><strong>10/20 正式評核</strong></div>
+      <div class="guild-list">
+        <p class="is-new">10/05–10/14｜提供指標資料給李老師彙整</p>
+        <p>10/15｜提交第一版資料（線上數位評核）</p>
+        <p class="is-new">10/20 14:00–17:00｜協會正式評核</p>
+        <p>參與｜理事長、Shawn、Gary、Mark、Joanne</p>
       </div>
     `;
 
-    const weeklyBlock = focus.querySelector(".focus-board-panel");
-    if (weeklyBlock) weeklyBlock.innerHTML = `
-      <div class="block-title"><span>本週新增進度</span><strong>TTQS｜會員</strong></div>
+    const share = focus.querySelector(".share-panel");
+    if (share) share.innerHTML = `
+      <div class="block-title"><span>六區下一步</span><strong>北1區＋南區</strong></div>
+      <h3>獎勵活動規劃</h3>
+      <div class="share-info-grid">
+        <p><b>北1區</b><span>11/12 或 11/19｜15:00–18:00</span></p>
+        <p><b>南區</b><span>12/23｜14:30 Open House＋17:30 晚餐</span></p>
+        <p><b>費用</b><span>會員 $500｜非會員 $1,500</span></p>
+        <p class="is-new"><b>NEW</b><span>北1區新增活動規劃</span></p>
+      </div>
+    `;
+
+    const board = focus.querySelector(".focus-board-panel");
+    if (board) board.innerHTML = `
+      <div class="block-title"><span>參訪活動</span><strong>苗栗二日遊｜廣州設計週</strong></div>
       <div class="board-date-grid">
-        <div><span>TTQS</span><strong>已送件</strong></div>
-        <div><span>會員總數</span><strong>229<small>家</small></strong></div>
+        <div><span>苗栗二日遊</span><strong>14<small>/30 位</small></strong></div>
+        <div><span>廣州設計週</span><strong>35<small>位滿額</small></strong></div>
       </div>
       <div class="board-notes">
-        <p class="is-new-text">TTQS｜9/23 申請文件已寄出；9/24 全球提供課程資訊。</p>
-        <p class="is-new-text">會員｜較 9/21 增加 1 家、2 位；新天新地國際 9/23 加入團體會員。</p>
-        <p>廣州設計週 35 人已滿額、苗栗二日遊訂金 $57,380，維持既有進度。</p>
+        <p class="is-new-text">苗栗｜11/26–11/27；訂金 $57,380 已付款，持續招募。</p>
+        <p>廣州｜12/7–12/10，35 位已滿額。</p>
+        <p>帳務已處理至 9/30；年會與二日遊費用持續對帳。</p>
       </div>
     `;
 
     const timeline = focus.querySelector(".timeline-list");
     if (timeline) timeline.innerHTML = `
-      <p><b>09/23</b><span>TTQS 申請文件寄出</span></p>
-      <p><b>09/23</b><span>新天新地國際加入團體會員</span></p>
-      <p><b>09/22</b><span>年會第一次場勘｜各組組長</span></p>
-      <p><b>09/23</b><span>年會 Attendee 63｜貴賓確認 11</span></p>
-      <p><b>09/24</b><span>全球提供 2025/01–2026/09 課程資訊</span></p>
-      <p><b>10/30</b><span>2026 綠裝修年度盛會｜綠見未來</span></p>
-      <p><b>12/23</b><span>南區獎勵活動｜暫訂</span></p>
+      <p><b>10/06</b><span>年會報名資訊更新</span></p>
+      <p><b>10/13</b><span>年會報名資訊更新</span></p>
+      <p><b>10/15</b><span>TTQS 提交第一版｜北市公會年會</span></p>
+      <p><b>10/20</b><span>TTQS 正式評核｜年會報名截止</span></p>
+      <p><b>10/30</b><span>2026 綠裝修年度盛會</span></p>
+      <p><b>11/26</b><span>苗栗二日遊</span></p>
+      <p><b>12/07</b><span>廣州設計週</span></p>
     `;
   }
 }
 
 function removeSlidesForWeeklyReport() {
-  const hiddenTitles = ["9月目標", "特約聯盟"];
+  const hiddenTitles = ["認證件數","認證金額","總收入","目標達成率","9月目標","特約聯盟"];
   for (let i = slides.length - 1; i >= 0; i -= 1) {
     if (hiddenTitles.includes(slides[i].dataset.title)) {
       slides[i].remove();
@@ -371,6 +345,7 @@ function removeSlidesForWeeklyReport() {
   slides.forEach((slide, index) => {
     const number = slide.querySelector(".section-name span");
     if (number) number.textContent = String(index + 1).padStart(2, "0");
+    slide.classList.toggle("is-active", index === 0);
   });
   const dots = document.querySelector("#slideDots");
   if (dots) dots.innerHTML = "";
@@ -381,12 +356,14 @@ function removeSlidesForWeeklyReport() {
 const originalRenderDashboard = renderDashboard;
 renderDashboard = function () {
   originalRenderDashboard();
-  updatePendingCertCard();
-  updateSeptemberGoalBreakdown();
+  updateSeptemberCloseSlide();
+  updateOctoberStartSlide();
+  updateQuarterDiagnosisSlide();
+  updateAllianceOverviewSlide();
   updateWeeklyHighlightSlide();
   updateAssociationWeeklyEmphasis();
 };
 
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：9 月總目標 127 萬＝認證 87 萬＋行銷 40 萬；協會進度更新至 9/23");
+status("週報已更新：9 月結算、10 月起跑、認證季度診斷、特約聯盟與 10/5 協會進度");
