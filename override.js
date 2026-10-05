@@ -112,6 +112,17 @@ function updateQuarterDiagnosisSlide() {
   const qText = document.querySelector("#quarterYoYText");
   if (qText) qText.textContent = `Q1 ${yoy(q1_2026,q1_2025)>=0?"+":""}${yoy(q1_2026,q1_2025)}%｜Q2 ${yoy(q2_2026,q2_2025)>=0?"+":""}${yoy(q2_2026,q2_2025)}%｜Q3 ${yoy(q3_2026,q3_2025)}%`;
 
+  const q1q3_2025 = q1_2025 + q2_2025 + q3_2025;
+  const q1q3_2026 = q1_2026 + q2_2026 + q3_2026;
+  const q1q3Diff = q1q3_2026 - q1q3_2025;
+  const q1q3Rate = q1q3_2025 ? (q1q3Diff / q1q3_2025 * 100) : 0;
+  const q1q3CurrentEl = document.querySelector("#q1q3Current");
+  const q1q3PreviousEl = document.querySelector("#q1q3Previous");
+  const q1q3LeadTextEl = document.querySelector("#q1q3LeadText");
+  if (q1q3CurrentEl) q1q3CurrentEl.innerHTML = `${moneyWan1(q1q3_2026)}<small>萬</small>`;
+  if (q1q3PreviousEl) q1q3PreviousEl.textContent = `${moneyWan1(q1q3_2025)} 萬`;
+  if (q1q3LeadTextEl) q1q3LeadTextEl.textContent = `+${moneyWan1(q1q3Diff)} 萬｜+${q1q3Rate.toFixed(1)}%`;
+
   const cert2026 = rows.reduce((sum,row)=>sum+numeric(row[10]),0);
   const total2026 = rows.reduce((sum,row)=>sum+numeric(row[21]),0);
   const certEl = document.querySelector("#annualCert2026");
@@ -148,14 +159,39 @@ function updateAllianceOverviewSlide() {
   if (potentialEl) potentialEl.innerHTML = `${potential}<small>家</small>`;
   if (noteEl) noteEl.textContent = `前四區 ${top4} 家｜約占 ${topShare}%`;
 
-  const target = document.querySelector("#allianceRegionBars");
-  if (target) target.innerHTML = ordered.map(([region,count])=>`
-    <div class="region-bar-row">
-      <span>${region}</span>
-      <div class="region-bar-track"><i style="width:${count/max*100}%"></i></div>
-      <strong>${count} 家</strong>
-    </div>
-  `).join("");
+  const known = ordered.filter(([region]) => region !== "待補");
+  const mapPositions = {
+    "台北": {x:65, y:10, color:"#ff6f61"},
+    "新北": {x:53, y:14, color:"#f6c969"},
+    "桃園": {x:43, y:20, color:"#9fd356"},
+    "新竹": {x:36, y:29, color:"#62e6ac"},
+    "宜蘭": {x:72, y:28, color:"#ff8d7f"},
+    "台中": {x:38, y:46, color:"#70b9ff"},
+    "台南": {x:30, y:70, color:"#ffd45a"},
+    "高雄": {x:30, y:82, color:"#ff9f68"}
+  };
+
+  const markers = document.querySelector("#allianceMapMarkers");
+  if (markers) {
+    markers.innerHTML = known.map(([region,count]) => {
+      const pos = mapPositions[region] || {x:50,y:50,color:"#62e6ac"};
+      return `<div class="alliance-map-marker" style="left:${pos.x}%;top:${pos.y}%;--marker:${pos.color}">
+        <b>${count}</b><span>${region}</span>
+      </div>`;
+    }).join("");
+  }
+
+  const legend = document.querySelector("#allianceRegionLegend");
+  if (legend) {
+    legend.innerHTML = known.map(([region,count]) => {
+      const pos = mapPositions[region] || {color:"#62e6ac"};
+      return `<div class="alliance-legend-item">
+        <i style="--legend:${pos.color}"></i>
+        <span>${region}</span>
+        <strong>${count} 家</strong>
+      </div>`;
+    }).join("");
+  }
 }
 
 function updateWeeklyHighlightSlide() {
