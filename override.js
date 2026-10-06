@@ -112,16 +112,43 @@ function updateQuarterDiagnosisSlide() {
   const qText = document.querySelector("#quarterYoYText");
   if (qText) qText.textContent = `Q1 ${yoy(q1_2026,q1_2025)>=0?"+":""}${yoy(q1_2026,q1_2025)}%｜Q2 ${yoy(q2_2026,q2_2025)>=0?"+":""}${yoy(q2_2026,q2_2025)}%｜Q3 ${yoy(q3_2026,q3_2025)}%`;
 
+  const q1_2024 = quarters[0].values[0], q2_2024 = quarters[1].values[0], q3_2024 = quarters[2].values[0];
+  const q1q3_2024 = q1_2024 + q2_2024 + q3_2024;
   const q1q3_2025 = q1_2025 + q2_2025 + q3_2025;
   const q1q3_2026 = q1_2026 + q2_2026 + q3_2026;
-  const q1q3Diff = q1q3_2026 - q1q3_2025;
-  const q1q3Rate = q1q3_2025 ? (q1q3Diff / q1q3_2025 * 100) : 0;
-  const q1q3CurrentEl = document.querySelector("#q1q3Current");
-  const q1q3PreviousEl = document.querySelector("#q1q3Previous");
-  const q1q3LeadTextEl = document.querySelector("#q1q3LeadText");
-  if (q1q3CurrentEl) q1q3CurrentEl.innerHTML = `${moneyWan1(q1q3_2026)}<small>萬</small>`;
-  if (q1q3PreviousEl) q1q3PreviousEl.textContent = `${moneyWan1(q1q3_2025)} 萬`;
-  if (q1q3LeadTextEl) q1q3LeadTextEl.textContent = `+${moneyWan1(q1q3Diff)} 萬｜+${q1q3Rate.toFixed(1)}%`;
+  const base = q1q3_2024 || 1;
+  const ratio2024 = 100;
+  const ratio2025 = q1q3_2025 / base * 100;
+  const ratio2026 = q1q3_2026 / base * 100;
+  const vs2025 = q1q3_2025 ? (q1q3_2026 / q1q3_2025 - 1) * 100 : 0;
+  const vs2024 = (q1q3_2026 / base - 1) * 100;
+  const q1q3Compare = document.querySelector("#q1q3Compare");
+  if (q1q3Compare) {
+    q1q3Compare.innerHTML = `
+      <div class="q1q3-row is-2024">
+        <span>2024</span>
+        <div class="q1q3-track"><i style="width:100%"></i></div>
+        <strong>${moneyWan1(q1q3_2024)}<small>萬</small></strong>
+        <b>${ratio2024.toFixed(0)}%</b>
+      </div>
+      <div class="q1q3-row is-2025">
+        <span>2025</span>
+        <div class="q1q3-track"><i style="width:${ratio2025.toFixed(1)}%"></i></div>
+        <strong>${moneyWan1(q1q3_2025)}<small>萬</small></strong>
+        <b>${ratio2025.toFixed(1)}%</b>
+      </div>
+      <div class="q1q3-row is-2026">
+        <span>2026</span>
+        <div class="q1q3-track"><i style="width:${ratio2026.toFixed(1)}%"></i></div>
+        <strong>${moneyWan1(q1q3_2026)}<small>萬</small></strong>
+        <b>${ratio2026.toFixed(1)}%</b>
+      </div>
+    `;
+  }
+  const compareNote = document.querySelector("#q1q3CompareNote");
+  if (compareNote) {
+    compareNote.textContent = `2026 較 2025 ${vs2025 >= 0 ? "+" : ""}${vs2025.toFixed(1)}%｜較 2024 ${vs2024 >= 0 ? "+" : ""}${vs2024.toFixed(1)}%`;
+  }
 
   const cert2026 = rows.reduce((sum,row)=>sum+numeric(row[10]),0);
   const total2026 = rows.reduce((sum,row)=>sum+numeric(row[21]),0);
