@@ -1596,3 +1596,78 @@ button { font: inherit; }
     border-color:#183d35 !important;
   }
 }
+
+
+/* Q1-Q3 three-year certification comparison */
+.q1q3-card-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.6vw;
+  margin-bottom:.6vw;
+}
+.q1q3-card-head span {
+  color:var(--green);
+  font-size:clamp(10px,.76vw,14px);
+  font-weight:950;
+}
+.q1q3-card-head b {
+  color:var(--muted);
+  font-size:clamp(9px,.66vw,12px);
+  font-weight:900;
+}
+.q1q3-compare {
+  display:grid;
+  gap:.48vw;
+}
+.q1q3-row {
+  display:grid;
+  grid-template-columns:3.1vw 1fr 5.4vw 3.2vw;
+  gap:.5vw;
+  align-items:center;
+}
+.q1q3-row > span {
+  color:var(--white);
+  font-size:clamp(11px,.82vw,15px);
+  font-weight:950;
+}
+.q1q3-track {
+  height:.82vw;
+  min-height:9px;
+  overflow:hidden;
+  background:rgba(255,255,255,.06);
+  border-radius:999px;
+}
+.q1q3-track i {
+  display:block;
+  height:100%;
+  border-radius:999px;
+}
+.q1q3-row.is-2024 .q1q3-track i { background:#7f9992; }
+.q1q3-row.is-2025 .q1q3-track i { background:var(--blue); }
+.q1q3-row.is-2026 .q1q3-track i { background:var(--green); }
+.q1q3-row strong {
+  color:var(--white);
+  font-size:clamp(12px,.9vw,17px);
+  text-align:right;
+  white-space:nowrap;
+}
+.q1q3-row strong small { font-size:.65em; }
+.q1q3-row > b {
+  color:var(--gold);
+  font-size:clamp(10px,.76vw,14px);
+  text-align:right;
+  white-space:nowrap;
+}
+#q1q3CompareNote {
+  margin:.6vw 0 0;
+  color:var(--gold);
+  font-size:clamp(12px,.9vw,17px);
+  font-weight:950;
+}
+@media print {
+  .q1q3-track { background:#dce8e3 !important; }
+  .q1q3-row > span,
+  .q1q3-row strong { color:#10231f !important; }
+  .q1q3-card-head b { color:#314d46 !important; }
+}
