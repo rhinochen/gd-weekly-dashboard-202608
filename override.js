@@ -49,6 +49,9 @@ function updateSeptemberCloseSlide() {
 }
 
 function updateOctoberStartSlide() {
+  const slide = document.querySelector('[data-title="10月起跑"]');
+  const meta = slide?.querySelector(".page-meta strong");
+  if (meta) meta.textContent = "截至 2026/10/12";
   const row = rows[9] || [];
   const certTarget = numeric(row[6]);
   const certActual = numeric(row[10]);
