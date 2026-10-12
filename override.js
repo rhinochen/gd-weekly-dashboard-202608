@@ -224,72 +224,74 @@ function updateAllianceOverviewSlide() {
 function updateWeeklyHighlightSlide() {
   const slide = document.querySelector('[data-title="本週重點"]');
   if (!slide) return;
+
   const meta = slide.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "2026/10/05｜一頁掌握最新進度";
+  if (meta) meta.textContent = "2026/10/12｜一頁掌握本週進度";
+
   const header = slide.querySelector(".weekly-highlight-header");
   if (header) header.innerHTML = `
     <div>
       <span>WEEKLY HIGHLIGHTS</span>
-      <h2>這週，最重要的 6 件事</h2>
+      <h2>這週，最重要的 5 件事</h2>
     </div>
-    <strong>年會 102／120｜會員 232 家｜TTQS 10/20 評核｜苗栗 14 位</strong>
+    <strong>年會 112／120｜會員 232 家｜TTQS 10/20 評核｜苗栗 17／30</strong>
   `;
 
   const grid = slide.querySelector(".weekly-highlight-grid");
   if (!grid) return;
+
   grid.innerHTML = `
-    <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top"><span>01｜2026 綠裝修年度盛會</span><b>85%</b></div>
-      <strong class="weekly-highlight-number">102<small>位</small></strong>
-      <h3>目前掌握人數</h3>
-      <p>網站報名 90 位</p>
-      <p class="weekly-highlight-em">＋邀請貴賓 12 位</p>
-      <p>120 席目標｜尚差 18 位｜10/20 報名截止</p>
+    <article class="weekly-highlight-card is-gold is-wide">
+      <div class="weekly-highlight-top"><span>01｜2026 綠裝修年度盛會</span><b>93%</b></div>
+      <div class="weekly-highlight-dual">
+        <div>
+          <strong class="weekly-highlight-number">112<small>位</small></strong>
+          <h3>目前掌握人數</h3>
+        </div>
+        <div class="weekly-highlight-mini">
+          <p><b>97</b><span>網站報名會員</span></p>
+          <p><b>15</b><span>貴賓已報名</span></p>
+          <p><b>+10</b><span>較上週增加</span></p>
+        </div>
+      </div>
+      <p class="weekly-highlight-em">120 位目標｜尚差 8 位｜10/20 報名截止</p>
+      <p>10/30 18:00–22:00｜台北 W Hotel｜主題「綠見未來」</p>
     </article>
 
     <article class="weekly-highlight-card is-red">
-      <div class="weekly-highlight-top"><span>02｜TTQS</span><b>評核排定</b></div>
+      <div class="weekly-highlight-top"><span>02｜TTQS</span><b>風險追蹤</b></div>
       <strong class="weekly-highlight-number">10/20</strong>
       <h3>14:00–17:00 正式評核</h3>
-      <p>10/5–10/14 彙整指標資料</p>
-      <p class="weekly-highlight-em">10/15 提交第一版線上數位評核</p>
-      <p>參與：理事長、Shawn、Gary、Mark、Joanne</p>
+      <p class="weekly-highlight-em">目前風險：佐證資料仍需補強</p>
+      <p>10/13 顧問提供指標資料簡報</p>
+      <p>10/14、10/16 內部評核資料檢核</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>03｜會員成長</span><b>+3 家</b></div>
+      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>維持</b></div>
       <strong class="weekly-highlight-number">232<small>家</small></strong>
       <h3>會員總數</h3>
-      <p>會員人數 258 位</p>
-      <p class="weekly-highlight-em">較 9/23 增加 3 家、2 位</p>
+      <p class="weekly-highlight-em">會員人數 258 位</p>
       <p>個人會員 206 家｜團體會員 26 家</p>
+      <p>與上週相比維持不變</p>
     </article>
 
     <article class="weekly-highlight-card is-blue">
-      <div class="weekly-highlight-top"><span>04｜苗栗二日遊</span><b>報名中</b></div>
-      <strong class="weekly-highlight-number">14<small>位</small></strong>
-      <h3>目前報名</h3>
-      <p>目標 30 位｜15 間雙人房</p>
-      <p class="weekly-highlight-em">訂金 $57,380 已付款</p>
-      <p>11/26–11/27｜寶元紀之丘</p>
+      <div class="weekly-highlight-top"><span>04｜苗栗二日遊</span><b>+3 位</b></div>
+      <strong class="weekly-highlight-number">17<small>/30 位</small></strong>
+      <h3>報名達成約 57%</h3>
+      <p class="weekly-highlight-em">上週 14 位 → 本週 17 位</p>
+      <p>尚差 13 位｜11/26–11/27</p>
+      <p>苗栗／寶元紀之丘｜享沐時光莊園渡假酒店</p>
     </article>
 
     <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top"><span>05｜北1區</span><b>NEW</b></div>
-      <strong class="weekly-highlight-number">11月</strong>
-      <h3>獎勵活動暫訂</h3>
-      <p>11/12 或 11/19（四）</p>
-      <p class="weekly-highlight-em">15:00–18:00</p>
-      <p>會員 $500｜非會員 $1,500</p>
-    </article>
-
-    <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>06｜帳務</span><b>完成</b></div>
-      <strong class="weekly-highlight-number">9/30</strong>
-      <h3>帳務處理進度</h3>
-      <p>送金單完成</p>
-      <p class="weekly-highlight-em">年會費用對帳＋名額確認</p>
-      <p>二日遊參與名單＋費用確認</p>
+      <div class="weekly-highlight-top"><span>05｜六區活動</span><b>追蹤中</b></div>
+      <strong class="weekly-highlight-name">北1＋南區</strong>
+      <h3>獎勵活動規劃</h3>
+      <p><b>北1區</b>｜11/12 或 11/19，待區長徐佳彣回覆</p>
+      <p><b>南區</b>｜12/23 Open House＋廠商分享＋晚餐</p>
+      <p class="weekly-highlight-em">廣州設計週 35 位已滿額</p>
     </article>
   `;
 }
@@ -402,7 +404,7 @@ function updateAssociationWeeklyEmphasis() {
 }
 
 function removeSlidesForWeeklyReport() {
-  const hiddenTitles = ["認證件數","認證金額","總收入","目標達成率","9月目標","特約聯盟"];
+  const hiddenTitles = ["9月結算","認證趨勢","協會快報","協會重點","認證件數","認證金額","總收入","目標達成率","9月目標","特約聯盟"];
   for (let i = slides.length - 1; i >= 0; i -= 1) {
     if (hiddenTitles.includes(slides[i].dataset.title)) {
       slides[i].remove();
@@ -437,4 +439,4 @@ renderDashboard = function () {
 
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：9 月結算、10 月起跑、認證季度診斷、特約聯盟與 10/5 協會進度");
+status("週報已更新：10 月業績、特約聯盟與 10/12 協會本週重點");
