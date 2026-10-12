@@ -1671,3 +1671,52 @@ button { font: inherit; }
   .q1q3-row strong { color:#10231f !important; }
   .q1q3-card-head b { color:#314d46 !important; }
 }
+
+
+/* 2026-10-12 weekly highlight layout: 5 priorities */
+.weekly-highlight-grid {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.weekly-highlight-card.is-wide {
+  grid-column: span 2;
+}
+.weekly-highlight-dual {
+  display:grid;
+  grid-template-columns:1fr 1.25fr;
+  gap:1vw;
+  align-items:end;
+}
+.weekly-highlight-mini {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:.5vw;
+}
+.weekly-highlight-mini p {
+  margin:0;
+  padding:.65vw .55vw;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:.55vw;
+  text-align:center;
+}
+.weekly-highlight-mini p b {
+  display:block;
+  color:var(--gold);
+  font-size:clamp(22px,1.8vw,34px);
+  line-height:1;
+}
+.weekly-highlight-mini p span {
+  display:block;
+  margin-top:.25vw;
+  color:var(--muted);
+  font-size:clamp(9px,.68vw,13px);
+  font-weight:900;
+}
+@media print {
+  .weekly-highlight-mini p {
+    background:#fff !important;
+    border-color:#183d35 !important;
+  }
+  .weekly-highlight-mini p span { color:#314d46 !important; }
+}
