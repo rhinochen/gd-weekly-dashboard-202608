@@ -92,9 +92,8 @@ function updateOctoberStartSlide() {
   setHtml("octMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
   setText("octMarketingProgress", `星光＋業配目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${marketingRate}%`);
 
-  setText("octTimeProgressLabel", `${month}/${day}｜時間進度 ${timeRate.toFixed(1)}%`);
+  setText("octTimeProgressLabel", `${month}/${day}｜時間進度`);
   setText("octTimeRate", `${timeRate.toFixed(1)}%`);
-  setWidth("octTimeBar", timeRate);
 
   setText("octPaceTotalRate", `${totalRate}%`);
   setText("octPaceCertRate", `${certRate}%`);
@@ -103,27 +102,18 @@ function updateOctoberStartSlide() {
   setWidth("octPaceCertBar", certRate);
   setWidth("octPaceMarketingBar", marketingRate);
 
-  const paceStatus = (rate, kind) => {
-    if (rate >= 100) return "已達標";
-    if (rate >= 95) return "接近達標";
-    if (rate >= timeRate) return "超前";
-    return kind === "marketing" ? "需追趕" : "落後";
+  ["octTotalBenchmark","octCertBenchmark","octMarketingBenchmark"].forEach((id) => {
+    const marker = document.querySelector("#" + id);
+    if (marker) marker.style.left = `${timeRate}%`;
+  });
+
+  const deltaText = (rate) => {
+    const delta = rate - timeRate;
+    return `${delta >= 0 ? "+" : ""}${delta.toFixed(1)} pt`;
   };
-  setText("octPaceTotalStatus", paceStatus(totalRate, "total"));
-  setText("octPaceCertStatus", paceStatus(certRate, "cert"));
-  setText("octPaceMarketingStatus", paceStatus(marketingRate, "marketing"));
-
-  const totalGap = Math.max(0, totalTarget - totalActual);
-  const certGap = Math.max(0, certTarget - certActual);
-  const marketingGap = Math.max(0, marketingTarget - marketingActual);
-  setHtml("octGapTotal", `${moneyWan1(totalGap)}<small>萬</small>`);
-  setHtml("octGapCert", `${moneyWan1(certGap)}<small>萬</small>`);
-  setHtml("octGapMarketing", `${moneyWan1(marketingGap)}<small>萬</small>`);
-
-  const focusText = certGap <= marketingGap
-    ? `認證距離達標僅差 ${moneyWan1(certGap)} 萬，本月後段優先補行銷 ${moneyWan1(marketingGap)} 萬缺口。`
-    : `目前總業績尚差 ${moneyWan1(totalGap)} 萬，持續追認證與行銷剩餘缺口。`;
-  setText("octFocusText", focusText);
+  setText("octPaceTotalDelta", deltaText(totalRate));
+  setText("octPaceCertDelta", deltaText(certRate));
+  setText("octPaceMarketingDelta", deltaText(marketingRate));
 }
 
 function updateQuarterDiagnosisSlide() {
