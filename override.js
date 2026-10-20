@@ -109,7 +109,7 @@ function updateOctoberStartSlide() {
 
   const deltaText = (rate) => {
     const delta = rate - timeRate;
-    return `${delta >= 0 ? "+" : ""}${delta.toFixed(1)} pt`;
+    return `${delta >= 0 ? "+" : ""}${delta.toFixed(1)}%`;
   };
   setText("octPaceTotalDelta", deltaText(totalRate));
   setText("octPaceCertDelta", deltaText(certRate));
