@@ -77,64 +77,70 @@
         </article>
       </div>
 
-      <div class="october-management-grid">
-        <article class="october-pace-panel">
-          <div class="block-title">
+      <article class="october-bullet-panel">
+        <div class="october-bullet-head">
+          <div>
             <span>本月節奏 vs. 時間進度</span>
-            <strong id="octTimeProgressLabel">10/20｜時間進度 64.5%</strong>
+            <strong>10 月業績節奏</strong>
           </div>
-          <div class="pace-list">
-            <div class="pace-row is-time">
-              <span>時間進度</span>
-              <div class="pace-track"><i id="octTimeBar" style="width:64.5%"></i></div>
-              <strong id="octTimeRate">64.5%</strong>
-            </div>
-            <div class="pace-row is-total">
-              <span>總業績</span>
-              <div class="pace-track"><i id="octPaceTotalBar" style="width:89.9%"></i></div>
-              <strong id="octPaceTotalRate">89.9%</strong>
-              <b id="octPaceTotalStatus">超前</b>
-            </div>
-            <div class="pace-row is-cert">
-              <span>認證</span>
-              <div class="pace-track"><i id="octPaceCertBar" style="width:96.3%"></i></div>
-              <strong id="octPaceCertRate">96.3%</strong>
-              <b id="octPaceCertStatus">接近達標</b>
-            </div>
-            <div class="pace-row is-marketing">
-              <span>行銷</span>
-              <div class="pace-track"><i id="octPaceMarketingBar" style="width:83.1%"></i></div>
-              <strong id="octPaceMarketingRate">83.1%</strong>
-              <b id="octPaceMarketingStatus">超前</b>
-            </div>
+          <div class="october-time-benchmark">
+            <span id="octTimeProgressLabel">10/20｜時間進度</span>
+            <strong id="octTimeRate">64.5%</strong>
           </div>
-        </article>
+        </div>
 
-        <article class="october-gap-panel">
-          <div class="block-title">
-            <span>距離目標缺口</span>
-            <strong>10 月剩餘差額</strong>
-          </div>
-          <div class="gap-kpi-list">
-            <div class="gap-kpi is-total">
-              <span>總收入尚差</span>
-              <strong id="octGapTotal">8.3<small>萬</small></strong>
+        <div class="october-bullet-list">
+          <div class="october-bullet-row is-total">
+            <div class="october-bullet-label">
+              <span>總業績</span>
+              <strong id="octPaceTotalRate">89.9%</strong>
             </div>
-            <div class="gap-kpi is-cert">
-              <span>認證尚差</span>
-              <strong id="octGapCert">1.6<small>萬</small></strong>
+            <div class="october-bullet-track">
+              <i id="octPaceTotalBar" style="width:89.9%"></i>
+              <b id="octTotalBenchmark" class="october-benchmark" style="left:64.5%"></b>
             </div>
-            <div class="gap-kpi is-marketing">
-              <span>行銷尚差</span>
-              <strong id="octGapMarketing">6.7<small>萬</small></strong>
+            <div class="october-bullet-delta">
+              <span id="octPaceTotalDelta">+25.4 pt</span>
+              <small>超前時間進度</small>
             </div>
           </div>
-          <div class="october-focus-note">
-            <b>本月後段重點</b>
-            <span id="octFocusText">認證接近完成，接下來集中補行銷缺口。</span>
+
+          <div class="october-bullet-row is-cert">
+            <div class="october-bullet-label">
+              <span>認證</span>
+              <strong id="octPaceCertRate">96.3%</strong>
+            </div>
+            <div class="october-bullet-track">
+              <i id="octPaceCertBar" style="width:96.3%"></i>
+              <b id="octCertBenchmark" class="october-benchmark" style="left:64.5%"></b>
+            </div>
+            <div class="october-bullet-delta">
+              <span id="octPaceCertDelta">+31.8 pt</span>
+              <small>接近達標</small>
+            </div>
           </div>
-        </article>
-      </div>
+
+          <div class="october-bullet-row is-marketing">
+            <div class="october-bullet-label">
+              <span>行銷</span>
+              <strong id="octPaceMarketingRate">83.1%</strong>
+            </div>
+            <div class="october-bullet-track">
+              <i id="octPaceMarketingBar" style="width:83.1%"></i>
+              <b id="octMarketingBenchmark" class="october-benchmark" style="left:64.5%"></b>
+            </div>
+            <div class="october-bullet-delta">
+              <span id="octPaceMarketingDelta">+18.6 pt</span>
+              <small>超前時間進度</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="october-benchmark-note">
+          <i></i>
+          <span>垂直基準線＝本月時間進度</span>
+        </div>
+      </article>
     </section>
 
     <section class="slide" data-title="認證趨勢">
