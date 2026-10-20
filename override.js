@@ -51,7 +51,21 @@ function updateSeptemberCloseSlide() {
 function updateOctoberStartSlide() {
   const slide = document.querySelector('[data-title="10月起跑"]');
   const meta = slide?.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "截至 2026/10/12";
+
+  const taipeiParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric"
+  }).formatToParts(new Date());
+  const year = Number(taipeiParts.find((part) => part.type === "year")?.value || 2026);
+  const month = Number(taipeiParts.find((part) => part.type === "month")?.value || 10);
+  const day = Number(taipeiParts.find((part) => part.type === "day")?.value || 20);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const timeRate = Math.min(100, day / daysInMonth * 100);
+
+  if (meta) meta.textContent = `截至 ${year}/${String(month).padStart(2,"0")}/${String(day).padStart(2,"0")}`;
+
   const row = rows[9] || [];
   const certTarget = numeric(row[6]);
   const certActual = numeric(row[10]);
@@ -59,21 +73,57 @@ function updateOctoberStartSlide() {
   const marketingActual = numeric(row[15]);
   const totalTarget = numeric(row[17]);
   const totalActual = numeric(row[21]);
+
   const totalRate = pct(totalActual, totalTarget, 1);
   const certRate = pct(certActual, certTarget, 1);
+  const marketingRate = pct(marketingActual, marketingTarget, 1);
 
   const setHtml = (id, value) => { const el = document.querySelector("#" + id); if (el) el.innerHTML = value; };
   const setText = (id, value) => { const el = document.querySelector("#" + id); if (el) el.textContent = value; };
+  const setWidth = (id, value) => { const el = document.querySelector("#" + id); if (el) el.style.width = `${Math.min(100, Math.max(0, value))}%`; };
 
   setHtml("octTotalActual", `${moneyWan1(totalActual)}<small>萬</small>`);
   setText("octTotalProgress", `10 月總目標 ${moneyWan1(totalTarget)} 萬｜達成 ${totalRate}%`);
-  const bar = document.querySelector("#octTotalBar");
-  if (bar) bar.style.width = `${Math.min(100,totalRate)}%`;
+  setWidth("octTotalBar", totalRate);
 
   setHtml("octCertActual", `${moneyWan1(certActual)}<small>萬</small>`);
   setText("octCertProgress", `調整後目標 ${moneyWan1(certTarget)} 萬｜達成 ${certRate}%`);
+
   setHtml("octMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
-  setText("octMarketingProgress", `星光＋業配目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${pct(marketingActual, marketingTarget, 1)}%`);
+  setText("octMarketingProgress", `星光＋業配目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${marketingRate}%`);
+
+  setText("octTimeProgressLabel", `${month}/${day}｜時間進度 ${timeRate.toFixed(1)}%`);
+  setText("octTimeRate", `${timeRate.toFixed(1)}%`);
+  setWidth("octTimeBar", timeRate);
+
+  setText("octPaceTotalRate", `${totalRate}%`);
+  setText("octPaceCertRate", `${certRate}%`);
+  setText("octPaceMarketingRate", `${marketingRate}%`);
+  setWidth("octPaceTotalBar", totalRate);
+  setWidth("octPaceCertBar", certRate);
+  setWidth("octPaceMarketingBar", marketingRate);
+
+  const paceStatus = (rate, kind) => {
+    if (rate >= 100) return "已達標";
+    if (rate >= 95) return "接近達標";
+    if (rate >= timeRate) return "超前";
+    return kind === "marketing" ? "需追趕" : "落後";
+  };
+  setText("octPaceTotalStatus", paceStatus(totalRate, "total"));
+  setText("octPaceCertStatus", paceStatus(certRate, "cert"));
+  setText("octPaceMarketingStatus", paceStatus(marketingRate, "marketing"));
+
+  const totalGap = Math.max(0, totalTarget - totalActual);
+  const certGap = Math.max(0, certTarget - certActual);
+  const marketingGap = Math.max(0, marketingTarget - marketingActual);
+  setHtml("octGapTotal", `${moneyWan1(totalGap)}<small>萬</small>`);
+  setHtml("octGapCert", `${moneyWan1(certGap)}<small>萬</small>`);
+  setHtml("octGapMarketing", `${moneyWan1(marketingGap)}<small>萬</small>`);
+
+  const focusText = certGap <= marketingGap
+    ? `認證距離達標僅差 ${moneyWan1(certGap)} 萬，本月後段優先補行銷 ${moneyWan1(marketingGap)} 萬缺口。`
+    : `目前總業績尚差 ${moneyWan1(totalGap)} 萬，持續追認證與行銷剩餘缺口。`;
+  setText("octFocusText", focusText);
 }
 
 function updateQuarterDiagnosisSlide() {
