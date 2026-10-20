@@ -208,6 +208,10 @@ function updateQuarterDiagnosisSlide() {
 }
 
 function updateAllianceOverviewSlide() {
+  const slide = document.querySelector('[data-title="特約版圖"]');
+  const meta = slide?.querySelector(".page-meta strong");
+  if (meta) meta.textContent = "10 月新增 10 位｜合作通路與區域分布";
+
   const valid = alliancePartners.filter((item) => !item.excluded && item.company);
   const joined = valid.length;
   const pendingBack = 10;
@@ -226,7 +230,7 @@ function updateAllianceOverviewSlide() {
   const potentialEl = document.querySelector("#alliancePotentialCount");
   const noteEl = document.querySelector("#allianceTopRegionNote");
   if (joinedEl) joinedEl.innerHTML = `${joined}<small>家</small>`;
-  if (potentialEl) potentialEl.innerHTML = `${potential}<small>家</small>`;
+  if (potentialEl) potentialEl.textContent = `${potential}`;
   if (noteEl) noteEl.textContent = `前四區 ${top4} 家｜約占 ${topShare}%`;
 
   const known = ordered.filter(([region]) => region !== "待補");
