@@ -273,7 +273,7 @@ function updateWeeklyHighlightSlide() {
   if (!slide) return;
 
   const meta = slide.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "2026/10/20｜一頁掌握本週進度";
+  if (meta) meta.textContent = "更新至 2026/10/22｜本週關鍵進度";
 
   const header = slide.querySelector(".weekly-highlight-header");
   if (header) header.innerHTML = `
@@ -281,64 +281,64 @@ function updateWeeklyHighlightSlide() {
       <span>WEEKLY HIGHLIGHTS</span>
       <h2>這週，最重要的 5 件事</h2>
     </div>
-    <strong>TTQS 今日評核｜年會 140 位｜會員 243 家｜中區 10/28 Open House</strong>
+    <strong>年會 151 位｜TTQS 評核完成｜會員 250 家｜中區 16 位</strong>
   `;
 
   const grid = slide.querySelector(".weekly-highlight-grid");
   if (!grid) return;
 
   grid.innerHTML = `
-    <article class="weekly-highlight-card is-red is-wide">
-      <div class="weekly-highlight-top"><span>01｜TTQS</span><b>今日正式評核</b></div>
+    <article class="weekly-highlight-card is-gold is-wide">
+      <div class="weekly-highlight-top"><span>01｜2026 綠裝修年度盛會</span><b>126%</b></div>
       <div class="weekly-highlight-dual">
         <div>
-          <strong class="weekly-highlight-number">10/20</strong>
-          <h3>14:00–17:00 委員正式評核</h3>
+          <strong class="weekly-highlight-number">151<small>位</small></strong>
+          <h3>進入最終執行週</h3>
         </div>
         <div class="weekly-highlight-mini">
-          <p><b>10/13</b><span>指標資料上雲端</span></p>
-          <p><b>10/14</b><span>確認簡報資訊</span></p>
-          <p><b>10/16</b><span>完成資料檢核</span></p>
+          <p><b>+12</b><span>較 10/20 增加</span></p>
+          <p><b>+31</b><span>超出 120 位目標</span></p>
+          <p><b>17</b><span>貴賓人數</span></p>
         </div>
       </div>
-      <p class="weekly-highlight-em">資料補強與內部檢核已完成，今日進入正式評核</p>
-      <p>13:15 於 5 樓會議室準備｜參與：理事長、Gary、Shawn、Mark、Joanne</p>
-    </article>
-
-    <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top"><span>02｜2026 綠裝修年度盛會</span><b>117%</b></div>
-      <strong class="weekly-highlight-number">140<small>位</small></strong>
-      <h3>目前掌握總人數</h3>
-      <p class="weekly-highlight-em">原目標 120 位｜超標 20 位</p>
-      <p>122 位基礎名單＋18 位貴賓</p>
-      <p>10/30｜台北 W Hotel｜進入桌次與席位配置</p>
+      <p class="weekly-highlight-em">今日 10/27 下午總部彩排｜10/29 11:00–12:00 W Hotel 彩排</p>
+      <p>10/30 18:00 正式登場｜台北 W Hotel｜主題「綠見未來」</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>+10 家</b></div>
-      <strong class="weekly-highlight-number">243<small>家</small></strong>
-      <h3>會員人數 272 位</h3>
-      <p class="weekly-highlight-em">台中課程後新增 10 家／12 位</p>
-      <p>一般會員 214 家｜團體會員 29 家</p>
-      <p>本週會員轉換成果明顯</p>
+      <div class="weekly-highlight-top"><span>02｜TTQS</span><b>評核完成</b></div>
+      <strong class="weekly-highlight-name">完成評核</strong>
+      <h3>10/20 數位評核完成</h3>
+      <p class="weekly-highlight-em">NEXT｜等待 11 月底通知</p>
+      <p>10/16、10/19 完成評核資料檢核</p>
+      <p>參與：理事長、Gary、Shawn、Mark、Joanne</p>
+    </article>
+
+    <article class="weekly-highlight-card is-green">
+      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>+9 家</b></div>
+      <strong class="weekly-highlight-number">250<small>家</small></strong>
+      <h3>會員人數 282 位</h3>
+      <p class="weekly-highlight-em">較 10/20 增加 9 家／12 位</p>
+      <p>個人會員 218 家｜團體會員 32 家</p>
+      <p>會員家數突破 250 家里程碑</p>
     </article>
 
     <article class="weekly-highlight-card is-blue">
-      <div class="weekly-highlight-top"><span>04｜中區活動</span><b>NEW</b></div>
-      <strong class="weekly-highlight-number">10/28</strong>
-      <h3>中區 Open House</h3>
-      <p class="weekly-highlight-em">15:00–16:30｜台中北屯</p>
+      <div class="weekly-highlight-top"><span>04｜中區 Open House</span><b>明日登場</b></div>
+      <strong class="weekly-highlight-number">16<small>位</small></strong>
+      <h3>目前報名人數</h3>
+      <p class="weekly-highlight-em">10/28 15:00–16:30｜台中北屯</p>
       <p>主辦：副理事長 張甯芯／澄逸室內裝修設計工程</p>
-      <p>北1區待確認｜南區 12/23 獎勵活動</p>
+      <p>空間參訪交流活動</p>
     </article>
 
     <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top"><span>05｜苗栗二日遊</span><b>57%</b></div>
-      <strong class="weekly-highlight-number">17<small>/30 位</small></strong>
-      <h3>目前報名</h3>
-      <p class="weekly-highlight-em">尚差 13 位</p>
-      <p>11/26–11/27｜住宿與兩筆訂金已完成</p>
-      <p>廣州設計週 35 位已滿額｜帳務已處理至 10/15</p>
+      <div class="weekly-highlight-top"><span>05｜六區活動</span><b>北1已定案</b></div>
+      <strong class="weekly-highlight-number">11/12</strong>
+      <h3>北1區獎勵活動</h3>
+      <p class="weekly-highlight-em">13:30｜主辦區長 徐佳彣</p>
+      <p>北1區會員免費｜非會員 $1,000</p>
+      <p>南區 12/23 暫訂｜苗栗 17/30｜廣州 35 位滿額</p>
     </article>
   `;
 }
@@ -486,4 +486,4 @@ renderDashboard = function () {
 
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：10 月業績、特約聯盟與 10/20 協會本週重點");
+status("週報已更新：10 月業績、特約聯盟與 10/22 協會最新進度");
