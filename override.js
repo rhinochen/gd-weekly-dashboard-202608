@@ -281,7 +281,7 @@ function updateWeeklyHighlightSlide() {
       <span>WEEKLY HIGHLIGHTS</span>
       <h2>這週，最重要的 5 件事</h2>
     </div>
-    <strong>年會 151 位｜TTQS 評核完成｜會員 250 家｜中區 16 位</strong>
+    <strong>年會 151 位｜TTQS 評核完成｜會員 250 家｜中區 18 位</strong>
   `;
 
   const grid = slide.querySelector(".weekly-highlight-grid");
@@ -325,7 +325,7 @@ function updateWeeklyHighlightSlide() {
 
     <article class="weekly-highlight-card is-blue">
       <div class="weekly-highlight-top"><span>04｜中區 Open House</span><b>明日登場</b></div>
-      <strong class="weekly-highlight-number">16<small>位</small></strong>
+      <strong class="weekly-highlight-number">18<small>位</small></strong>
       <h3>目前報名人數</h3>
       <p class="weekly-highlight-em">10/28 15:00–16:30｜台中北屯</p>
       <p>主辦：副理事長 張甯芯／澄逸室內裝修設計工程</p>
