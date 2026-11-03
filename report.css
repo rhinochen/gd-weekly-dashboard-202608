@@ -1,0 +1,202 @@
+/* Presentation layer for the four active weekly report slides.
+   Container units keep typography proportional on wide and tall displays. */
+.report-slide {
+  container-type: inline-size;
+  padding: 2.7% 4.4% 3.3%;
+  --muted: #bdd0c9;
+  background: radial-gradient(ellipse at 100% 0, #12392e 0, transparent 48%), #071d18;
+}
+.report-slide.is-active { display: flex; flex-direction: column; gap: 1.3cqw; }
+.report-slide::before, .report-slide::after { display: none; }
+.report-slide .slide-header { flex-shrink: 0; align-items: center; }
+.report-slide .section-name { gap: 1cqw; }
+.report-slide .section-name span { width: 2.7cqw; height: 2.7cqw; border-radius: .6cqw; font-size: 1.2cqw; }
+.report-slide .section-name strong { font-size: 1.35cqw; color: var(--muted); }
+.report-slide .page-meta strong { font-size: 1.1cqw; letter-spacing: .03em; }
+.report-slide .page-title, .report-slide .weekly-highlight-header { margin: .1cqw 0 .25cqw; flex-shrink: 0; }
+.report-slide .page-title h2, .report-slide .weekly-highlight-header h2 { font-size: 3.65cqw; line-height: 1.15; letter-spacing: -.025em; }
+.report-slide strong, .report-slide b { font-variant-numeric: tabular-nums; }
+.report-slide .month-close-hero,
+.report-slide .november-target-hero { margin: 0; gap: 1cqw; }
+.report-slide .month-close-hero { flex: 1.35; grid-template-columns: 1.65fr 1fr; min-height: 0; }
+.report-slide .month-close-hero > div { padding: 1.6cqw 1.8cqw; display: flex; flex-direction: column; justify-content: center; border-radius: 1cqw; }
+.report-slide .month-close-hero span { font-size: 1.45cqw; }
+.report-slide .month-close-hero strong { font-size: 8.2cqw; letter-spacing: -.05em; margin: .8cqw 0; }
+.report-slide .month-close-rate strong { font-size: 7cqw; }
+.report-slide .month-close-hero strong small { font-size: .25em; margin-left: .3em; letter-spacing: 0; }
+.report-slide .month-close-hero p { font-size: 1.55cqw; }
+.report-slide .performance-split-grid { gap: 1cqw; flex: .95; min-height: 0; }
+.report-slide .performance-card { padding: 1.2cqw 1.6cqw; border-radius: 1cqw; display: flex; flex-direction: column; justify-content: center; border-top-width: .32cqw; }
+.report-slide .performance-card > span { font-size: 1.4cqw; }
+.report-slide .performance-card > strong { font-size: 4.4cqw; line-height: 1.1; margin: .5cqw 0; }
+.report-slide .performance-card p { font-size: 1.4cqw; line-height: 1.5; }
+
+/* Target markers are on a common scale, including overachievement. */
+.revenue-progress-list { display: grid; gap: 2cqw; }
+.october-progress { grid-template-columns: 1fr 1fr; padding: 1.3cqw 1.6cqw; background: rgba(255,255,255,.025); border: 1px solid var(--line); border-radius: 1cqw; }
+.revenue-progress { --progress-color: var(--green); min-width: 0; }
+.revenue-progress.is-gold { --progress-color: var(--gold); }
+.revenue-progress.is-blue { --progress-color: var(--blue); }
+.revenue-progress-label { display: flex; align-items: center; justify-content: space-between; font-size: 1.5cqw; }
+.revenue-progress-label strong { color: var(--progress-color); font-size: 1.7cqw; }
+.revenue-progress-track { position: relative; height: .75cqw; margin: 1cqw 0 .6cqw; border-radius: 99px; background: #21463d; }
+.revenue-progress-track i { display: block; height: 100%; border-radius: inherit; background: var(--progress-color); }
+.revenue-progress-track b { position: absolute; top: -.3cqw; height: 1.35cqw; width: 2px; background: #eef8f3; transform: translateX(-100%); }
+.revenue-progress > p { display: flex; justify-content: space-between; gap: 1cqw; margin: 0; color: var(--muted); font-size: 1.2cqw; }
+.revenue-progress > p span { text-align: right; }
+
+/* November: target totals followed by live category progress. */
+.report-slide .november-target-hero { grid-template-columns: 1.35fr 1fr 1fr; flex: 1; min-height: 0; }
+.report-slide .november-total-card, .report-slide .november-target-card { padding: 1.7cqw 1.7cqw; display: flex; flex-direction: column; justify-content: center; border-radius: 1cqw; }
+.report-slide .november-total-card > span, .report-slide .november-target-card > span { font-size: 1.45cqw; }
+.report-slide .november-total-card > strong, .report-slide .november-target-card > strong { font-size: 6.6cqw; margin: .7cqw 0; line-height: 1; letter-spacing: -.04em; }
+.report-slide .november-total-card p, .report-slide .november-target-card p { font-size: 1.45cqw; line-height: 1.5; }
+.report-slide .november-start-panel { display: flex; flex-direction: column; align-items: stretch; justify-content: space-between; flex: 1.4; min-height: 0; padding: 1.8cqw; border-radius: 1cqw; gap: 1.4cqw; }
+.progress-panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 2cqw; }
+.progress-panel-heading > div:first-child > span { display: block; font-size: 1.4cqw; color: var(--muted); }
+.progress-panel-heading > div:first-child > strong { display: block; font-size: 2.4cqw; margin-top: .5cqw; }
+.total-progress { text-align: right; flex-shrink: 0; }
+.total-progress strong { color: var(--green); display: block; font-size: 4.2cqw; line-height: 1; }
+.total-progress span { color: var(--muted); font-size: 1.2cqw; }
+.november-start-panel .revenue-progress-list { grid-template-columns: 1fr; gap: 1.4cqw; margin-bottom: .5cqw; }
+.november-start-panel .revenue-progress-track { height: 1cqw; }
+
+/* Alliance: the total is primary, with historical additions and pending below. */
+.report-slide .alliance-overview-layout { flex: 1; min-height: 0; height: auto; grid-template-columns: .8fr 1.55fr; gap: 1cqw; }
+.report-slide .alliance-kpi-panel, .report-slide .alliance-region-panel { padding: 1.5cqw; border-radius: 1cqw; min-height: 0; }
+.report-slide .alliance-kpi-panel { display: flex; flex-direction: column; gap: 1cqw; }
+.report-slide .alliance-kpi-grid { flex: 1; min-height: 0; gap: 1cqw; grid-template-columns: 1fr 1fr; grid-template-rows: 1.2fr 1fr; }
+.report-slide .alliance-kpi-grid section { padding: 1.2cqw; border-radius: .75cqw; display: flex; flex-direction: column; justify-content: center; }
+.report-slide .alliance-kpi-grid section.is-joined { grid-column: 1 / -1; background: linear-gradient(145deg, #164839, #0c2924); }
+.report-slide .alliance-kpi-grid section.is-joined strong { font-size: 8.6cqw; letter-spacing: -.04em; }
+.report-slide .alliance-kpi-grid section strong { font-size: 3.7cqw; line-height: 1.1; margin: .6cqw 0; }
+.report-slide .alliance-kpi-grid section.is-month-new strong { color: var(--gold); }
+.report-slide .alliance-kpi-grid span, .report-slide .alliance-kpi-grid section.is-month-new > span { font-size: 1.4cqw; color: var(--muted); }
+.report-slide .alliance-kpi-grid section p { font-size: 1.15cqw; margin: 0; line-height: 1.5; }
+.report-slide .alliance-kpi-grid section.is-month-new::after { display: none; }
+.report-slide .alliance-potential-inline { flex-shrink: 0; margin: 0; padding: 1cqw; display: block; }
+.report-slide .alliance-potential-inline span { display: block; font-size: 1.15cqw; margin-bottom: .35cqw; }
+.report-slide .alliance-potential-inline strong { font-size: 1.45cqw; }
+.report-slide .alliance-region-panel { display: flex; flex-direction: column; }
+.report-slide .alliance-region-panel .block-title { display: flex; justify-content: space-between; align-items: center; gap: 1cqw; }
+.report-slide .block-title span { font-size: 1.5cqw; }
+.report-slide .block-title strong { font-size: 1.15cqw; color: var(--muted); }
+.report-slide .alliance-map-content { flex: 1; min-height: 0; height: auto; grid-template-columns: 1fr 1fr; gap: 1.4cqw; }
+.report-slide .alliance-map-stage { height: 100%; min-height: 0; }
+.report-slide .alliance-map-image { max-width: 94%; max-height: 90%; filter: saturate(.45) brightness(.93); }
+.report-slide .alliance-map-marker { padding: .3cqw .5cqw; gap: .3cqw; border-width: 1.5px; }
+.report-slide .alliance-map-marker b { font-size: 1.3cqw; }
+.report-slide .alliance-map-marker span { font-size: 1cqw; }
+.report-slide .alliance-region-legend { grid-template-columns: 1fr; gap: .55cqw; }
+.report-slide .alliance-legend-item { padding: .65cqw .8cqw; gap: .8cqw; grid-template-columns: .65cqw 1fr auto; }
+.report-slide .alliance-legend-item span, .report-slide .alliance-legend-item strong { font-size: 1.3cqw; }
+
+/* Weekly highlights: a lead card and concise supporting cards. */
+.report-slide .weekly-highlight-header { display: block; }
+.report-slide .weekly-highlight-header > div > span { display: none; }
+.report-slide .weekly-highlight-grid { height: auto; min-height: 0; flex: 1; gap: 1cqw; grid-template-rows: 1fr 1fr; }
+.report-slide .weekly-highlight-card { padding: 1.4cqw; border-radius: 1cqw; border-top-width: .3cqw; }
+.report-slide .weekly-highlight-card::after { display: none; }
+.report-slide .weekly-highlight-top { gap: .6cqw; }
+.report-slide .weekly-highlight-top span { font-size: 1.18cqw; }
+.report-slide .weekly-highlight-top b { padding: .3cqw .55cqw; font-size: 1.05cqw; }
+.report-slide .weekly-highlight-number { font-size: 4.8cqw; margin: 1cqw 0 .1cqw; }
+.report-slide .weekly-highlight-name { font-size: 3cqw; margin: 1.3cqw 0 .2cqw; }
+.report-slide .weekly-highlight-card h3 { font-size: 1.7cqw; margin: .5cqw 0 .6cqw; }
+.report-slide .weekly-highlight-card p, .report-slide .weekly-highlight-card p.weekly-highlight-em { font-size: 1.25cqw; line-height: 1.55; margin: .25cqw 0; }
+.report-slide .weekly-highlight-dual { gap: 1.5cqw; grid-template-columns: .7fr 1.3fr; align-items: center; }
+.report-slide .weekly-highlight-dual .weekly-highlight-number { font-size: 5.6cqw; }
+.report-slide .weekly-highlight-mini { gap: .6cqw; }
+.report-slide .weekly-highlight-mini p { padding: .9cqw .4cqw; margin: 0; }
+.report-slide .weekly-highlight-mini p b { font-size: 2.35cqw; }
+.report-slide .weekly-highlight-mini p span { font-size: 1.1cqw; line-height: 1.4; margin-top: .5cqw; }
+.upcoming-list { list-style: none; margin: 1cqw 0 0; padding: 0; display: grid; gap: 1cqw; }
+.upcoming-list li { display: grid; grid-template-columns: 6.6cqw 1fr; gap: .7cqw; align-items: start; }
+.upcoming-list time { font-size: 1.2cqw; font-weight: 900; color: var(--gold); padding-top: .15cqw; }
+.upcoming-list strong { display: block; font-size: 1.35cqw; line-height: 1.4; }
+.upcoming-list span { display: block; color: var(--muted); font-size: 1.12cqw; line-height: 1.45; margin-top: .2cqw; }
+
+.report-footer { position: fixed; left: 2vw; right: 2vw; bottom: 1.4vh; display: flex; justify-content: space-between; align-items: end; color: #a4beb4; font-size: clamp(10px,.8vw,15px); pointer-events: none; }
+.report-footer > span { display: grid; gap: .25em; }
+.report-footer > div { display: grid; gap: .3em; text-align: right; }
+.report-footer b { font-weight: 500; }
+.report-footer .is-stale { color: var(--gold); }
+.deck-controls { opacity: .75; bottom: 1.3vh; }
+.deck-controls button { min-height: 34px; }
+#slideDots button { min-height: 7px; }
+.deck-controls button:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+.data-status { pointer-events: none; }
+
+@media screen and (max-aspect-ratio: 1/1) {
+  .report-slide, .report-slide.is-active { display: flex; flex-direction: column; gap: 18px; padding: 24px 20px; margin-bottom: 16px; height: auto; overflow: visible; }
+  .report-slide .section-name span { width: 28px; height: 28px; font-size: 12px; }
+  .report-slide .section-name strong { font-size: 12px; }
+  .report-slide .page-meta strong { font-size: 10px; }
+  .report-slide .page-title h2, .report-slide .weekly-highlight-header h2 { font-size: 28px; }
+  .report-slide .month-close-hero { grid-template-columns: 1fr; gap: 12px; }
+  .report-slide .month-close-hero > div { padding: 20px; }
+  .report-slide .month-close-hero strong { font-size: 64px; }
+  .report-slide .month-close-rate strong { font-size: 48px; }
+  .report-slide .month-close-hero span, .report-slide .month-close-hero p { font-size: 15px; }
+  .report-slide .performance-split-grid, .report-slide .november-target-hero, .report-slide .alliance-overview-layout, .report-slide .weekly-highlight-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .report-slide .performance-card, .report-slide .november-total-card, .report-slide .november-target-card, .report-slide .november-start-panel, .report-slide .alliance-kpi-panel, .report-slide .alliance-region-panel, .report-slide .weekly-highlight-card { padding: 20px; border-radius: 12px; }
+  .report-slide .performance-card > span, .report-slide .performance-card p, .report-slide .november-total-card > span, .report-slide .november-target-card > span, .report-slide .november-total-card p, .report-slide .november-target-card p { font-size: 15px; }
+  .report-slide .performance-card > strong { font-size: 42px; }
+  .report-slide .november-total-card > strong, .report-slide .november-target-card > strong { font-size: 56px; margin: 10px 0; }
+  .october-progress, .november-start-panel .revenue-progress-list { grid-template-columns: 1fr; padding: 16px; gap: 20px; }
+  .november-start-panel .revenue-progress-list { padding: 0; margin-top: 18px; }
+  .revenue-progress-label, .revenue-progress-label strong { font-size: 16px; }
+  .revenue-progress > p { font-size: 13px; }
+  .revenue-progress-track, .november-start-panel .revenue-progress-track { height: 8px; margin: 12px 0 8px; }
+  .revenue-progress-track b { height: 14px; top: -3px; }
+  .progress-panel-heading > div:first-child > span, .total-progress span { font-size: 13px; }
+  .progress-panel-heading > div:first-child > strong { font-size: 20px; }
+  .total-progress strong { font-size: 36px; }
+  .report-slide .alliance-kpi-grid { gap: 12px; }
+  .report-slide .alliance-kpi-grid section { padding: 16px; }
+  .report-slide .alliance-kpi-grid section.is-joined strong { font-size: 72px; }
+  .report-slide .alliance-kpi-grid section strong { font-size: 36px; }
+  .report-slide .alliance-kpi-grid span, .report-slide .alliance-kpi-grid section.is-month-new > span { font-size: 15px; }
+  .report-slide .alliance-kpi-grid section p, .report-slide .alliance-potential-inline span { font-size: 12px; }
+  .report-slide .alliance-potential-inline { padding: 14px; margin-top: 12px; }
+  .report-slide .alliance-potential-inline strong { font-size: 16px; }
+  .report-slide .block-title span { font-size: 16px; }
+  .report-slide .block-title strong { font-size: 12px; }
+  .report-slide .alliance-map-content { grid-template-columns: 1fr; gap: 16px; }
+  .report-slide .alliance-map-stage { height: 360px; margin-top: 12px; }
+  .report-slide .alliance-map-image { max-height: 100%; max-width: 100%; }
+  .report-slide .alliance-map-marker b { font-size: 14px; }
+  .report-slide .alliance-map-marker span { font-size: 11px; }
+  .report-slide .alliance-map-marker { padding: 3px 6px; gap: 3px; }
+  .report-slide .alliance-region-legend { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .report-slide .alliance-legend-item { padding: 8px; grid-template-columns: 8px 1fr auto; gap: 6px; }
+  .report-slide .alliance-legend-item span, .report-slide .alliance-legend-item strong { font-size: 13px; }
+  .report-slide .weekly-highlight-card.is-wide { grid-column: auto; }
+  .report-slide .weekly-highlight-top span { font-size: 13px; }
+  .report-slide .weekly-highlight-top b { font-size: 11px; padding: 4px 8px; }
+  .report-slide .weekly-highlight-dual { grid-template-columns: 1fr; }
+  .report-slide .weekly-highlight-number, .report-slide .weekly-highlight-dual .weekly-highlight-number { font-size: 52px; margin-top: 16px; }
+  .report-slide .weekly-highlight-name { font-size: 32px; margin-top: 16px; }
+  .report-slide .weekly-highlight-card h3 { font-size: 20px; margin: 10px 0; }
+  .report-slide .weekly-highlight-card p, .report-slide .weekly-highlight-card p.weekly-highlight-em { font-size: 14px; margin: 6px 0; }
+  .report-slide .weekly-highlight-mini { gap: 8px; margin: 8px 0; }
+  .report-slide .weekly-highlight-mini p { padding: 12px 4px; }
+  .report-slide .weekly-highlight-mini p b { font-size: 24px; }
+  .report-slide .weekly-highlight-mini p span { font-size: 11px; }
+  .upcoming-list { gap: 18px; margin-top: 18px; }
+  .upcoming-list li { grid-template-columns: 82px 1fr; gap: 10px; }
+  .upcoming-list time { font-size: 13px; }
+  .upcoming-list strong { font-size: 16px; }
+  .upcoming-list span { font-size: 13px; }
+  .report-footer { position: static; padding: 8px 20px 24px; font-size: 11px; }
+}
+
+@media print {
+  .report-slide { display: flex; flex-direction: column; gap: 1.3cqw; background: white !important; }
+  .report-footer { display: none; }
+  .report-slide .alliance-kpi-grid section.is-joined, .october-progress { background: white !important; }
+  .report-slide strong, .report-slide b, .report-slide span, .report-slide p, .report-slide h2, .report-slide h3, .upcoming-list time { color: #102f25 !important; }
+  .revenue-progress-track { background: #d8e5df !important; }
+  .revenue-progress-track b { background: #102f25 !important; }
+  .report-slide .november-start-panel { background: white !important; }
+}

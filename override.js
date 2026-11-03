@@ -16,6 +16,24 @@ function pct(actual, target, digits = 0) {
   return digits ? Number(value.toFixed(digits)) : Math.round(value);
 }
 
+// Both months use the same scale within each chart; amounts remain driven by rows.
+function renderRevenueProgress(id, entries) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  const scale = Math.max(100, ...entries.map((entry) => pct(entry.actual, entry.target, 1)));
+  target.innerHTML = entries.map((entry) => {
+    const rate = pct(entry.actual, entry.target, 1);
+    return `<div class="revenue-progress ${entry.color}">
+      <div class="revenue-progress-label"><span>${escapeHtml(entry.label)}</span><strong>${rate}%</strong></div>
+      <div class="revenue-progress-track" role="img" aria-label="${escapeHtml(entry.label)}：實績 ${moneyWan1(entry.actual)} 萬，目標 ${moneyWan1(entry.target)} 萬，達成 ${rate}%">
+        <i style="width:${Math.min(100, Math.max(0, rate / scale * 100))}%"></i>
+        <b style="left:${100 / scale * 100}%" title="目標 100%"></b>
+      </div>
+      <p>實績 ${moneyWan1(entry.actual)} 萬<span>目標 ${moneyWan1(entry.target)} 萬</span></p>
+    </div>`;
+  }).join("");
+}
+
 function quarterSum(columnIndex, startMonthIndex) {
   return [0,1,2].reduce((sum, offset) => sum + numeric(rows[startMonthIndex + offset]?.[columnIndex]), 0);
 }
@@ -74,6 +92,10 @@ function updateOctoberCloseSlide() {
   setHtml("octCloseMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
   setText("octCloseMarketingTargetText", `目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${marketingRate}%`);
   setHtml("octCloseCases", `${cases}<small>件</small>`);
+  renderRevenueProgress("octRevenueProgress", [
+    {label:"認證", actual:certActual, target:certTarget, color:"is-gold"},
+    {label:"行銷", actual:marketingActual, target:marketingTarget, color:"is-blue"}
+  ]);
 }
 
 function updateNovemberStartSlide() {
@@ -81,7 +103,9 @@ function updateNovemberStartSlide() {
   const certActual = numeric(row[10]);
   const marketingActual = numeric(row[15]);
   const totalActual = numeric(row[21]);
-  const totalTarget = 950000;
+  const certTarget = numeric(row[6]);
+  const marketingTarget = numeric(row[11]);
+  const totalTarget = numeric(row[17]);
   const totalRate = pct(totalActual, totalTarget, 1);
 
   const nowParts = new Intl.DateTimeFormat("en-US", {
@@ -105,6 +129,16 @@ function updateNovemberStartSlide() {
   if (certEl) certEl.textContent = `目前 ${moneyWan1(certActual)} 萬`;
   if (marketingEl) marketingEl.textContent = `目前 ${moneyWan1(marketingActual)} 萬`;
   if (ringEl) ringEl.textContent = `${totalRate}%`;
+  update("novTotalTarget", `${moneyWan1(totalTarget)}<small>萬</small>`, true);
+  update("novCertTarget", `${moneyWan1(certTarget)}<small>萬</small>`, true);
+  update("novMarketingTarget", `${moneyWan1(marketingTarget)}<small>萬</small>`, true);
+  update("novStatusText", totalActual > 0 ?
+    (totalActual >= totalTarget ? "本月目標已達成" : `距離目標還差 ${moneyWan1(totalTarget - totalActual)} 萬`) :
+    "本月剛起跑，目前尚無業績");
+  renderRevenueProgress("novRevenueProgress", [
+    {label:"認證", actual:certActual, target:certTarget, color:"is-gold"},
+    {label:"行銷", actual:marketingActual, target:marketingTarget, color:"is-blue"}
+  ]);
 }
 
 function updateQuarterDiagnosisSlide() {
@@ -201,7 +235,7 @@ function updateQuarterDiagnosisSlide() {
 function updateAllianceOverviewSlide() {
   const slide = document.querySelector('[data-title="特約版圖"]');
   const meta = slide?.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "10 月新增 10 位｜合作通路與區域分布";
+  if (meta) meta.textContent = "合作通路與區域分布";
 
   const valid = alliancePartners.filter((item) => !item.excluded && item.company);
   const joined = valid.length;
@@ -235,13 +269,15 @@ function updateAllianceOverviewSlide() {
     "台南": {x:30, y:70, color:"#ffd45a"},
     "高雄": {x:30, y:82, color:"#ff9f68"}
   };
+  // CSV labels include both 桃園 and 桃園市; use the same geographic position.
+  const positionFor = (region) => mapPositions[region.trim().replaceAll("臺", "台").replace(/[縣市]$/, "")];
 
   const markers = document.querySelector("#allianceMapMarkers");
   if (markers) {
-    markers.innerHTML = known.map(([region,count]) => {
-      const pos = mapPositions[region] || {x:50,y:50,color:"#62e6ac"};
+    markers.innerHTML = known.filter(([region]) => positionFor(region)).map(([region,count]) => {
+      const pos = positionFor(region);
       return `<div class="alliance-map-marker" style="left:${pos.x}%;top:${pos.y}%;--marker:${pos.color}">
-        <b>${count}</b><span>${region}</span>
+        <b>${count}</b><span>${escapeHtml(region)}</span>
       </div>`;
     }).join("");
   }
@@ -249,10 +285,10 @@ function updateAllianceOverviewSlide() {
   const legend = document.querySelector("#allianceRegionLegend");
   if (legend) {
     legend.innerHTML = known.map(([region,count]) => {
-      const pos = mapPositions[region] || {color:"#62e6ac"};
+      const pos = positionFor(region) || {color:"#62e6ac"};
       return `<div class="alliance-legend-item">
         <i style="--legend:${pos.color}"></i>
-        <span>${region}</span>
+        <span>${escapeHtml(region)}</span>
         <strong>${count} 家</strong>
       </div>`;
     }).join("");
@@ -270,9 +306,8 @@ function updateWeeklyHighlightSlide() {
   if (header) header.innerHTML = `
     <div>
       <span>WEEKLY HIGHLIGHTS</span>
-      <h2>這週，最重要的 5 件事</h2>
+      <h2>協會本週重點</h2>
     </div>
-    <strong>年會 150 人實到｜抵用券 64 張｜會員 251 家｜北1區 14 位</strong>
   `;
 
   const grid = slide.querySelector(".weekly-highlight-grid");
@@ -302,16 +337,14 @@ function updateWeeklyHighlightSlide() {
       <h3>會員人數 283 位</h3>
       <p class="weekly-highlight-em">較 10/22 增加 1 家／1 位</p>
       <p>個人會員 219 家｜團體會員 32 家</p>
-      <p>會員規模持續小幅成長</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
       <div class="weekly-highlight-top"><span>03｜TTQS</span><b>等待通知</b></div>
       <strong class="weekly-highlight-name">評核完成</strong>
-      <h3>10/20 數位評核已完成</h3>
+      <h3>10/20 數位評核</h3>
       <p class="weekly-highlight-em">預計 11 月底寄發通知</p>
       <p>10/19 完成評核資料檢核</p>
-      <p>本週狀態無重大變化</p>
     </article>
 
     <article class="weekly-highlight-card is-blue">
@@ -323,13 +356,13 @@ function updateWeeklyHighlightSlide() {
       <p>南區 12/23 暫訂</p>
     </article>
 
-    <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top"><span>05｜11 月後續節點</span><b>NEXT</b></div>
-      <strong class="weekly-highlight-number">11/20</strong>
-      <h3>第 12 次理監事會議</h3>
-      <p class="weekly-highlight-em">11:50 入場｜大直典華（暫訂）</p>
-      <p>苗栗二日遊 11/26–11/27｜目前 17 位</p>
-      <p>廣州設計週 12/7–12/10｜35 位</p>
+    <article class="weekly-highlight-card is-gold upcoming-card">
+      <div class="weekly-highlight-top"><span>05｜近期行程</span><b>待辦節點</b></div>
+      <ul class="upcoming-list">
+        <li><time>11/20</time><div><strong>第 12 次理監事會議</strong><span>11:50 入場｜大直典華（暫訂）</span></div></li>
+        <li><time>11/26–27</time><div><strong>苗栗二日遊</strong><span>已報名 17 位／名額 30 位</span></div></li>
+        <li><time>12/07–10</time><div><strong>廣州設計週</strong><span>參加 35 位</span></div></li>
+      </ul>
     </article>
   `;
 }
@@ -450,6 +483,7 @@ function removeSlidesForWeeklyReport() {
     }
   }
   slides.forEach((slide, index) => {
+    slide.classList.add("report-slide");
     const number = slide.querySelector(".section-name span");
     if (number) number.textContent = String(index + 1).padStart(2, "0");
     slide.classList.toggle("is-active", index === 0);
@@ -476,6 +510,25 @@ renderDashboard = function () {
   updateAssociationWeeklyEmphasis();
 };
 
+function prepareReportLayout() {
+  const october = document.querySelector('[data-title="10月結算"]');
+  if (october && !document.getElementById("octRevenueProgress")) {
+    const progress = document.createElement("div");
+    progress.id = "octRevenueProgress";
+    progress.className = "revenue-progress-list october-progress";
+    october.append(progress);
+  }
+  // Each slide has a single main heading; the header retains section navigation.
+  document.querySelectorAll('.page-title.compact > p').forEach((el) => el.remove());
+  const allianceGrid = document.querySelector(".alliance-kpi-grid-current");
+  const joined = document.getElementById("allianceJoinedCount")?.closest("section");
+  if (allianceGrid && joined) {
+    joined.classList.add("is-joined");
+    allianceGrid.prepend(joined);
+  }
+}
+
+prepareReportLayout();
 removeSlidesForWeeklyReport();
 renderDashboard();
 status("週報已更新：10 月最終結算、11 月目標、特約聯盟與 11/3 協會進度");

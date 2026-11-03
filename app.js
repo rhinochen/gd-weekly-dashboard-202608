@@ -22,12 +22,14 @@ const fallbackRows = [
   ["7",14,10,10,11,14,1200000,496500,900500,481000,381400,0,84000,192800,446000,1652500,"7月",1200000,580500,1093300,927000,2033900,"169%"],
   ["8",20,9,18,13,21,1400000,603200,961385,870200,385000,0,497000,145500,742500,1090500,"8月",1400000,1100200,1106885,1612700,1475500,"105%"],
   ["9",19,12,16,11,22,870000,537100,597355,1092000,616100,400000,236000,580000,253000,951000,"9月",1270000,773100,1177355,1345000,1567100,"123%"],
-  ["10",14,4,16,6,14,420000,242000,496500,710600,136000,400000,128000,20100,644000,126000,"10月",820000,370000,516600,1354600,262000,"32%"],
+  ["10",14,12,16,6,14,420000,242000,496500,710600,500200,400000,128000,20100,644000,649000,"10月",820000,370000,516600,1354600,1149200,"140.1%"],
   ["11",17,"",9,17,18,550000,613700,660490,420900,"",400000,192400,135000,781000,"","11月",950000,806100,795490,1201900,0,"0%"],
   ["12",36,"",41,26,29,1870000,1047500,1015100,1982470,"",400000,1265000,1020000,1287000,"","12月",2270000,2312500,2035100,3269470,0,"0%"]
 ];
 
 let rows = fallbackRows;
+let sheetLastSyncedAt = null;
+let allianceLastSyncedAt = null;
 let contractData = { newSent: 31, newSigned: 10, newTarget: 10, dualSent: 0, dualSigned: 0, pendingAmount: 880000 };
 let alliancePartners = [
   { region: "新北", designer: "王國珮", company: "Funz房飾-麗正室內裝修規劃企業", period: "6月" },
@@ -289,8 +291,8 @@ function renderDashboard() {
   update("annualActual", formatWan(annualActual));
   update("monthlyDelta", `尚差 ${formatWan(Math.max(0, monthlyTarget - currentTotal))}`);
   update("annualDelta", `尚差 ${formatWan(Math.max(0, ANNUAL_TARGET - annualActual))}`);
-  document.querySelector("#monthlyRateBar").style.width = `${Math.min(100, monthlyRate * 100)}%`;
-  document.querySelector("#annualRateBar").style.width = `${Math.min(100, annualRate * 100)}%`;
+  document.querySelector("#monthlyRateBar")?.style.setProperty("width", `${Math.min(100, monthlyRate * 100)}%`);
+  document.querySelector("#annualRateBar")?.style.setProperty("width", `${Math.min(100, annualRate * 100)}%`);
 
   const currentMask = rows.map((item, index) => index <= monthIndex ? numeric(item[2]) : null);
   const certMask = rows.map((item, index) => index <= monthIndex ? wan(numeric(item[10])) : null);
@@ -478,7 +480,11 @@ function buildControls() {
 function showSlide(index) {
   activeSlide = (index + slides.length) % slides.length;
   slides.forEach((slide,slideIndex) => slide.classList.toggle("is-active", slideIndex === activeSlide));
-  [...document.querySelectorAll("#slideDots button")].forEach((dot,dotIndex) => dot.classList.toggle("is-active", dotIndex === activeSlide));
+  [...document.querySelectorAll("#slideDots button")].forEach((dot,dotIndex) => {
+    dot.classList.toggle("is-active", dotIndex === activeSlide);
+    if (dotIndex === activeSlide) dot.setAttribute("aria-current", "page");
+    else dot.removeAttribute("aria-current");
+  });
   update("currentSlide", activeSlide + 1);
 }
 
@@ -574,6 +580,8 @@ async function syncSheet() {
       .slice(0,12);
     if (dataRows.length !== 12) throw new Error("月份資料不完整");
     rows = dataRows;
+    sheetLastSyncedAt = new Date();
+    updateSyncState("sheetSyncState", "業績", sheetLastSyncedAt);
 
     const [contractResult, allianceResult] = await Promise.allSettled([
       fetch(`${CONTRACT_CSV_URL}&_=${cacheBuster}`, { cache: "no-store" }),
@@ -586,20 +594,40 @@ async function syncSheet() {
     if (allianceResult.status === "fulfilled" && allianceResult.value.ok) {
       const allianceParsed = parseCsv(await allianceResult.value.text());
       alliancePartners = parseAlliancePartners(allianceParsed);
+      allianceLastSyncedAt = new Date();
+      updateSyncState("allianceSyncState", "聯盟", allianceLastSyncedAt);
+    } else {
+      updateSyncState("allianceSyncState", "聯盟", allianceLastSyncedAt, true);
     }
     renderDashboard();
     status("ai2026 已同步");
   } catch (error) {
+    updateSyncState("sheetSyncState", "業績", sheetLastSyncedAt, true);
+    updateSyncState("allianceSyncState", "聯盟", allianceLastSyncedAt, true);
     renderDashboard();
     status("目前使用最近備份資料", true);
   }
 }
 
+function updateSyncState(id, label, lastSuccess, failed = false) {
+  const element = document.getElementById(id);
+  if (!element) return;
+  const time = lastSuccess ? new Intl.DateTimeFormat("zh-TW", {
+    timeZone: "Asia/Taipei", hour: "2-digit", minute: "2-digit", hour12: false
+  }).format(lastSuccess) : "";
+  element.textContent = failed ? `${label}｜${time ? `上次同步 ${time}` : "備份資料"}` : `${label}｜已同步 ${time}`;
+  element.classList.toggle("is-stale", failed);
+}
+
 document.querySelector("#prevButton").addEventListener("click", () => showSlide(activeSlide-1));
 document.querySelector("#nextButton").addEventListener("click", () => showSlide(activeSlide+1));
 document.querySelector("#fullscreenButton").addEventListener("click", async () => {
-  if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
-  else await document.exitFullscreen();
+  try {
+    if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+    else await document.exitFullscreen();
+  } catch (error) {
+    status("目前瀏覽器不允許全螢幕，請使用瀏覽器的全螢幕選單", true);
+  }
 });
 document.querySelector("#downloadPdfButton").addEventListener("click", downloadWeeklyPdf);
 document.addEventListener("keydown", (event) => {

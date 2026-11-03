@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#061b18">
   <title>營運部週會即時儀表板</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="report.css">
 </head>
 <body>
   <main class="deck">
@@ -104,31 +105,27 @@
       <div class="november-target-hero">
         <article class="november-total-card">
           <span>11 月總目標</span>
-          <strong>95<small>萬</small></strong>
+          <strong id="novTotalTarget">95<small>萬</small></strong>
           <p>目前業績 <b id="novCurrentTotal">0 萬</b>｜達成 <b id="novCurrentRate">0%</b></p>
         </article>
         <article class="november-target-card is-gold">
           <span>認證目標</span>
-          <strong>55<small>萬</small></strong>
+          <strong id="novCertTarget">55<small>萬</small></strong>
           <p id="novCertCurrent">目前 0 萬</p>
         </article>
         <article class="november-target-card is-blue">
           <span>行銷目標</span>
-          <strong>40<small>萬</small></strong>
+          <strong id="novMarketingTarget">40<small>萬</small></strong>
           <p id="novMarketingCurrent">目前 0 萬</p>
         </article>
       </div>
 
       <article class="november-start-panel">
-        <div>
-          <span>MONTH START</span>
-          <strong>本月剛起跑，目前尚無業績</strong>
-          <p>本月目標 95 萬｜認證 55 萬＋行銷 40 萬</p>
+        <div class="progress-panel-heading">
+          <div><span>本月達成進度</span><strong id="novStatusText">本月剛起跑，目前尚無業績</strong></div>
+          <div class="total-progress"><strong id="novProgressRing">0%</strong><span>總達成率</span></div>
         </div>
-        <div class="november-progress-ring">
-          <strong id="novProgressRing">0%</strong>
-          <span>目前達成</span>
-        </div>
+        <div id="novRevenueProgress" class="revenue-progress-list"></div>
       </article>
     </section>
 
@@ -244,7 +241,7 @@
             <section class="is-month-new">
               <span>10 月新增</span>
               <strong>+10<small>位</small></strong>
-              <p>本月新增特約夥伴</p>
+              <p>2026 年 10 月新增特約夥伴</p>
             </section>
             <section>
               <span>目前加入</span>
@@ -752,6 +749,11 @@
       </div>
     </section>
   </main>
+
+  <footer class="report-footer">
+    <span>GD 營運週會 <b>2026/11/03</b></span>
+    <div role="status" aria-live="polite"><span id="sheetSyncState">業績｜等待同步</span><span id="allianceSyncState">聯盟｜等待同步</span></div>
+  </footer>
 
   <nav class="deck-controls" aria-label="簡報控制">
     <button id="prevButton" type="button" aria-label="上一頁">←</button>
