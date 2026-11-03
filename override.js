@@ -56,7 +56,7 @@ function updateOctoberCloseSlide() {
   const marketingActual = numeric(row[15]);
   const totalTarget = numeric(row[17]);
   const totalActual = numeric(row[21]);
-  const cases = numeric(row[1]);
+  const cases = numeric(row[2]);
 
   const totalRate = pct(totalActual, totalTarget, 1);
   const certRate = pct(certActual, certTarget, 1);
