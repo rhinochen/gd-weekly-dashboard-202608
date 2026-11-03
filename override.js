@@ -48,24 +48,7 @@ function updateSeptemberCloseSlide() {
   setText("sepTotalRateCard", `${moneyWan1(totalTarget)} 萬目標｜${totalRate}%`);
 }
 
-function updateOctoberStartSlide() {
-  const slide = document.querySelector('[data-title="10月起跑"]');
-  const meta = slide?.querySelector(".page-meta strong");
-
-  const taipeiParts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Taipei",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric"
-  }).formatToParts(new Date());
-  const year = Number(taipeiParts.find((part) => part.type === "year")?.value || 2026);
-  const month = Number(taipeiParts.find((part) => part.type === "month")?.value || 10);
-  const day = Number(taipeiParts.find((part) => part.type === "day")?.value || 20);
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const timeRate = Math.min(100, day / daysInMonth * 100);
-
-  if (meta) meta.textContent = `截至 ${year}/${String(month).padStart(2,"0")}/${String(day).padStart(2,"0")}`;
-
+function updateOctoberCloseSlide() {
   const row = rows[9] || [];
   const certTarget = numeric(row[6]);
   const certActual = numeric(row[10]);
@@ -73,47 +56,55 @@ function updateOctoberStartSlide() {
   const marketingActual = numeric(row[15]);
   const totalTarget = numeric(row[17]);
   const totalActual = numeric(row[21]);
+  const cases = numeric(row[1]);
 
   const totalRate = pct(totalActual, totalTarget, 1);
   const certRate = pct(certActual, certTarget, 1);
   const marketingRate = pct(marketingActual, marketingTarget, 1);
+  const excess = Math.max(0, totalActual - totalTarget);
 
   const setHtml = (id, value) => { const el = document.querySelector("#" + id); if (el) el.innerHTML = value; };
   const setText = (id, value) => { const el = document.querySelector("#" + id); if (el) el.textContent = value; };
-  const setWidth = (id, value) => { const el = document.querySelector("#" + id); if (el) el.style.width = `${Math.min(100, Math.max(0, value))}%`; };
 
-  setHtml("octTotalActual", `${moneyWan1(totalActual)}<small>萬</small>`);
-  setText("octTotalProgress", `10 月總目標 ${moneyWan1(totalTarget)} 萬｜達成 ${totalRate}%`);
-  setWidth("octTotalBar", totalRate);
+  setHtml("octCloseTotalActual", `${moneyWan1(totalActual)}<small>萬</small>`);
+  setText("octCloseTotalTargetText", `目標 ${moneyWan1(totalTarget)} 萬｜超標 ${moneyWan1(excess)} 萬`);
+  setText("octCloseTotalRate", `${totalRate}%`);
+  setHtml("octCloseCertActual", `${moneyWan1(certActual)}<small>萬</small>`);
+  setText("octCloseCertTargetText", `目標 ${moneyWan1(certTarget)} 萬｜達成 ${certRate}%`);
+  setHtml("octCloseMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
+  setText("octCloseMarketingTargetText", `目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${marketingRate}%`);
+  setHtml("octCloseCases", `${cases}<small>件</small>`);
+}
 
-  setHtml("octCertActual", `${moneyWan1(certActual)}<small>萬</small>`);
-  setText("octCertProgress", `調整後目標 ${moneyWan1(certTarget)} 萬｜達成 ${certRate}%`);
+function updateNovemberStartSlide() {
+  const row = rows[10] || [];
+  const certActual = numeric(row[10]);
+  const marketingActual = numeric(row[15]);
+  const totalActual = numeric(row[21]);
+  const totalTarget = 950000;
+  const totalRate = pct(totalActual, totalTarget, 1);
 
-  setHtml("octMarketingActual", `${moneyWan1(marketingActual)}<small>萬</small>`);
-  setText("octMarketingProgress", `星光＋業配目標 ${moneyWan1(marketingTarget)} 萬｜達成 ${marketingRate}%`);
+  const nowParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+  const part = (type) => nowParts.find((item) => item.type === type)?.value || "";
+  const dateEl = document.querySelector("#novReportDate");
+  if (dateEl) dateEl.textContent = `截至 ${part("year")}/${part("month")}/${part("day")}`;
 
-  setText("octTimeProgressLabel", `${month}/${day}｜時間進度`);
-  setText("octTimeRate", `${timeRate.toFixed(1)}%`);
+  const totalEl = document.querySelector("#novCurrentTotal");
+  const rateEl = document.querySelector("#novCurrentRate");
+  const certEl = document.querySelector("#novCertCurrent");
+  const marketingEl = document.querySelector("#novMarketingCurrent");
+  const ringEl = document.querySelector("#novProgressRing");
 
-  setText("octPaceTotalRate", `${totalRate}%`);
-  setText("octPaceCertRate", `${certRate}%`);
-  setText("octPaceMarketingRate", `${marketingRate}%`);
-  setWidth("octPaceTotalBar", totalRate);
-  setWidth("octPaceCertBar", certRate);
-  setWidth("octPaceMarketingBar", marketingRate);
-
-  ["octTotalBenchmark","octCertBenchmark","octMarketingBenchmark"].forEach((id) => {
-    const marker = document.querySelector("#" + id);
-    if (marker) marker.style.left = `${timeRate}%`;
-  });
-
-  const deltaText = (rate) => {
-    const delta = rate - timeRate;
-    return `${delta >= 0 ? "+" : ""}${delta.toFixed(1)}%`;
-  };
-  setText("octPaceTotalDelta", deltaText(totalRate));
-  setText("octPaceCertDelta", deltaText(certRate));
-  setText("octPaceMarketingDelta", deltaText(marketingRate));
+  if (totalEl) totalEl.textContent = `${moneyWan1(totalActual)} 萬`;
+  if (rateEl) rateEl.textContent = `${totalRate}%`;
+  if (certEl) certEl.textContent = `目前 ${moneyWan1(certActual)} 萬`;
+  if (marketingEl) marketingEl.textContent = `目前 ${moneyWan1(marketingActual)} 萬`;
+  if (ringEl) ringEl.textContent = `${totalRate}%`;
 }
 
 function updateQuarterDiagnosisSlide() {
@@ -273,7 +264,7 @@ function updateWeeklyHighlightSlide() {
   if (!slide) return;
 
   const meta = slide.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "更新至 2026/10/22｜本週關鍵進度";
+  if (meta) meta.textContent = "更新至 2026/11/03｜本週關鍵進度";
 
   const header = slide.querySelector(".weekly-highlight-header");
   if (header) header.innerHTML = `
@@ -281,7 +272,7 @@ function updateWeeklyHighlightSlide() {
       <span>WEEKLY HIGHLIGHTS</span>
       <h2>這週，最重要的 5 件事</h2>
     </div>
-    <strong>年會 151 位｜TTQS 評核完成｜會員 250 家｜中區 18 位</strong>
+    <strong>年會 150 人實到｜抵用券 64 張｜會員 251 家｜北1區 14 位</strong>
   `;
 
   const grid = slide.querySelector(".weekly-highlight-grid");
@@ -289,56 +280,56 @@ function updateWeeklyHighlightSlide() {
 
   grid.innerHTML = `
     <article class="weekly-highlight-card is-gold is-wide">
-      <div class="weekly-highlight-top"><span>01｜2026 綠裝修年度盛會</span><b>126%</b></div>
+      <div class="weekly-highlight-top"><span>01｜2026 綠裝修年度盛會</span><b>已完成</b></div>
       <div class="weekly-highlight-dual">
         <div>
-          <strong class="weekly-highlight-number">151<small>位</small></strong>
-          <h3>進入最終執行週</h3>
+          <strong class="weekly-highlight-number">150<small>位</small></strong>
+          <h3>實際出席人數</h3>
         </div>
         <div class="weekly-highlight-mini">
-          <p><b>+12</b><span>較 10/20 增加</span></p>
-          <p><b>+31</b><span>超出 120 位目標</span></p>
-          <p><b>17</b><span>貴賓人數</span></p>
+          <p><b>96.2%</b><span>報到率</span></p>
+          <p><b>13</b><span>貴賓全數出席</span></p>
+          <p><b>64</b><span>認證抵用券購買張數</span></p>
         </div>
       </div>
-      <p class="weekly-highlight-em">今日 10/27 下午總部彩排｜10/29 11:00–12:00 W Hotel 彩排</p>
-      <p>10/30 18:00 正式登場｜台北 W Hotel｜主題「綠見未來」</p>
+      <p class="weekly-highlight-em">應到 156 位｜未報到 6 位（5 位綠設計師＋1 位來賓）</p>
+      <p>W Hotel 餐廳總金額 $485,441｜已付訂金 $106,128</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>02｜TTQS</span><b>評核完成</b></div>
-      <strong class="weekly-highlight-name">完成評核</strong>
-      <h3>10/20 數位評核完成</h3>
-      <p class="weekly-highlight-em">NEXT｜等待 11 月底通知</p>
-      <p>10/16、10/19 完成評核資料檢核</p>
-      <p>參與：理事長、Gary、Shawn、Mark、Joanne</p>
+      <div class="weekly-highlight-top"><span>02｜會員概況</span><b>+1 家</b></div>
+      <strong class="weekly-highlight-number">251<small>家</small></strong>
+      <h3>會員人數 283 位</h3>
+      <p class="weekly-highlight-em">較 10/22 增加 1 家／1 位</p>
+      <p>個人會員 219 家｜團體會員 32 家</p>
+      <p>會員規模持續小幅成長</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>+9 家</b></div>
-      <strong class="weekly-highlight-number">250<small>家</small></strong>
-      <h3>會員人數 282 位</h3>
-      <p class="weekly-highlight-em">較 10/20 增加 9 家／12 位</p>
-      <p>個人會員 218 家｜團體會員 32 家</p>
-      <p>會員家數突破 250 家里程碑</p>
+      <div class="weekly-highlight-top"><span>03｜TTQS</span><b>等待通知</b></div>
+      <strong class="weekly-highlight-name">評核完成</strong>
+      <h3>10/20 數位評核已完成</h3>
+      <p class="weekly-highlight-em">預計 11 月底寄發通知</p>
+      <p>10/19 完成評核資料檢核</p>
+      <p>本週狀態無重大變化</p>
     </article>
 
     <article class="weekly-highlight-card is-blue">
-      <div class="weekly-highlight-top"><span>04｜中區 Open House</span><b>明日登場</b></div>
-      <strong class="weekly-highlight-number">18<small>位</small></strong>
-      <h3>目前報名人數</h3>
-      <p class="weekly-highlight-em">10/28 15:00–16:30｜台中北屯</p>
-      <p>主辦：副理事長 張甯芯／澄逸室內裝修設計工程</p>
-      <p>空間參訪交流活動</p>
+      <div class="weekly-highlight-top"><span>04｜六區活動</span><b>已完成＋推進中</b></div>
+      <strong class="weekly-highlight-number">17<small>/20 位</small></strong>
+      <h3>中區 Open House 實到</h3>
+      <p class="weekly-highlight-em">10/28 活動完成｜到場率 85%</p>
+      <p>北1區 11/12 13:30｜目前已報名 14 位</p>
+      <p>南區 12/23 暫訂</p>
     </article>
 
     <article class="weekly-highlight-card is-gold">
-      <div class="weekly-highlight-top"><span>05｜六區活動</span><b>北1已定案</b></div>
-      <strong class="weekly-highlight-number">11/12</strong>
-      <h3>北1區獎勵活動</h3>
-      <p class="weekly-highlight-em">13:30｜主辦區長 徐佳彣</p>
-      <p>北1區會員免費｜非會員 $1,000</p>
-      <p>南區 12/23 暫訂｜苗栗 17/30｜廣州 35 位滿額</p>
+      <div class="weekly-highlight-top"><span>05｜11 月後續節點</span><b>NEXT</b></div>
+      <strong class="weekly-highlight-number">11/20</strong>
+      <h3>第 12 次理監事會議</h3>
+      <p class="weekly-highlight-em">11:50 入場｜大直典華（暫訂）</p>
+      <p>苗栗二日遊 11/26–11/27｜目前 17 位</p>
+      <p>廣州設計週 12/7–12/10｜35 位</p>
     </article>
   `;
 }
@@ -477,7 +468,8 @@ renderDashboard = function () {
     console.warn("Base dashboard render skipped for hidden legacy slides:", error);
   }
   updateSeptemberCloseSlide();
-  updateOctoberStartSlide();
+  updateOctoberCloseSlide();
+  updateNovemberStartSlide();
   updateQuarterDiagnosisSlide();
   updateAllianceOverviewSlide();
   updateWeeklyHighlightSlide();
@@ -486,4 +478,4 @@ renderDashboard = function () {
 
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：10 月業績、特約聯盟與 10/22 協會最新進度");
+status("週報已更新：10 月最終結算、11 月目標、特約聯盟與 11/3 協會進度");
