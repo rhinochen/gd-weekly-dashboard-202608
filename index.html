@@ -49,96 +49,85 @@
       </div>
     </section>
 
-    <section class="slide" data-title="10月起跑">
+    <section class="slide" data-title="10月結算">
       <header class="slide-header">
-        <div class="section-name"><span>02</span><strong>10 月目標與目前業績</strong></div>
-        <div class="page-meta"><strong>截至 2026/10/05</strong></div>
+        <div class="section-name"><span>01</span><strong>10 月業績最終結算</strong></div>
+        <div class="page-meta"><strong>2026/10｜完整結算</strong></div>
       </header>
       <div class="page-title compact">
-        <p>10 月起跑｜目前業績即時連動 ai2026</p>
-        <h2>本月進度</h2>
+        <p>10 月完整結算｜認證＋行銷</p>
+        <h2>10 月業績成果</h2>
       </div>
-      <div class="october-progress-grid">
-        <article class="october-main-card">
-          <span>目前總收入</span>
-          <strong id="octTotalActual">26.2<small>萬</small></strong>
-          <p id="octTotalProgress">10 月總目標 82 萬｜達成 32%</p>
-          <div class="achievement-progress"><i id="octTotalBar" style="width:32%"></i></div>
-        </article>
-        <article class="october-side-card is-gold">
+
+      <div class="month-close-hero october-close-hero">
+        <div>
+          <span>10 月總收入</span>
+          <strong id="octCloseTotalActual">114.9<small>萬</small></strong>
+          <p id="octCloseTotalTargetText">目標 82 萬｜超標 32.9 萬</p>
+        </div>
+        <div class="month-close-rate">
+          <span>總達成率</span>
+          <strong id="octCloseTotalRate">140.1%</strong>
+          <p>完整結算</p>
+        </div>
+      </div>
+
+      <div class="performance-split-grid">
+        <article class="performance-card is-gold">
           <span>認證收入</span>
-          <strong id="octCertActual">13.6<small>萬</small></strong>
-          <p id="octCertProgress">調整後目標 42 萬｜達成 32%</p>
+          <strong id="octCloseCertActual">50.0<small>萬</small></strong>
+          <p id="octCloseCertTargetText">目標 42 萬｜達成 119.1%</p>
         </article>
-        <article class="october-side-card is-blue">
+        <article class="performance-card is-blue">
           <span>行銷收入</span>
-          <strong id="octMarketingActual">12.6<small>萬</small></strong>
-          <p id="octMarketingProgress">星光＋業配目標 40 萬｜達成 32%</p>
+          <strong id="octCloseMarketingActual">64.9<small>萬</small></strong>
+          <p id="octCloseMarketingTargetText">目標 40 萬｜達成 162.3%</p>
+        </article>
+        <article class="performance-card is-green">
+          <span>認證申請件數</span>
+          <strong id="octCloseCases">12<small>件</small></strong>
+          <p>10 月完成申請案件數</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="11月起跑">
+      <header class="slide-header">
+        <div class="section-name"><span>02</span><strong>11 月目標與目前業績</strong></div>
+        <div class="page-meta"><strong id="novReportDate">截至 2026/11/03</strong></div>
+      </header>
+      <div class="page-title compact">
+        <p>11 月起跑｜本月目標結構</p>
+        <h2>11 月業績目標</h2>
+      </div>
+
+      <div class="november-target-hero">
+        <article class="november-total-card">
+          <span>11 月總目標</span>
+          <strong>95<small>萬</small></strong>
+          <p>目前業績 <b id="novCurrentTotal">0 萬</b>｜達成 <b id="novCurrentRate">0%</b></p>
+        </article>
+        <article class="november-target-card is-gold">
+          <span>認證目標</span>
+          <strong>55<small>萬</small></strong>
+          <p id="novCertCurrent">目前 0 萬</p>
+        </article>
+        <article class="november-target-card is-blue">
+          <span>行銷目標</span>
+          <strong>40<small>萬</small></strong>
+          <p id="novMarketingCurrent">目前 0 萬</p>
         </article>
       </div>
 
-      <article class="october-bullet-panel">
-        <div class="october-bullet-head">
-          <div>
-            <span>本月節奏 vs. 時間進度</span>
-            <strong>10 月業績節奏</strong>
-          </div>
-          <div class="october-time-benchmark">
-            <span id="octTimeProgressLabel">10/20｜時間進度</span>
-            <strong id="octTimeRate">64.5%</strong>
-          </div>
+      <article class="november-start-panel">
+        <div>
+          <span>MONTH START</span>
+          <strong>本月剛起跑，目前尚無業績</strong>
+          <p>本月目標 95 萬｜認證 55 萬＋行銷 40 萬</p>
         </div>
-
-        <div class="october-bullet-list">
-          <div class="october-bullet-row is-total">
-            <div class="october-bullet-label">
-              <span>總業績</span>
-              <strong id="octPaceTotalRate">89.9%</strong>
-            </div>
-            <div class="october-bullet-track">
-              <i id="octPaceTotalBar" style="width:89.9%"></i>
-              <b id="octTotalBenchmark" class="october-benchmark" style="left:64.5%"></b>
-            </div>
-            <div class="october-bullet-delta">
-              <span id="octPaceTotalDelta">+25.4%</span>
-              <small>超前時間進度</small>
-            </div>
-          </div>
-
-          <div class="october-bullet-row is-cert">
-            <div class="october-bullet-label">
-              <span>認證</span>
-              <strong id="octPaceCertRate">96.3%</strong>
-            </div>
-            <div class="october-bullet-track">
-              <i id="octPaceCertBar" style="width:96.3%"></i>
-              <b id="octCertBenchmark" class="october-benchmark" style="left:64.5%"></b>
-            </div>
-            <div class="october-bullet-delta">
-              <span id="octPaceCertDelta">+31.8%</span>
-              <small>接近達標</small>
-            </div>
-          </div>
-
-          <div class="october-bullet-row is-marketing">
-            <div class="october-bullet-label">
-              <span>行銷</span>
-              <strong id="octPaceMarketingRate">83.1%</strong>
-            </div>
-            <div class="october-bullet-track">
-              <i id="octPaceMarketingBar" style="width:83.1%"></i>
-              <b id="octMarketingBenchmark" class="october-benchmark" style="left:64.5%"></b>
-            </div>
-            <div class="october-bullet-delta">
-              <span id="octPaceMarketingDelta">+18.6%</span>
-              <small>超前時間進度</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="october-benchmark-note">
-          <i></i>
-          <span>垂直基準線＝本月時間進度</span>
+        <div class="november-progress-ring">
+          <strong id="novProgressRing">0%</strong>
+          <span>目前達成</span>
         </div>
       </article>
     </section>
