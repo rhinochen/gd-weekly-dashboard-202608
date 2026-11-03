@@ -2078,3 +2078,113 @@ button { font: inherit; }
   }
   .alliance-potential-inline strong { color:#10231f !important; }
 }
+
+
+/* 2026-11 weekly report: November target start */
+.october-close-hero > div:first-child {
+  background:linear-gradient(145deg,rgba(98,230,172,.15),rgba(112,185,255,.04));
+}
+.november-target-hero {
+  display:grid;
+  grid-template-columns:1.55fr 1fr 1fr;
+  gap:.85vw;
+  margin:.85vw 0 1vw;
+}
+.november-total-card,
+.november-target-card {
+  padding:1.15vw 1.25vw;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:.8vw;
+}
+.november-total-card { border-left:.45vw solid var(--green); }
+.november-target-card.is-gold { border-left:.45vw solid var(--gold); }
+.november-target-card.is-blue { border-left:.45vw solid var(--blue); }
+.november-total-card > span,
+.november-target-card > span {
+  display:block;
+  color:var(--muted);
+  font-size:clamp(10px,.82vw,15px);
+  font-weight:900;
+}
+.november-total-card > strong,
+.november-target-card > strong {
+  display:block;
+  margin:.3vw 0;
+  color:var(--white);
+  font-size:clamp(40px,3.5vw,66px);
+  line-height:1;
+}
+.november-total-card > strong { color:var(--green); }
+.november-target-card.is-gold > strong { color:var(--gold); }
+.november-target-card.is-blue > strong { color:var(--blue); }
+.november-total-card strong small,
+.november-target-card strong small { font-size:.34em; }
+.november-total-card p,
+.november-target-card p {
+  margin:.2vw 0 0;
+  color:var(--muted);
+  font-size:clamp(11px,.84vw,16px);
+  font-weight:850;
+}
+.november-total-card p b { color:var(--white); }
+.november-start-panel {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:1.1vw;
+  align-items:center;
+  min-height:13vw;
+  padding:1.4vw 1.55vw;
+  background:linear-gradient(145deg,rgba(98,230,172,.08),rgba(255,255,255,.025));
+  border:1px solid rgba(98,230,172,.23);
+  border-radius:.9vw;
+}
+.november-start-panel > div:first-child > span {
+  color:var(--green);
+  font-size:clamp(10px,.74vw,14px);
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.november-start-panel > div:first-child > strong {
+  display:block;
+  margin:.4vw 0;
+  color:var(--white);
+  font-size:clamp(28px,2.5vw,48px);
+}
+.november-start-panel > div:first-child > p {
+  margin:0;
+  color:var(--muted);
+  font-size:clamp(13px,1vw,19px);
+  font-weight:850;
+}
+.november-progress-ring {
+  width:9vw;
+  height:9vw;
+  min-width:110px;
+  min-height:110px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border:1vw solid rgba(98,230,172,.12);
+  border-radius:50%;
+}
+.november-progress-ring strong {
+  color:var(--green);
+  font-size:clamp(28px,2.4vw,46px);
+  line-height:1;
+}
+.november-progress-ring span {
+  margin-top:.35vw;
+  color:var(--muted);
+  font-size:clamp(9px,.66vw,12px);
+  font-weight:900;
+}
+@media print {
+  .november-total-card,.november-target-card,.november-start-panel {
+    background:#fff !important;
+    border-color:#183d35 !important;
+  }
+  .november-start-panel > div:first-child > strong,
+  .november-total-card p b { color:#10231f !important; }
+}
