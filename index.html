@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#061b18">
   <title>營運部週會即時儀表板</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="report.css">
+  <link rel="stylesheet" href="report.css?v=20261110">
 </head>
 <body>
   <main class="deck">
@@ -92,14 +92,14 @@
       </div>
     </section>
 
-    <section class="slide" data-title="11月起跑">
+    <section class="slide" data-title="11月業績">
       <header class="slide-header">
-        <div class="section-name"><span>02</span><strong>11 月目標與目前業績</strong></div>
-        <div class="page-meta"><strong id="novReportDate">截至 2026/11/03</strong></div>
+        <div class="section-name"><span>01</span><strong>11 月目標與目前業績</strong></div>
+        <div class="page-meta"><strong id="novReportDate">截至 2026/11/10</strong></div>
       </header>
       <div class="page-title compact">
-        <p>11 月起跑｜本月目標結構</p>
-        <h2>11 月業績目標</h2>
+        <p>11 月業績｜目標與目前進度</p>
+        <h2>11 月業績進度</h2>
       </div>
 
       <div class="november-target-hero">
@@ -122,7 +122,7 @@
 
       <article class="november-start-panel">
         <div class="progress-panel-heading">
-          <div><span>本月達成進度</span><strong id="novStatusText">本月剛起跑，目前尚無業績</strong></div>
+          <div><span>本月達成進度</span><strong id="novStatusText">本月尚無業績入帳</strong></div>
           <div class="total-progress"><strong id="novProgressRing">0%</strong><span>總達成率</span></div>
         </div>
         <div id="novRevenueProgress" class="revenue-progress-list"></div>
@@ -751,20 +751,20 @@
   </main>
 
   <footer class="report-footer">
-    <span>GD 營運週會 <b>2026/11/03</b></span>
+    <span>GD 營運週會 <b>2026/11/10</b></span>
     <div role="status" aria-live="polite"><span id="sheetSyncState">業績｜等待同步</span><span id="allianceSyncState">聯盟｜等待同步</span></div>
   </footer>
 
   <nav class="deck-controls" aria-label="簡報控制">
     <button id="prevButton" type="button" aria-label="上一頁">←</button>
     <div id="slideDots"></div>
-    <span><b id="currentSlide">1</b> / <b id="totalSlides">8</b></span>
+    <span><b id="currentSlide">1</b> / <b id="totalSlides">3</b></span>
     <button id="nextButton" type="button" aria-label="下一頁">→</button>
     <button id="fullscreenButton" type="button">全螢幕</button>
     <button id="downloadPdfButton" type="button">下載本週 PDF</button>
   </nav>
   <div class="data-status" id="dataStatus">正在同步 ai2026</div>
   <script src="app.js"></script>
-  <script src="override.js"></script>
+  <script src="override.js?v=20261110"></script>
 </body>
 </html>

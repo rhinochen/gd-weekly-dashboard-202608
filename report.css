@@ -1,4 +1,4 @@
-/* Presentation layer for the four active weekly report slides.
+/* Presentation layer for the active weekly report slides.
    Container units keep typography proportional on wide and tall displays. */
 .report-slide {
   container-type: inline-size;
@@ -110,7 +110,15 @@
 .report-slide .weekly-highlight-mini p { padding: .9cqw .4cqw; margin: 0; }
 .report-slide .weekly-highlight-mini p b { font-size: 2.35cqw; }
 .report-slide .weekly-highlight-mini p span { font-size: 1.1cqw; line-height: 1.4; margin-top: .5cqw; }
-.upcoming-list { list-style: none; margin: 1cqw 0 0; padding: 0; display: grid; gap: 1cqw; }
+.report-slide .annual-expense-card .weekly-highlight-dual { grid-template-columns: 1fr 1.3fr; gap: 1cqw; }
+.report-slide .annual-expense-card .weekly-highlight-number { font-size: 5cqw; }
+.report-slide .annual-expense-card .weekly-highlight-mini p b { font-size: 2.1cqw; }
+.report-slide .annual-expense-card .weekly-highlight-mini small { font-size: .45em; margin-left: .15em; }
+.report-slide .annual-expense-card .weekly-highlight-mini p span { font-size: .98cqw; }
+.report-slide .board-meeting-card h3 { font-size: 1.55cqw; }
+.report-slide .board-meeting-card .weekly-highlight-number { font-size: 4.2cqw; margin-top: .8cqw; }
+.association-accounting-note { flex-shrink: 0; margin: -.4cqw 0 0; color: var(--muted); font-size: 1.1cqw; }
+.upcoming-list { list-style: none; margin: .8cqw 0 0; padding: 0; display: grid; gap: .8cqw; }
 .upcoming-list li { display: grid; grid-template-columns: 6.6cqw 1fr; gap: .7cqw; align-items: start; }
 .upcoming-list time { font-size: 1.2cqw; font-weight: 900; color: var(--gold); padding-top: .15cqw; }
 .upcoming-list strong { display: block; font-size: 1.35cqw; line-height: 1.4; }
@@ -175,9 +183,16 @@
   .report-slide .weekly-highlight-top span { font-size: 13px; }
   .report-slide .weekly-highlight-top b { font-size: 11px; padding: 4px 8px; }
   .report-slide .weekly-highlight-dual { grid-template-columns: 1fr; }
+  .report-slide .annual-expense-card .weekly-highlight-dual { grid-template-columns: 1fr; }
+  .report-slide .annual-expense-card .weekly-highlight-number { font-size: 52px; }
+  .report-slide .annual-expense-card .weekly-highlight-mini p b { font-size: 24px; }
+  .report-slide .annual-expense-card .weekly-highlight-mini p span { font-size: 11px; }
   .report-slide .weekly-highlight-number, .report-slide .weekly-highlight-dual .weekly-highlight-number { font-size: 52px; margin-top: 16px; }
   .report-slide .weekly-highlight-name { font-size: 32px; margin-top: 16px; }
   .report-slide .weekly-highlight-card h3 { font-size: 20px; margin: 10px 0; }
+  .report-slide .board-meeting-card h3 { font-size: 19px; }
+  .report-slide .board-meeting-card .weekly-highlight-number { font-size: 52px; margin-top: 16px; }
+  .association-accounting-note { font-size: 12px; margin: 0; }
   .report-slide .weekly-highlight-card p, .report-slide .weekly-highlight-card p.weekly-highlight-em { font-size: 14px; margin: 6px 0; }
   .report-slide .weekly-highlight-mini { gap: 8px; margin: 8px 0; }
   .report-slide .weekly-highlight-mini p { padding: 12px 4px; }

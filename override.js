@@ -134,7 +134,7 @@ function updateNovemberStartSlide() {
   update("novMarketingTarget", `${moneyWan1(marketingTarget)}<small>萬</small>`, true);
   update("novStatusText", totalActual > 0 ?
     (totalActual >= totalTarget ? "本月目標已達成" : `距離目標還差 ${moneyWan1(totalTarget - totalActual)} 萬`) :
-    "本月剛起跑，目前尚無業績");
+    "本月尚無業績入帳");
   renderRevenueProgress("novRevenueProgress", [
     {label:"認證", actual:certActual, target:certTarget, color:"is-gold"},
     {label:"行銷", actual:marketingActual, target:marketingTarget, color:"is-blue"}
@@ -248,7 +248,8 @@ function updateAllianceOverviewSlide() {
   });
   const ordered = Object.entries(countByRegion).sort((a,b)=>b[1]-a[1]);
   const max = Math.max(...ordered.map(([,count])=>count),1);
-  const top4 = ordered.slice(0,4).reduce((sum,[,count])=>sum+count,0);
+  const known = ordered.filter(([region]) => region !== "待補");
+  const top4 = known.slice(0,4).reduce((sum,[,count])=>sum+count,0);
   const topShare = joined ? Math.round(top4/joined*100) : 0;
 
   const joinedEl = document.querySelector("#allianceJoinedCount");
@@ -258,7 +259,6 @@ function updateAllianceOverviewSlide() {
   if (potentialEl) potentialEl.textContent = `${potential}`;
   if (noteEl) noteEl.textContent = `前四區 ${top4} 家｜約占 ${topShare}%`;
 
-  const known = ordered.filter(([region]) => region !== "待補");
   const mapPositions = {
     "台北": {x:65, y:10, color:"#ff6f61"},
     "新北": {x:53, y:14, color:"#f6c969"},
@@ -300,7 +300,7 @@ function updateWeeklyHighlightSlide() {
   if (!slide) return;
 
   const meta = slide.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "更新至 2026/11/03｜本週關鍵進度";
+  if (meta) meta.textContent = "2026/11/10 週報｜人數統計截至 11/09";
 
   const header = slide.querySelector(".weekly-highlight-header");
   if (header) header.innerHTML = `
@@ -314,57 +314,65 @@ function updateWeeklyHighlightSlide() {
   if (!grid) return;
 
   grid.innerHTML = `
-    <article class="weekly-highlight-card is-gold is-wide">
-      <div class="weekly-highlight-top"><span>01｜2026 綠裝修年度盛會</span><b>已完成</b></div>
+    <article class="weekly-highlight-card is-gold is-wide annual-expense-card">
+      <div class="weekly-highlight-top"><span>01｜年度盛會・費用結算</span><b>3 項待補</b></div>
       <div class="weekly-highlight-dual">
         <div>
-          <strong class="weekly-highlight-number">150<small>位</small></strong>
-          <h3>實際出席人數</h3>
+          <strong class="weekly-highlight-number">55.08<small>萬</small></strong>
+          <h3>目前已知支出 NT$550,848</h3>
         </div>
         <div class="weekly-highlight-mini">
-          <p><b>96.2%</b><span>報到率</span></p>
-          <p><b>13</b><span>貴賓全數出席</span></p>
-          <p><b>64</b><span>認證抵用券購買張數</span></p>
+          <p><b>156<small>位</small></b><span>W Hotel 訂餐計費</span></p>
+          <p><b>133<small>位</small></b><span>活動計費人數</span></p>
+          <p><b>4,142<small>元</small></b><span>每計費人平均已知支出</span></p>
         </div>
       </div>
-      <p class="weekly-highlight-em">應到 156 位｜未報到 6 位（5 位綠設計師＋1 位來賓）</p>
-      <p>W Hotel 餐廳總金額 $485,441｜已付訂金 $106,128</p>
+      <p class="weekly-highlight-em">W Hotel 依訂餐 156 位計費｜餐費 NT$485,441</p>
+      <p>待補：主視覺背板／印刷輸出、副總召、工作人員餐食</p>
+    </article>
+
+    <article class="weekly-highlight-card is-blue north-event-card">
+      <div class="weekly-highlight-top"><span>02｜北1區獎勵活動</span><b>主辦 徐佳彣</b></div>
+      <strong class="weekly-highlight-number">23<small>位</small></strong>
+      <h3>11/12（四）13:30</h3>
+      <p class="weekly-highlight-em">北1區 15 位＋北3區 8 位</p>
+      <p>北1區會員免費｜非會員 NT$1,000</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>02｜會員概況</span><b>+1 家</b></div>
-      <strong class="weekly-highlight-number">251<small>家</small></strong>
-      <h3>會員人數 283 位</h3>
-      <p class="weekly-highlight-em">較 10/22 增加 1 家／1 位</p>
-      <p>個人會員 219 家｜團體會員 32 家</p>
+      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>截至 11/09</b></div>
+      <strong class="weekly-highlight-number">248<small>家</small></strong>
+      <h3>會員人數 281 位</h3>
+      <p class="weekly-highlight-em">個人 216 家｜團體 32 家</p>
+      <p>11/13（五）彙整會員收款明細</p>
     </article>
 
-    <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>03｜TTQS</span><b>等待通知</b></div>
-      <strong class="weekly-highlight-name">評核完成</strong>
-      <h3>10/20 數位評核</h3>
-      <p class="weekly-highlight-em">預計 11 月底寄發通知</p>
-      <p>10/19 完成評核資料檢核</p>
-    </article>
-
-    <article class="weekly-highlight-card is-blue">
-      <div class="weekly-highlight-top"><span>04｜六區活動</span><b>已完成＋推進中</b></div>
-      <strong class="weekly-highlight-number">17<small>/20 位</small></strong>
-      <h3>中區 Open House 實到</h3>
-      <p class="weekly-highlight-em">10/28 活動完成｜到場率 85%</p>
-      <p>北1區 11/12 13:30｜目前已報名 14 位</p>
-      <p>南區 12/23 暫訂</p>
+    <article class="weekly-highlight-card is-gold board-meeting-card">
+      <div class="weekly-highlight-top"><span>04｜第12次理監事會議</span><b>11/20</b></div>
+      <strong class="weekly-highlight-number">7.85<small>萬</small></strong>
+      <h3>預估會後結餘 NT$78,541</h3>
+      <p class="weekly-highlight-em">11:50 入場｜大直典華（暫訂）</p>
+      <p>預估出席費 NT$24,000</p>
+      <p>餘額用於 2027/02 理監事聚餐</p>
     </article>
 
     <article class="weekly-highlight-card is-gold upcoming-card">
-      <div class="weekly-highlight-top"><span>05｜近期行程</span><b>待辦節點</b></div>
+      <div class="weekly-highlight-top"><span>05｜近期活動與準備</span><b>持續推進</b></div>
       <ul class="upcoming-list">
-        <li><time>11/20</time><div><strong>第 12 次理監事會議</strong><span>11:50 入場｜大直典華（暫訂）</span></div></li>
-        <li><time>11/26–27</time><div><strong>苗栗二日遊</strong><span>已報名 17 位／名額 30 位</span></div></li>
-        <li><time>12/07–10</time><div><strong>廣州設計週</strong><span>參加 35 位</span></div></li>
+        <li><time>11/26–27</time><div><strong>苗栗二日遊・17 位</strong><span>交通、住宿、餐飲及保險確認中</span></div></li>
+        <li><time>12/07–10</time><div><strong>廣州設計週・35 位</strong><span>待辦：錦旗、布條、團長照片與頭銜</span></div></li>
+        <li><time>12/23</time><div><strong>南區活動（暫訂）</strong><span>14:30 活動｜17:30 晚餐<br>會員 $500／非會員 $1,500</span></div></li>
       </ul>
     </article>
   `;
+
+  let accountingNote = slide.querySelector(".association-accounting-note");
+  if (!accountingNote) {
+    accountingNote = document.createElement("p");
+    accountingNote.className = "association-accounting-note";
+    slide.append(accountingNote);
+  }
+  accountingNote.textContent = "帳務進度｜已處理至 11/09，送金單與收據已完成";
 }
 
 function updateAssociationWeeklyEmphasis() {
@@ -475,7 +483,7 @@ function updateAssociationWeeklyEmphasis() {
 }
 
 function removeSlidesForWeeklyReport() {
-  const hiddenTitles = ["9月結算","認證趨勢","協會快報","協會重點","認證件數","認證金額","總收入","目標達成率","9月目標","特約聯盟"];
+  const hiddenTitles = ["9月結算","10月結算","認證趨勢","協會快報","協會重點","認證件數","認證金額","總收入","目標達成率","9月目標","特約聯盟"];
   for (let i = slides.length - 1; i >= 0; i -= 1) {
     if (hiddenTitles.includes(slides[i].dataset.title)) {
       slides[i].remove();
@@ -531,4 +539,4 @@ function prepareReportLayout() {
 prepareReportLayout();
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：10 月最終結算、11 月目標、特約聯盟與 11/3 協會進度");
+status("週報已更新：11 月業績、特約聯盟與 11/10 協會進度");
