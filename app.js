@@ -315,6 +315,8 @@ function renderDashboard() {
 }
 
 function parseAlliancePartners(parsedRows) {
+  const headers = (parsedRows[0] || []).map((cell) => String(cell || "").trim());
+  const dateColumn = headers.findIndex((label) => /^(加入|簽約|回簽|生效)(日期|年月|月份)$/.test(label));
   return parsedRows
     .slice(1)
     .filter((row) => numeric(row[0]) > 0 && String(row[4] || "").trim())
@@ -325,9 +327,25 @@ function parseAlliancePartners(parsedRows) {
       region: normalizeRegion(row[2]),
       designer: String(row[3] || "待補").trim(),
       company: String(row[4] || "").trim(),
+      joinedMonth: dateColumn >= 0 ? parseAllianceMonth(row[dateColumn]) : null,
       period: getAlliancePeriod(numeric(row[0]) || index + 1),
       pending: String(row[1] || "").trim() === "資料待補"
     }));
+}
+
+function parseAllianceMonth(value) {
+  const match = String(value || "").trim().match(/^(20\d{2})[\/年.-](\d{1,2})(?:[\/月.\-T\s]|$)/);
+  if (!match || Number(match[2]) < 1 || Number(match[2]) > 12) return null;
+  return `${match[1]}-${match[2].padStart(2, "0")}`;
+}
+
+function summarizeAllianceMonth(partners, month) {
+  const valid = partners.filter((item) => !item.excluded && item.status !== "不列入" && item.company);
+  return {
+    joined: valid.length,
+    monthly: valid.filter((item) => item.joinedMonth === month),
+    undated: valid.filter((item) => !item.joinedMonth).length
+  };
 }
 
 function getAlliancePeriod(number) {

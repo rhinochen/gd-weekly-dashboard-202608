@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#061b18">
   <title>營運部週會即時儀表板</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="report.css?v=20261117">
+  <link rel="stylesheet" href="report.css?v=20261117-2">
 </head>
 <body>
   <main class="deck">
@@ -226,41 +226,35 @@
       </div>
     </section>
 
-    <section class="slide" data-title="特約版圖">
+    <section class="slide alliance-month-slide" data-title="特約版圖">
       <header class="slide-header">
-        <div class="section-name"><span>04</span><strong>特約聯盟版圖</strong></div>
-        <div class="page-meta"><strong>合作通路與區域分布</strong></div>
+        <div class="section-name"><span>02</span><strong>特約聯盟・11 月進度</strong></div>
+        <div class="page-meta"><strong>2026/11｜本月新增與累計合作分列</strong></div>
       </header>
       <div class="page-title compact">
-        <p>10 月新增 10 位特約夥伴｜合作版圖持續擴張</p>
-        <h2>目前合作規模</h2>
+        <h2>11 月特約聯盟進度</h2>
       </div>
       <div class="alliance-overview-layout">
         <article class="alliance-kpi-panel">
           <div class="alliance-kpi-grid alliance-kpi-grid-current">
             <section class="is-month-new">
-              <span>10 月新增</span>
-              <strong>+10<small>位</small></strong>
-              <p>2026 年 10 月新增特約夥伴</p>
+              <span>11 月新增合作</span>
+              <strong id="allianceMonthNewCount" class="is-unconfirmed">待確認</strong>
+              <p id="allianceMonthNewNote">本月新增依回簽日期核對</p>
             </section>
             <section>
-              <span>目前加入</span>
-              <strong id="allianceJoinedCount">43<small>家</small></strong>
-              <p>目前合作基本盤</p>
-            </section>
-            <section class="is-pending">
-              <span>待回簽</span>
-              <strong>10<small>家</small></strong>
-              <p>持續推進中</p>
+              <span>累計合作名冊</span>
+              <strong id="allianceJoinedCount">—<small>家</small></strong>
+              <p>即時同步有效合作公司</p>
             </section>
           </div>
-          <div class="alliance-potential-inline">
-            <span>若待回簽全數完成</span>
-            <strong>合作規模可達 <b id="alliancePotentialCount">53</b> 家</strong>
+          <div class="alliance-month-roster">
+            <h3>11 月新合作名單</h3>
+            <ul id="allianceMonthList"><li class="alliance-month-empty">待確認 11 月回簽名單與日期</li></ul>
           </div>
         </article>
         <article class="alliance-region-panel">
-          <div class="block-title"><span>主要區域分布</span><strong id="allianceTopRegionNote">前四區約占 72%</strong></div>
+          <div class="block-title"><span>累計合作區域分布</span><strong id="allianceTopRegionNote">同步中</strong></div>
           <div class="alliance-map-content">
             <div class="alliance-map-stage">
               <img src="taiwan-map-clean.png" alt="台灣特約聯盟區域分布" class="alliance-map-image">
@@ -495,6 +489,48 @@
           <p>含 6 月、7 月與 8 月已簽夥伴</p>
         </article>
       </div>
+    </section>
+
+    <section class="slide member-intake-slide" data-title="11月會員招募">
+      <header class="slide-header">
+        <div class="section-name"><span>03</span><strong>協會會員・11 月梯次</strong></div>
+        <div class="page-meta"><strong>202611 梯次｜秘書日誌 11/16</strong></div>
+      </header>
+      <div class="page-title compact"><h2>營隊帶動會員加入</h2></div>
+      <div class="member-intake-kpis">
+        <article><span>個人會員新增</span><strong>+12<small>家</small></strong><p>營隊贈送 7 位＋一般會員 5 位</p></article>
+        <article><span>團體會員新增</span><strong>+1<small>家</small></strong><p>文三設計｜2 位會員</p></article>
+        <article><span>本梯次會員人數增加</span><strong>+14<small>位</small></strong><p>個人 12 位＋團體 2 位</p></article>
+      </div>
+      <div class="member-intake-rosters">
+        <article class="member-intake-group is-camp">
+          <h3><span>營隊加入</span><b>7 位・贈送會員身分</b></h3>
+          <ol>
+            <li><b>羅鵑晏</b><span>初色室內設計裝修有限公司</span></li>
+            <li><b>邱秀美</b><span>域誠環保科技股份有限公司</span></li>
+            <li><b>蔡宛臻</b><span>悠奕設計</span></li>
+            <li><b>許涵翔</b><span>采晴有限公司</span></li>
+            <li><b>陳雅華</b><span>原想創意設計(股)公司</span></li>
+            <li><b>黃暐家</b><span>暐家室內裝修設計有限公司</span></li>
+            <li><b>蘇宗柘</b><span>德克室內裝修設計有限公司</span></li>
+          </ol>
+        </article>
+        <article class="member-intake-group is-direct">
+          <h3><span>一般會員加入</span><b>5 位</b></h3>
+          <ol>
+            <li><b>陳韻如</b><span>山林希家具有限公司</span></li>
+            <li><b>黃庭涵</b><span>建運企業有限公司</span></li>
+            <li><b>陳郁青</b><span>清芷室內裝修設計有限公司</span></li>
+            <li><b>許涵翔</b><span>采晴有限公司</span></li>
+            <li><b>簡廷桓</b><span>桓盛有限公司</span></li>
+          </ol>
+          <div class="member-intake-corporate">
+            <h3><span>團體會員加入</span><b>1 家・2 位</b></h3>
+            <p><b>陳建竣／陳彥光</b><span>文三設計室內裝修有限公司</span></p>
+          </div>
+        </article>
+      </div>
+      <p class="member-intake-note">截至 11/16 會員總覽：252 家／284 位｜個人 220 家・團體 32 家</p>
     </section>
 
     <section class="slide" data-title="本週重點">
@@ -764,7 +800,7 @@
     <button id="downloadPdfButton" type="button">下載本週 PDF</button>
   </nav>
   <div class="data-status" id="dataStatus">正在同步 ai2026</div>
-  <script src="app.js"></script>
-  <script src="override.js?v=20261117"></script>
+  <script src="app.js?v=20261117-2"></script>
+  <script src="override.js?v=20261117-2"></script>
 </body>
 </html>

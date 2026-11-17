@@ -235,12 +235,23 @@ function updateQuarterDiagnosisSlide() {
 function updateAllianceOverviewSlide() {
   const slide = document.querySelector('[data-title="特約版圖"]');
   const meta = slide?.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "合作通路與區域分布";
+  if (meta) meta.textContent = "2026/11｜本月新增與累計合作分列";
 
-  const valid = alliancePartners.filter((item) => !item.excluded && item.company);
-  const joined = valid.length;
-  const pendingBack = 10;
-  const potential = joined + pendingBack;
+  const valid = alliancePartners.filter((item) => !item.excluded && item.status !== "不列入" && item.company);
+  const { joined, monthly, undated } = summarizeAllianceMonth(valid, "2026-11");
+  const monthlyCount = document.querySelector("#allianceMonthNewCount");
+  const monthlyNote = document.querySelector("#allianceMonthNewNote");
+  const monthList = document.querySelector("#allianceMonthList");
+  if (monthlyCount) {
+    monthlyCount.classList.toggle("is-unconfirmed", monthly.length === 0 && undated > 0);
+    monthlyCount.innerHTML = monthly.length === 0 && undated > 0 ? "待確認" :
+      `${undated > 0 ? "至少 " : "+"}${monthly.length}<small>家</small>`;
+  }
+  if (monthlyNote) monthlyNote.textContent = undated > 0 ?
+    "名冊尚有未標回簽日期的公司，本月新增待核對" : "依 11 月加入／回簽日期統計";
+  if (monthList) monthList.innerHTML = monthly.length ?
+    monthly.map((item) => `<li><b>${escapeHtml(item.designer)}</b><span>${escapeHtml(item.company)}</span></li>`).join("") :
+    `<li class="alliance-month-empty">${undated > 0 ? "待確認 11 月回簽名單與日期" : "11 月目前無新增回簽紀錄"}</li>`;
   const countByRegion = {};
   valid.forEach((item) => {
     const region = item.region || "待補";
@@ -253,10 +264,8 @@ function updateAllianceOverviewSlide() {
   const topShare = joined ? Math.round(top4/joined*100) : 0;
 
   const joinedEl = document.querySelector("#allianceJoinedCount");
-  const potentialEl = document.querySelector("#alliancePotentialCount");
   const noteEl = document.querySelector("#allianceTopRegionNote");
   if (joinedEl) joinedEl.innerHTML = `${joined}<small>家</small>`;
-  if (potentialEl) potentialEl.textContent = `${potential}`;
   if (noteEl) noteEl.textContent = `前四區 ${top4} 家｜約占 ${topShare}%`;
 
   const mapPositions = {
@@ -344,6 +353,7 @@ function updateWeeklyHighlightSlide() {
       <strong class="weekly-highlight-number">252<small>家</small></strong>
       <h3>會員人數 284 位</h3>
       <p class="weekly-highlight-em">個人 220 家｜團體 32 家</p>
+      <p>11 月梯次｜個人 +12 家・團體 +1 家</p>
     </article>
 
     <article class="weekly-highlight-card is-gold board-meeting-card">
@@ -531,7 +541,6 @@ function prepareReportLayout() {
   const joined = document.getElementById("allianceJoinedCount")?.closest("section");
   if (allianceGrid && joined) {
     joined.classList.add("is-joined");
-    allianceGrid.prepend(joined);
   }
 }
 
