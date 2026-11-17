@@ -238,20 +238,17 @@ function updateAllianceOverviewSlide() {
   if (meta) meta.textContent = "2026/11｜本月新增與累計合作分列";
 
   const valid = alliancePartners.filter((item) => !item.excluded && item.status !== "不列入" && item.company);
-  const { joined, monthly, undated } = summarizeAllianceMonth(valid, "2026-11");
+  const { joined } = summarizeAllianceMonth(valid, "2026-11");
+  // November additions were confirmed in the November 17 meeting.
+  // Keep this monthly figure separate from the live cumulative company roster.
+  const confirmedNovemberAdditions = 2;
   const monthlyCount = document.querySelector("#allianceMonthNewCount");
   const monthlyNote = document.querySelector("#allianceMonthNewNote");
-  const monthList = document.querySelector("#allianceMonthList");
   if (monthlyCount) {
-    monthlyCount.classList.toggle("is-unconfirmed", monthly.length === 0 && undated > 0);
-    monthlyCount.innerHTML = monthly.length === 0 && undated > 0 ? "待確認" :
-      `${undated > 0 ? "至少 " : "+"}${monthly.length}<small>家</small>`;
+    monthlyCount.classList.remove("is-unconfirmed");
+    monthlyCount.innerHTML = `+${confirmedNovemberAdditions}<small>位</small>`;
   }
-  if (monthlyNote) monthlyNote.textContent = undated > 0 ?
-    "名冊尚有未標回簽日期的公司，本月新增待核對" : "依 11 月加入／回簽日期統計";
-  if (monthList) monthList.innerHTML = monthly.length ?
-    monthly.map((item) => `<li><b>${escapeHtml(item.designer)}</b><span>${escapeHtml(item.company)}</span></li>`).join("") :
-    `<li class="alliance-month-empty">${undated > 0 ? "待確認 11 月回簽名單與日期" : "11 月目前無新增回簽紀錄"}</li>`;
+  if (monthlyNote) monthlyNote.textContent = "11 月新增特約夥伴｜11/17 週會確認";
   const countByRegion = {};
   valid.forEach((item) => {
     const region = item.region || "待補";
@@ -349,11 +346,11 @@ function updateWeeklyHighlightSlide() {
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>截至 11/16</b></div>
-      <strong class="weekly-highlight-number">252<small>家</small></strong>
-      <h3>會員人數 284 位</h3>
-      <p class="weekly-highlight-em">個人 220 家｜團體 32 家</p>
-      <p>11 月梯次｜個人 +12 家・團體 +1 家</p>
+      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>名冊核對 11/17</b></div>
+      <strong class="weekly-highlight-number">251<small>家</small></strong>
+      <h3>會員人數 281 位</h3>
+      <p class="weekly-highlight-em">個人 220 家｜團體 31 家（61 位）</p>
+      <p>11 月梯次｜個人 10 家・團體 2 家</p>
     </article>
 
     <article class="weekly-highlight-card is-gold board-meeting-card">
