@@ -300,7 +300,7 @@ function updateWeeklyHighlightSlide() {
   if (!slide) return;
 
   const meta = slide.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "2026/11/10 週報｜人數統計截至 11/09";
+  if (meta) meta.textContent = "11/17（二）09:00 週會｜秘書日誌 2026/11/16";
 
   const header = slide.querySelector(".weekly-highlight-header");
   if (header) header.innerHTML = `
@@ -318,49 +318,48 @@ function updateWeeklyHighlightSlide() {
       <div class="weekly-highlight-top"><span>01｜年度盛會・費用結算</span><b>3 項待補</b></div>
       <div class="weekly-highlight-dual">
         <div>
-          <strong class="weekly-highlight-number">55.08<small>萬</small></strong>
-          <h3>目前已知支出 NT$550,848</h3>
+          <strong class="weekly-highlight-number">55.21<small>萬</small></strong>
+          <h3>目前已知支出 NT$552,116</h3>
         </div>
         <div class="weekly-highlight-mini">
           <p><b>156<small>位</small></b><span>W Hotel 訂餐計費</span></p>
-          <p><b>133<small>位</small></b><span>活動計費人數</span></p>
-          <p><b>4,142<small>元</small></b><span>每計費人平均已知支出</span></p>
+          <p><b>135<small>位</small></b><span>活動計費人數</span></p>
+          <p><b>4,090<small>元</small></b><span>每計費人平均已知支出</span></p>
         </div>
       </div>
       <p class="weekly-highlight-em">W Hotel 依訂餐 156 位計費｜餐費 NT$485,441</p>
-      <p>待補：主視覺背板／印刷輸出、副總召、工作人員餐食</p>
+      <p>待補：背板／印刷輸出、工作人員餐食與加班費</p>
     </article>
 
     <article class="weekly-highlight-card is-blue north-event-card">
       <div class="weekly-highlight-top"><span>02｜北1區獎勵活動</span><b>主辦 徐佳彣</b></div>
-      <strong class="weekly-highlight-number">23<small>位</small></strong>
-      <h3>11/12（四）13:30</h3>
-      <p class="weekly-highlight-em">北1區 15 位＋北3區 8 位</p>
-      <p>北1區會員免費｜非會員 NT$1,000</p>
+      <strong class="weekly-highlight-number">19<small>位</small></strong>
+      <h3>實際出席｜報名 24 位</h3>
+      <p class="weekly-highlight-em">11/12（四）活動已完成</p>
+      <p>出席率 79.2%</p>
     </article>
 
     <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>截至 11/09</b></div>
-      <strong class="weekly-highlight-number">248<small>家</small></strong>
-      <h3>會員人數 281 位</h3>
-      <p class="weekly-highlight-em">個人 216 家｜團體 32 家</p>
-      <p>11/13（五）彙整會員收款明細</p>
+      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>截至 11/16</b></div>
+      <strong class="weekly-highlight-number">252<small>家</small></strong>
+      <h3>會員人數 284 位</h3>
+      <p class="weekly-highlight-em">個人 220 家｜團體 32 家</p>
     </article>
 
     <article class="weekly-highlight-card is-gold board-meeting-card">
       <div class="weekly-highlight-top"><span>04｜第12次理監事會議</span><b>11/20</b></div>
-      <strong class="weekly-highlight-number">7.85<small>萬</small></strong>
-      <h3>預估會後結餘 NT$78,541</h3>
-      <p class="weekly-highlight-em">11:50 入場｜大直典華（暫訂）</p>
-      <p>預估出席費 NT$24,000</p>
+      <strong class="weekly-highlight-number">22<small>位已報名</small></strong>
+      <h3>11/20（五）11:50 入場</h3>
+      <p class="weekly-highlight-em">大直典華（暫訂）</p>
+      <p>預估會後結餘 NT$78,541</p>
       <p>餘額用於 2027/02 理監事聚餐</p>
     </article>
 
     <article class="weekly-highlight-card is-gold upcoming-card">
       <div class="weekly-highlight-top"><span>05｜近期活動與準備</span><b>持續推進</b></div>
       <ul class="upcoming-list">
-        <li><time>11/26–27</time><div><strong>苗栗二日遊・17 位</strong><span>交通、住宿、餐飲及保險確認中</span></div></li>
-        <li><time>12/07–10</time><div><strong>廣州設計週・35 位</strong><span>待辦：錦旗、布條、團長照片與頭銜</span></div></li>
+        <li><time>11/26–27</time><div><strong>苗栗二日遊・19 位</strong><span>交通、住宿、餐飲及保險確認中</span></div></li>
+        <li><time>12/07–10</time><div><strong>廣州設計週・35 位</strong><span>報價：錦旗 $2,835／布條 $1,200<br>待補：團長照片與頭銜</span></div></li>
         <li><time>12/23</time><div><strong>南區活動（暫訂）</strong><span>14:30 活動｜17:30 晚餐<br>會員 $500／非會員 $1,500</span></div></li>
       </ul>
     </article>
@@ -539,4 +538,4 @@ function prepareReportLayout() {
 prepareReportLayout();
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：11 月業績、特約聯盟與 11/10 協會進度");
+status("週報已更新：11/17 週會｜秘書日誌 11/16");

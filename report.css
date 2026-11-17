@@ -118,7 +118,8 @@
 .report-slide .board-meeting-card h3 { font-size: 1.55cqw; }
 .report-slide .board-meeting-card .weekly-highlight-number { font-size: 4.2cqw; margin-top: .8cqw; }
 .association-accounting-note { flex-shrink: 0; margin: -.4cqw 0 0; color: var(--muted); font-size: 1.1cqw; }
-.upcoming-list { list-style: none; margin: .8cqw 0 0; padding: 0; display: grid; gap: .8cqw; }
+.report-slide .upcoming-card { padding-top: 1cqw; padding-bottom: 1cqw; }
+.upcoming-list { list-style: none; margin: .4cqw 0 0; padding: 0; display: grid; gap: .5cqw; }
 .upcoming-list li { display: grid; grid-template-columns: 6.6cqw 1fr; gap: .7cqw; align-items: start; }
 .upcoming-list time { font-size: 1.2cqw; font-weight: 900; color: var(--gold); padding-top: .15cqw; }
 .upcoming-list strong { display: block; font-size: 1.35cqw; line-height: 1.4; }
