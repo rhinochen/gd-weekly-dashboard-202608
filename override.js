@@ -304,9 +304,10 @@ function updateAllianceOverviewSlide() {
 function updateWeeklyHighlightSlide() {
   const slide = document.querySelector('[data-title="本週重點"]');
   if (!slide) return;
+  slide.classList.add("association-weekly-slide");
 
   const meta = slide.querySelector(".page-meta strong");
-  if (meta) meta.textContent = "11/17（二）09:00 週會｜秘書日誌 2026/11/16";
+  if (meta) meta.textContent = "11/24（二）09:00 週會｜秘書日誌 2026/11/24";
 
   const header = slide.querySelector(".weekly-highlight-header");
   if (header) header.innerHTML = `
@@ -321,53 +322,60 @@ function updateWeeklyHighlightSlide() {
 
   grid.innerHTML = `
     <article class="weekly-highlight-card is-gold is-wide annual-expense-card">
-      <div class="weekly-highlight-top"><span>01｜年度盛會・費用結算</span><b>3 項待補</b></div>
+      <div class="weekly-highlight-top"><span>01｜年度盛會・費用結算</span><b>2 項待補</b></div>
       <div class="weekly-highlight-dual">
         <div>
-          <strong class="weekly-highlight-number">55.21<small>萬</small></strong>
-          <h3>目前已知支出 NT$552,116</h3>
+          <strong class="weekly-highlight-number">57.21<small>萬</small></strong>
+          <h3>目前已知支出 NT$572,116</h3>
         </div>
         <div class="weekly-highlight-mini">
-          <p><b>156<small>位</small></b><span>W Hotel 訂餐計費</span></p>
+          <p><b>156<small>位</small></b><span>總出席｜含免費 21 位</span></p>
           <p><b>135<small>位</small></b><span>活動計費人數</span></p>
-          <p><b>4,090<small>元</small></b><span>每計費人平均已知支出</span></p>
+          <p><b>4,238<small>元</small></b><span>每位計費者分攤已知支出</span></p>
         </div>
       </div>
-      <p class="weekly-highlight-em">W Hotel 依訂餐 156 位計費｜餐費 NT$485,441</p>
-      <p>待補：背板／印刷輸出、工作人員餐食與加班費</p>
+      <p class="weekly-highlight-em">較上週 +NT$20,000｜背板／印刷輸出（估）</p>
+      <p>待補工作人員餐食、加班費；尚未完成最終結算</p>
     </article>
 
-    <article class="weekly-highlight-card is-blue north-event-card">
-      <div class="weekly-highlight-top"><span>02｜北1區獎勵活動</span><b>主辦 徐佳彣</b></div>
-      <strong class="weekly-highlight-number">19<small>位</small></strong>
-      <h3>實際出席｜報名 24 位</h3>
-      <p class="weekly-highlight-em">11/12（四）活動已完成</p>
-      <p>出席率 79.2%</p>
-    </article>
-
-    <article class="weekly-highlight-card is-green">
-      <div class="weekly-highlight-top"><span>03｜會員概況</span><b>名冊核對 11/17</b></div>
-      <strong class="weekly-highlight-number">251<small>家</small></strong>
-      <h3>會員人數 281 位</h3>
-      <p class="weekly-highlight-em">個人 220 家｜團體 31 家（61 位）</p>
-      <p>11 月梯次｜個人 10 家・團體 2 家</p>
+    <article class="weekly-highlight-card is-green membership-summary-card">
+      <div class="weekly-highlight-top"><span>02｜會員概況</span><b>截至 11/16</b></div>
+      <strong class="weekly-highlight-number">252<small>家</small></strong>
+      <h3>會員人數 283 位</h3>
+      <p class="weekly-highlight-em">個人 221 家｜團體 31 家</p>
+      <p>11 月入會名單：12 家／14 位</p>
+      <p>延續同一梯次，未另計本週新增</p>
     </article>
 
     <article class="weekly-highlight-card is-gold board-meeting-card">
-      <div class="weekly-highlight-top"><span>04｜第12次理監事會議</span><b>11/20</b></div>
-      <strong class="weekly-highlight-number">22<small>位已報名</small></strong>
-      <h3>11/20（五）11:50 入場</h3>
-      <p class="weekly-highlight-em">大直典華（暫訂）</p>
-      <p>預估會後結餘 NT$78,541</p>
-      <p>餘額用於 2027/02 理監事聚餐</p>
+      <div class="weekly-highlight-top"><span>03｜第12次理監事會議</span><b>11/20 已完成</b></div>
+      <strong class="weekly-highlight-number">22<small>位全到</small></strong>
+      <h3>專款結餘 NT$35,181</h3>
+      <p>會議紀錄已整理，待簽核</p>
+      <p>11/24 呈報進度待確認</p>
+      <p class="weekly-highlight-em">個人公仔提案｜12/01 待決議</p>
     </article>
 
-    <article class="weekly-highlight-card is-gold upcoming-card">
-      <div class="weekly-highlight-top"><span>05｜近期活動與準備</span><b>持續推進</b></div>
+    <article class="weekly-highlight-card is-blue travel-preparation-card">
+      <div class="weekly-highlight-top"><span>04｜出團準備</span><b>進入執行</b></div>
+      <div class="travel-preparation-item">
+        <h3>11/26–27 苗栗｜19 位</h3>
+        <p>11/23 已開群組並公告</p>
+        <p>交通、住宿、餐飲、保險與參訪<br>已完成申請</p>
+      </div>
+      <div class="travel-preparation-item">
+        <h3>12/07–10 廣州｜35 位</h3>
+        <p>3 面錦旗＋布條 11/23 已送達</p>
+        <p class="weekly-highlight-em">待補：團長照片與頭銜</p>
+      </div>
+    </article>
+
+    <article class="weekly-highlight-card is-gold upcoming-card upcoming-events-card">
+      <div class="weekly-highlight-top"><span>05｜近期活動</span><b>3 場預告</b></div>
       <ul class="upcoming-list">
-        <li><time>11/26–27</time><div><strong>苗栗二日遊・19 位</strong><span>交通、住宿、餐飲及保險確認中</span></div></li>
-        <li><time>12/07–10</time><div><strong>廣州設計週・35 位</strong><span>報價：錦旗 $2,835／布條 $1,200<br>待補：團長照片與頭銜</span></div></li>
-        <li><time>12/23</time><div><strong>南區活動（暫訂）</strong><span>14:30 活動｜17:30 晚餐<br>會員 $500／非會員 $1,500</span></div></li>
+        <li><time datetime="2026-12-18T14:00">12/18<br>14:00</time><div><strong>增能知識分享會</strong><span>設計定價權・AI 提案・居住品質<br>台北內湖</span></div></li>
+        <li><time datetime="2026-12-23T14:30">12/23</time><div><strong>南區獎勵活動</strong><span>14:30 Open House＋廠商分享<br>17:30 晚餐｜會員 $500／非會員 $1,500</span></div></li>
+        <li><time datetime="2027-01-06">2027<br>01/06</time><div><strong>建材中心參訪｜規劃 40 位</strong><span>分 2 組參訪；晚餐龍都飯店<br>會員 $800／非會員 $1,800<br>繳 2027 年費並出席餐會，可退餐費</span></div></li>
       </ul>
     </article>
   `;
@@ -378,7 +386,7 @@ function updateWeeklyHighlightSlide() {
     accountingNote.className = "association-accounting-note";
     slide.append(accountingNote);
   }
-  accountingNote.textContent = "帳務進度｜已處理至 11/09，送金單與收據已完成";
+  accountingNote.textContent = "帳務進度｜已處理至 11/16，送金單與收據已完成";
 }
 
 function updateAssociationWeeklyEmphasis() {
@@ -544,4 +552,4 @@ function prepareReportLayout() {
 prepareReportLayout();
 removeSlidesForWeeklyReport();
 renderDashboard();
-status("週報已更新：11/17 週會｜秘書日誌 11/16");
+status("週報已更新：11/24 週會｜秘書日誌 11/24");
